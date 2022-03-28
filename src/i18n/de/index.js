@@ -77,6 +77,8 @@ export default {
   resolution: 'Auflösung',
   weight: 'Gewicht',
   frontView: 'Ansicht von vorne',
+  sideView: 'Side View',
+  topView: 'Top View',
   // room settings
   roomSize: 'Raumgröße',
   showReference: 'Show Axes Reference',
@@ -118,5 +120,6 @@ export default {
   fromFrontWall: 'Von vorne',
   fromFloor: 'Vom Boden',
   ScreenMap: 'Screen Texture',
-  mapPattern: 'Texture Pattern'
+  mapPattern: 'Texture Pattern',
+  history: 'Storage'
 }

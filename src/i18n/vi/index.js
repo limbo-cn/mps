@@ -77,6 +77,8 @@ export default {
   resolution: 'Độ phân giải',
   weight: 'Trọng lượng',
   frontView: 'Mặt trước',
+  sideView: 'Side View',
+  topView: 'Top View',
   // room settings
   roomSize: 'Kích thước phòng',
   showReference: 'Show Axes Reference',
@@ -118,5 +120,6 @@ export default {
   fromFrontWall: 'Từ phía trước',
   fromFloor: 'Từ sàn',
   ScreenMap: 'Screen Texture',
-  mapPattern: 'Texture Pattern'
+  mapPattern: 'Texture Pattern',
+  history: 'Storage'
 }

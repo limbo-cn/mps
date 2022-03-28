@@ -77,6 +77,8 @@ export default {
   resolution: '해상도',
   weight: '무게',
   frontView: '전면 보기',
+  sideView: 'Side View',
+  topView: 'Top View',
   // room settings
   roomSize: '공간 크기',
   showReference: 'Show Axes Reference',
@@ -118,5 +120,6 @@ export default {
   fromFrontWall: '전면에서',
   fromFloor: '바닥에서',
   ScreenMap: 'Screen Texture',
-  mapPattern: 'Texture Pattern'
+  mapPattern: 'Texture Pattern',
+  history: 'Storage'
 }

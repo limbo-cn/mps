@@ -143,9 +143,9 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: 'mps',
-        short_name: 'mps',
-        description: 'mps',
+        name: 'MPS',
+        short_name: 'MPS',
+        description: 'MPS',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
@@ -210,7 +210,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'mps'
+        appId: 'MPS'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

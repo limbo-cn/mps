@@ -2,25 +2,56 @@
   <div class="row q-pa-sm q-pl-md">
     <q-field dense borderless>
       <template v-slot:control>
-        <span class="text-subtitle2 text-grey-7"> {{$t('unit')}}:</span>
-        <q-radio size="sm" v-for="optionUnit in optionUnits" :key="optionUnit.value" @update:modelValue="changeUnit" v-model="unit" :val="optionUnit.value" :label="optionUnit.label" />
+        <span class="text-subtitle2 text-grey-7">{{ $t('unit') }}:</span>
+        <q-radio
+          size="sm"
+          v-for="optionUnit in optionUnits"
+          :key="optionUnit.value"
+          @update:modelValue="changeUnit"
+          v-model="unit"
+          :val="optionUnit.value"
+          :label="optionUnit.label"
+        />
       </template>
     </q-field>
     <q-field dense borderless>
-      <q-checkbox v-model="isShowRefrence" @update:modelValue="updateShowRefrence" left-label :label="$t('showReference')" />
+      <q-checkbox
+        v-model="isShowRefrence"
+        @update:modelValue="updateShowRefrence"
+        left-label
+        :label="$t('showReference')"
+      />
     </q-field>
     <q-field dense borderless>
-      <q-checkbox v-model="isShowProjectorInterfere" @update:modelValue="updateShowProjectorInterfere" left-label :label="$t('showProjectorInterfere')" />
+      <q-checkbox
+        v-model="isShowProjectorInterfere"
+        @update:modelValue="updateShowProjectorInterfere"
+        left-label
+        :label="$t('showProjectorInterfere')"
+      />
     </q-field>
     <q-field dense borderless>
-      <q-checkbox v-model="isShowProjectionDistanceRefrence" @update:modelValue="updateShowProjectionDistanceRefrence" left-label :label="$t('showProjectionDistanceRefrence')" />
+      <q-checkbox
+        v-model="isShowProjectionDistanceRefrence"
+        @update:modelValue="updateShowProjectionDistanceRefrence"
+        left-label
+        :label="$t('showProjectionDistanceRefrence')"
+      />
     </q-field>
     <q-field dense borderless>
-      <q-input v-model.number="roomBrightness" suffix="lx" dense type="number" step="1" :min="0" style="width: 100%">
+      <q-input
+        v-model.number="roomBrightness"
+        @update:modelValue="updateRoomBrightness"
+        suffix="lx"
+        dense
+        type="number"
+        step="1"
+        :min="0"
+        :max="500"
+        style="width: 100%"
+      >
         <template v-slot:prepend>
-          <div class="text-subtitle2" style="width:120px">
-            {{$t('roomBrightness')}}:
-          </div>
+          <div class="text-subtitle2" style="width:120px">{{ $t('roomBrightness') }}:</div>
         </template>
       </q-input>
     </q-field>
@@ -89,10 +120,12 @@ export default {
         this.SET_UNIT_LABEL(this.$t('feet'))
         this.SET_UNIT_RATIO(unitRatio.feet)
       }
+    },
+    updateRoomBrightness(val) {
+      this.$bus.emit('updateRoomBrightness', val)
     }
   }
 }
 </script>
 <style lang="scss">
-
 </style>

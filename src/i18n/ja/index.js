@@ -77,6 +77,8 @@ export default {
   resolution: '解像度',
   weight: '重量',
   frontView: '前面図',
+  sideView: 'Side View',
+  topView: 'Top View',
   // room settings
   roomSize: '部屋のサイズ',
   showReference: 'Show Axes Reference',
@@ -118,5 +120,6 @@ export default {
   fromFrontWall: '前から',
   fromFloor: '床から',
   ScreenMap: 'Screen Texture',
-  mapPattern: 'Texture Pattern'
+  mapPattern: 'Texture Pattern',
+  history: 'Storage'
 }

@@ -3,8 +3,8 @@
     <q-card class="fit">
       <q-table @row-click="clickRow" v-model:selected="selectedRows" :rows="projectors" :columns="columns" row-key="uId" :class="$q.dark.isActive?`my-sticky-header-table-dark`:`my-sticky-header-table`" selection="multiple" :pagination="{rowsPerPage :100}" hide-bottom dense flat bordered square>
         <template v-slot:body-cell="props">
-          <q-td :props="props" :class="props.row.uId === selectedProjector.uId?$q.dark.isActive?'bg-grey-8':'bg-grey-4':''">
-            <span v-if="props.row.uId === selectedProjector.uId" class="text-primary">{{props.value}}</span>
+          <q-td :props="props" :class="props.row.uId === selectedProjector?.uId?$q.dark.isActive?'bg-grey-8':'bg-grey-4':''">
+            <span v-if="props.row.uId === selectedProjector?.uId" class="text-primary">{{props.value}}</span>
             <span v-else>{{props.value}}</span>
           </q-td>
         </template>

@@ -1,6 +1,6 @@
-# mps (mps)
+# MPS (MPS)
 
-mps
+MPS
 
 ## Install the dependencies
 ```bash

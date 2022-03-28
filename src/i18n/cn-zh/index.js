@@ -77,6 +77,8 @@ export default {
     resolution: '分辨率',
     weight: '重量',
     frontView: '正面视角',
+    sideView: '侧视图',
+    topView: '俯视图',
     // room settings
     roomSize: '房间大小',
     showReference: '显示参考坐标系',
@@ -118,5 +120,6 @@ export default {
     fromFrontWall: '距离前方墙',
     fromFloor: '距离地板',
     ScreenMap: '屏幕纹理',
-    mapPattern: '纹理样式'
+    mapPattern: '纹理样式',
+    history: '存储'
 }

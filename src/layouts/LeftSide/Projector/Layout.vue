@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-sm q-pl-md">
-    <div class="text-body1">{{$t('single')}}</div>
+    <div class="text-body1">{{ $t('single') }}</div>
     <div class="q-gutter-sm row q-pa-sm">
       <div class="col-5 text-center">
         <q-btn class="full-width" outline color="primary" :label="$t('desktop')" @click="desktop" />
@@ -9,13 +9,21 @@
         <q-btn class="full-width" outline color="primary" :label="$t('ceiling')" @click="ceiling" />
       </div>
       <div class="col-5 text-center">
-        <q-btn class="full-width" outline color="primary" :label="$t('fullScreen')" @click="fullscreen" />
+        <q-btn
+          class="full-width"
+          v-show="screenType === 0"
+          outline
+          color="primary"
+          :label="$t('fullScreen')"
+          @click="fullscreen"
+        />
       </div>
     </div>
-    <div class="text-body1">{{$t('multiple')}}</div>
-    <div class="text-subtitle2 text-primary q-pa-sm" v-if="selectedRows.length === 0">
-      {{$t('selectProjectors')}}
-    </div>
+    <div class="text-body1">{{ $t('multiple') }}</div>
+    <div
+      class="text-subtitle2 text-primary q-pa-sm"
+      v-if="selectedRows.length === 0"
+    >{{ $t('selectProjectors') }}</div>
     <div class="q-gutter-sm row q-pa-sm" v-show="selectedRows.length > 0">
       <div class="col-5 text-center">
         <q-btn class="full-width" outline color="primary" :label="$t('xAlign')" @click="xAlign" />
@@ -34,9 +42,7 @@
       </div>
       <q-input v-model="gridX" type="number" min="1" max="10" style="width:85%">
         <template v-slot:prepend>
-          <div class="text-subtitle2">
-            x:
-          </div>
+          <div class="text-subtitle2">x:</div>
         </template>
         <template v-slot:append>
           <q-btn outline color="primary" :label="$t('grid')" @click="grid" />
@@ -57,6 +63,9 @@ export default ({
     }
   },
   computed: {
+    screenType() {
+      return this.$store.state.screen.screenType
+    },
     selectedRows: {
       get() {
         return this.$store.state.projector.selectedProjectors
@@ -181,7 +190,7 @@ export default ({
       this.SET_SELECTED_PROJECTOR_Y(this.$store.state.screen.y - yOffset)
       this.SET_SELECTED_PROJECTOR_Z(this.$store.state.screen.z + zOffset)
       this.SET_SELECTED_PROJECTOR_ROTATE_X(0)
-      this.SET_SELECTED_PROJECTOR_ROTATE_Y(180)
+      this.SET_SELECTED_PROJECTOR_ROTATE_Y(0)
       this.SET_SELECTED_PROJECTOR_ROTATE_Z(0)
 
       this.setProjector()
@@ -225,7 +234,7 @@ export default ({
 })
 </script>
 <style lang="scss" scoped>
-
 </style>
 <style lang="sass">
+
 </style>

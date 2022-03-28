@@ -3,15 +3,39 @@
     <div class="fit" id="threeView">
       <q-btn
         push
-        icon="videocam"
-        style="z-index:10"
-        :color="$q.dark.isActive ? 'grey-8' : 'white'"
+        dense
         text-color="primary"
-        class="absolute-top-left q-ma-md"
-        @mousedown="changeCamera"
-        @mouseup="resetCamera"
+        :color="$q.dark.isActive ? 'grey-8' : 'white'"
+        icon="crop_din"
+        class="q-ml-sm q-mt-sm absolute-top-left"
+        style="z-index:10"
+        @click="frontCamera"
       >
         <q-tooltip>{{ $t('frontView') }}</q-tooltip>
+      </q-btn>
+      <q-btn
+        push
+        dense
+        text-color="primary"
+        :color="$q.dark.isActive ? 'grey-8' : 'white'"
+        icon="navigate_before"
+        style="z-index:10;top:40px;"
+        class="q-ml-sm q-mt-sm absolute-top-left"
+        @click="sideCamera"
+      >
+        <q-tooltip>{{ $t('sideView') }}</q-tooltip>
+      </q-btn>
+      <q-btn
+        push
+        dense
+        text-color="primary"
+        :color="$q.dark.isActive ? 'grey-8' : 'white'"
+        icon="expand_more"
+        style="z-index:10;top:80px;"
+        class="q-ml-sm q-mt-sm absolute-top-left"
+        @click="topCamera"
+      >
+        <q-tooltip>{{ $t('topView') }}</q-tooltip>
       </q-btn>
       <ProjectorDetail />
       <q-resize-observer @resize="resizeCanvas" debounce="100" />
@@ -39,6 +63,7 @@ export default ({
     this.$bus.on('autoAdjustScreenPosition', this.autoAdjustScreenPosition)
     this.$bus.on('setRoomSize', this.setRoomSize)
     this.$bus.on('addProjector', this.addProjector)
+    this.$bus.on('addProjectorsHistory', this.addProjectorsHistory)
     this.$bus.on('editProjector', this.editProjector)
     this.$bus.on('setProjector', this.setProjector)
     this.$bus.on('setProjectors', this.setProjectors)
@@ -50,6 +75,7 @@ export default ({
     this.$bus.on('updateShowRefrence', this.updateShowRefrence)
     this.$bus.on('updateShowProjectorInterfere', this.updateShowProjectorInterfere)
     this.$bus.on('updateShowProjectionDistanceRefrence', this.updateShowProjectionDistanceRefrence)
+    this.$bus.on('updateRoomBrightness', this.updateRoomBrightness)
     this.$bus.on('setLight', this.setLight)
   },
   beforeUnmount() {
@@ -58,6 +84,7 @@ export default ({
     this.$bus.off('autoAdjustScreenPosition', this.autoAdjustScreenPosition)
     this.$bus.off('setRoomSize', this.setRoomSize)
     this.$bus.off('addProjector', this.addProjector)
+    this.$bus.off('addProjectorsHistory', this.addProjectorsHistory)
     this.$bus.off('editProjector', this.editProjector)
     this.$bus.off('setProjector', this.setProjector)
     this.$bus.off('setProjectors', this.setProjectors)
@@ -69,6 +96,7 @@ export default ({
     this.$bus.off('updateShowRefrence', this.updateShowRefrence)
     this.$bus.off('updateShowProjectorInterfere', this.updateShowProjectorInterfere)
     this.$bus.off('updateShowProjectionDistanceRefrence', this.updateShowProjectionDistanceRefrence)
+    this.$bus.off('updateRoomBrightness', this.updateRoomBrightness)
     this.$bus.off('setLight', this.setLight)
   },
   mounted() {
@@ -103,6 +131,9 @@ export default ({
     addProjector(uId) {
       view.addProjector(uId)
     },
+    addProjectorsHistory(uId) {
+      view.addProjectorsHistory(uId)
+    },
     editProjector(uId) {
       view.editProjector(uId)
     },
@@ -125,11 +156,14 @@ export default ({
       const image = view.getDataUrl()
       this.SET_THREE_VIEW_IMAGE(image)
     },
-    changeCamera() {
-      view.changeCamera()
+    frontCamera() {
+      view.frontCamera()
     },
-    resetCamera() {
-      view.resetCamera()
+    sideCamera() {
+      view.sideCamera()
+    },
+    topCamera() {
+      view.topCamera()
     },
     setTheme() {
       view.setTheme()
@@ -145,6 +179,9 @@ export default ({
     },
     setLight(val) {
       view.setLight(val)
+    },
+    updateRoomBrightness(val) {
+      view.updateRoomBrightness(val)
     }
   }
 })

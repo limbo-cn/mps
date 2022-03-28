@@ -1,6 +1,6 @@
 import store from '../store'
 import ThreeBase from './ThreeBase.js'
-import { DoubleSide, MeshBasicMaterial } from 'three'
+import { DoubleSide, MeshBasicMaterial, Vector3 } from 'three'
 
 export default class ThreeView extends ThreeBase {
     constructor(domSelector) {
@@ -49,7 +49,7 @@ export default class ThreeView extends ThreeBase {
     }
 
     addProjector(uId) {
-        this._addProjecotr(uId).then(projector => {
+        this._addProjector(uId).then(projector => {
             this._projectors.push(projector)
             store.commit('projector/SET_SELECTED_PROJECTOR_X', projector.position.x / this._roomSize.ratio)
             store.commit('projector/SET_SELECTED_PROJECTOR_Y', projector.position.y / this._roomSize.ratio)
@@ -57,6 +57,17 @@ export default class ThreeView extends ThreeBase {
 
             this._createAllBoundLine()
         })
+    }
+
+    async addProjectorsHistory(projectors) {
+        for (const projector of projectors) {
+            await this._addProjector(projector.uId).then(projectorObj => {
+                this._projectors.push(projectorObj)
+                store.commit('projector/SET_SELECTED_PROJECTOR_UID', projector.uId)
+                this.setProjector(projector)
+            })
+        }
+        this._createAllBoundLine()
     }
 
     editProjector(uId) {
@@ -154,15 +165,22 @@ export default class ThreeView extends ThreeBase {
         return dataUrl
     }
 
-    changeCamera() {
-        this._controls.saveState()
-
-        this._camera.position.set(this._roomSize.widthDraw / 2, this._roomSize.heightDraw / 2, this._roomSize.depthDraw)
+    frontCamera() {
+        this._camera.position.set(this._roomSize.widthDraw / 2, this._roomSize.heightDraw / 2, this._roomSize.depthDraw * 1.6)
         this._camera.lookAt(this._roomSize.widthDraw / 2, this._roomSize.heightDraw / 2, 0)
+        this._controls.target.copy(new Vector3(this._roomSize.widthDraw / 2, this._roomSize.heightDraw / 2, 0))
     }
 
-    resetCamera() {
-        this._controls.reset()
+    sideCamera() {
+        this._camera.position.set(this._roomSize.widthDraw * 2.5, this._roomSize.heightDraw / 2, this._roomSize.depthDraw / 2)
+        this._camera.lookAt(0, this._roomSize.heightDraw / 2, this._roomSize.depthDraw / 2)
+        this._controls.target.copy(new Vector3(0, this._roomSize.heightDraw / 2, this._roomSize.depthDraw / 2))
+    }
+
+    topCamera() {
+        this._camera.position.set(this._roomSize.widthDraw / 2, this._roomSize.heightDraw * 4, this._roomSize.depthDraw / 2)
+        this._camera.lookAt(this._roomSize.widthDraw / 2, 0, this._roomSize.depthDraw / 2)
+        this._controls.target.copy(new Vector3(this._roomSize.widthDraw / 2, 0, this._roomSize.depthDraw / 2))
     }
 
     updateShowRefrence(val) {
@@ -193,6 +211,11 @@ export default class ThreeView extends ThreeBase {
 
     updateShowProjectionDistanceRefrence(val) {
         this._isShowDistanceRefrence = val
+        this._createAllBoundLine()
+    }
+
+    updateRoomBrightness(val) {
+        this._light.power = 4 * Math.PI * val / 250
         this._createAllBoundLine()
     }
 

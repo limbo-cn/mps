@@ -217,7 +217,7 @@ export default class ThreeBase {
             this._light.position.set(this._roomSize.widthDraw / 2, this._roomSize.heightDraw, this._roomSize.depthDraw / 2)
             return
         }
-        this._light = new PointLight(0xffffff, 1.2, 0, 2)
+        this._light = new PointLight(0xffffff, 1, 0, 2)
         this._light.position.set(this._roomSize.widthDraw / 2, this._roomSize.heightDraw, this._roomSize.depthDraw / 2)
         this._scene.add(this._light)
 
@@ -246,9 +246,9 @@ export default class ThreeBase {
         this._transformControl.addEventListener('change', event => {
             throttleCount++
             if (throttleCount % 2 === 0 && this._transformControl.object) {
-                store.commit('projector/SET_SELECTED_PROJECTOR_X', this._transformControl.object.position.x / this._roomSize.ratio)
-                store.commit('projector/SET_SELECTED_PROJECTOR_Y', this._transformControl.object.position.y / this._roomSize.ratio)
-                store.commit('projector/SET_SELECTED_PROJECTOR_Z', this._transformControl.object.position.z / this._roomSize.ratio)
+                store.commit('projector/SET_SELECTED_PROJECTOR_X', this._transformControl.object.position?.x / this._roomSize.ratio)
+                store.commit('projector/SET_SELECTED_PROJECTOR_Y', this._transformControl.object.position?.y / this._roomSize.ratio)
+                store.commit('projector/SET_SELECTED_PROJECTOR_Z', this._transformControl.object.position?.z / this._roomSize.ratio)
 
                 if (this._isInterfere) {
                     this._analyzeInterfere()
@@ -578,7 +578,7 @@ export default class ThreeBase {
         })
     }
 
-    _addProjecotr(uId) {
+    _addProjector(uId) {
         const mtlLoader = new MTLLoader()
         const objLoader = new OBJLoader()
         const p = new Promise((resolve, reject) => {

@@ -1,9 +1,11 @@
 import { createStore } from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 import common from './common'
 import projector from './projector'
 import room from './room'
 import screen from './screen'
+import history from './history'
 
 /*
  * If not building with SSR mode, you can
@@ -14,13 +16,20 @@ import screen from './screen'
  * with the Store instance.
  */
 
+const historyState = createPersistedState({
+  paths: ['history']
+})
+
 const Store = createStore({
   modules: {
     common,
     projector,
     room,
-    screen
+    screen,
+    history
   },
+
+  plugins: [historyState],
 
   // enable strict mode (adds overhead!)
   // for dev mode and --debug builds only

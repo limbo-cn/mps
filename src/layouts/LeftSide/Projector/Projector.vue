@@ -1,14 +1,14 @@
 <template>
   <div class="row q-pl-md q-pa-sm">
     <div class="q-mb-sm" :class="`col-12`">
-      <q-btn id="leftside-addprojector" outline color="white" text-color="primary" :label="$t('addProjector')" @click="()=>{showDlgChooseProjecotr = true; isEdit = false}" icon="add" style="width: 95%" />
+      <q-btn id="leftside-addprojector" outline color="white" text-color="primary" :label="$t('addProjector')" @click="()=>{showDlgChooseProjector = true; isEdit = false}" icon="add" style="width: 95%" />
     </div>
     <template v-if="projectors.length > 0">
       <div class="col-4" v-show="projectors.length>0">
         <q-btn @click="deleteProjector" outline color="primary" icon="delete_outline" style="width: 90%" />
       </div>
       <div class="col-4">
-        <q-btn @click="showDlgCopyProjecotr = true" outline color="primary" icon="file_copy" style="width: 90%" />
+        <q-btn @click="showDlgCopyProjector = true" outline color="primary" icon="file_copy" style="width: 90%" />
       </div>
       <div class="col-4">
         <q-btn outline color="primary" @click="editProjector" icon="loop" style="width: 90%" />
@@ -51,7 +51,7 @@
     <Blending />
   </q-expansion-item>
 
-  <q-dialog v-model="showDlgCopyProjecotr" @show="initDlgCopyProjecotr">
+  <q-dialog v-model="showDlgCopyProjector" @show="initDlgCopyProjector">
     <q-card style="width: 700px; max-width: 80vw;">
       <q-card-section>
         <div class="text-h5">{{$t('copyProjector')}}</div>
@@ -74,7 +74,7 @@
     </q-card>
   </q-dialog>
 
-  <q-dialog v-model="showDlgChooseProjecotr" @show="initDlgChooseProjecotr">
+  <q-dialog v-model="showDlgChooseProjector" @show="initDlgChooseProjector">
     <q-card style="width: 700px; max-width: 80vw;">
       <q-card-section v-show="!isEdit">
         <div class="text-h5">{{$t('addProjector')}}</div>
@@ -201,9 +201,9 @@ export default {
       aspectRatioOptions: ['16/10', '16/9', '4/3'],
       weight: '',
       weightOptions: ['0-2', '1-5', '5-10', '10-20', '20-50'],
-      showDlgCopyProjecotr: false,
+      showDlgCopyProjector: false,
       copyName: '',
-      showDlgChooseProjecotr: false,
+      showDlgChooseProjector: false,
       addProjectorModelName: '',
       addCustomName: '',
       isEdit: false
@@ -293,7 +293,7 @@ export default {
 
       this.$bus.emit('setProjector', this.selectedProjector)
     },
-    initDlgChooseProjecotr() {
+    initDlgChooseProjector() {
       if (this.isEdit) {
         this.addProjectorModelName = this.selectedProjector.modelName
         this.addCustomName = this.selectedProjector.customName
@@ -364,7 +364,7 @@ export default {
         this.$bus.emit('addProjector', projector.uId)
       }
 
-      this.showDlgChooseProjecotr = false
+      this.showDlgChooseProjector = false
     },
     deleteProjector() {
       showConfirm(this.$t('sureToDelete'), this.$t('yes'), this.$t('cancel'), () => {
@@ -387,13 +387,13 @@ export default {
       this.ADD_PROJECTOR(projector)
 
       this.$bus.emit('addProjector', projector.uId)
-      this.showDlgCopyProjecotr = false
+      this.showDlgCopyProjector = false
     },
-    initDlgCopyProjecotr() {
+    initDlgCopyProjector() {
       this.copyName = `${this.selectedProjector.customName}-copy`
     },
     editProjector() {
-      this.showDlgChooseProjecotr = true
+      this.showDlgChooseProjector = true
       this.isEdit = true
     }
   }

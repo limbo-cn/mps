@@ -10,3 +10,9 @@ export function SET_DEPTH(state, depth) {
 export function SET_BRIGHTNESS(state, brightness) {
     state.brightness = brightness
 }
+export function SET_ROOM_HISTORY(state, room) {
+    state.width = room.width
+    state.height = room.height
+    state.depth = room.depth
+    state.brightness = room.brightness
+}

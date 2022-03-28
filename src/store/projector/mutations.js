@@ -32,48 +32,75 @@ export function SET_SELECTED_PROJECTORS(state, projectors) {
 }
 
 export function SET_SELECTED_PROJECTOR_TEXTURE(state, texture) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.texture = texture
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.texture = texture
 }
 
 export function SET_SELECTED_PROJECTOR_ASPECT_RATIO(state, aspectRatio) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.aspectRatio = aspectRatio
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.aspectRatio = aspectRatio
 }
 
 export function SET_SELECTED_PROJECTOR_IMAGE_ASPECT_RATIO(state, imageAspectRatio) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.imageAspectRatio = imageAspectRatio
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.imageAspectRatio = imageAspectRatio
 }
 
 export function SET_SELECTED_PROJECTOR_SHOW_BLENDING_GUIDE_LINE(state, isShowBlendingGuideLine) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.isShowBlendingGuideLine = isShowBlendingGuideLine
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.isShowBlendingGuideLine = isShowBlendingGuideLine
 }
 
 export function SET_SELECTED_PROJECTOR_BLENDING_GUIDE_LINE_L(state, blendingGuideLineL) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.blendingGuideLineL = blendingGuideLineL
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.blendingGuideLineL = blendingGuideLineL
 }
 
 export function SET_SELECTED_PROJECTOR_BLENDING_GUIDE_LINE_R(state, blendingGuideLineR) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.blendingGuideLineR = blendingGuideLineR
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.blendingGuideLineR = blendingGuideLineR
 }
 
 export function SET_SELECTED_PROJECTOR_BLENDING_GUIDE_LINE_T(state, blendingGuideLineT) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.blendingGuideLineT = blendingGuideLineT
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.blendingGuideLineT = blendingGuideLineT
 }
 
 export function SET_SELECTED_PROJECTOR_BLENDING_GUIDE_LINE_B(state, blendingGuideLineB) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.blendingGuideLineB = blendingGuideLineB
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.blendingGuideLineB = blendingGuideLineB
 }
 
 export function SET_SELECTED_PROJECTOR_X(state, x) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.x = x
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.x = x
 }
 
 export function SET_PROJECTORS_X(state, { projectors, value }) {
@@ -83,8 +110,11 @@ export function SET_PROJECTORS_X(state, { projectors, value }) {
 }
 
 export function SET_SELECTED_PROJECTOR_Y(state, y) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.y = y
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.y = y
 }
 
 export function SET_PROJECTORS_Y(state, { projectors, value }) {
@@ -94,8 +124,11 @@ export function SET_PROJECTORS_Y(state, { projectors, value }) {
 }
 
 export function SET_SELECTED_PROJECTOR_Z(state, z) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.z = z
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.z = z
 }
 
 export function SET_PROJECTORS_Z(state, { projectors, value }) {
@@ -105,46 +138,78 @@ export function SET_PROJECTORS_Z(state, { projectors, value }) {
 }
 
 export function SET_SELECTED_PROJECTOR_PROJECTION_DISTANCE(state, projectionDistance) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.projectionDistance = projectionDistance
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.projectionDistance = projectionDistance
 }
 
 export function SET_SELECTED_PROJECTOR_BRIGHTNESS_NIT(state, brightnessOnScreenNit) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.brightnessOnScreenNit = brightnessOnScreenNit
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.brightnessOnScreenNit = brightnessOnScreenNit
 }
 
 export function SET_SELECTED_PROJECTOR_AMBITENT_CONTRAST(state, ambientContrast) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.ambientContrast = ambientContrast
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.ambientContrast = ambientContrast
 }
 
 export function SET_SELECTED_PROJECTOR_ROTATE_X(state, rotateX) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.rotateX = rotateX
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.rotateX = rotateX
 }
 
 export function SET_SELECTED_PROJECTOR_ROTATE_Y(state, rotateY) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.rotateY = rotateY
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.rotateY = rotateY
 }
 
 export function SET_SELECTED_PROJECTOR_ROTATE_Z(state, rotateZ) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.rotateZ = rotateZ
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.rotateZ = rotateZ
 }
 
 export function SET_SELECTED_PROJECTOR_LENS_SHIFT_H(state, lensShiftH) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.lensShiftH = lensShiftH
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.lensShiftH = lensShiftH
 }
 
 export function SET_SELECTED_PROJECTOR_LENS_SHIFT_V(state, lensShiftV) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.lensShiftV = lensShiftV
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.lensShiftV = lensShiftV
 }
 
 export function SET_SELECTED_PROJECTOR_THROW_RATIO(state, throwRatio) {
-    const projecotr = state.projectors.find(o => o.uId === state.selectedProjectorUid)
-    projecotr.throwRatio = throwRatio
+    const projector = state.projectors.find(o => o.uId === state.selectedProjectorUid)
+    if (!projector) {
+        return
+    }
+    projector.throwRatio = throwRatio
+}
+
+export function SET_PROJECTOR_HISTORY(state, projector) {
+    state.projectors = projector.projectors
+    state.selectedProjectorUid = projector.selectedProjectorUid
 }

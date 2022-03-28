@@ -1,13 +1,31 @@
 <template>
-  <q-header reveal :style="{background:$q.dark.isActive?'#1e1f26':'white'}" id="app-header">
+  <q-header reveal :style="{ background: $q.dark.isActive ? '#1e1f26' : 'white' }" id="app-header">
     <q-toolbar class="shadow-2">
-      <img :src="$q.dark.isActive?logo_white:logo" :style="{background:!$q.dark.isActive?'white':''}" class="rounded-borders" style="height: 40px;padding: 2px; max-width: 150px;">
+      <img
+        :src="$q.dark.isActive ? logo_white : logo"
+        :style="{ background: !$q.dark.isActive ? 'white' : '' }"
+        class="rounded-borders"
+        style="height: 40px;padding: 2px; max-width: 150px;"
+      />
 
       <q-toolbar-title>
-        <div v-show="!$q.platform.is.mobile" style="font-weight:bold" :style="{color:$q.dark.isActive?'white':'#45ba55'}">Multi Projection Simulator</div>
+        <div
+          v-show="!$q.platform.is.mobile"
+          style="font-weight:bold"
+          :style="{ color: $q.dark.isActive ? 'white' : '#45ba55' }"
+        >Multi Projection Simulator</div>
       </q-toolbar-title>
 
-      <q-btn flat round :color="$q.dark.isActive?'white':'green'" icon="language">
+      <q-btn
+        flat
+        round
+        :color="$q.dark.isActive ? 'white' : 'green'"
+        icon="history"
+        v-show="!$q.platform.is.mobile"
+        @click="showHistory = true"
+      />
+
+      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" icon="language">
         <q-menu>
           <q-list>
             <q-item clickable v-close-popup @click="changeLanguage(`en-us`)">
@@ -44,25 +62,43 @@
         </q-menu>
       </q-btn>
 
-      <q-btn flat round :color="$q.dark.isActive?'white':'green'" icon="brightness_medium" @click="toggleTheme" />
-      <q-btn flat round :color="$q.dark.isActive?'white':'green'" v-show="!$q.platform.is.mobile" @click="$q.fullscreen.toggle()" :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'" />
-
+      <q-btn
+        flat
+        round
+        :color="$q.dark.isActive ? 'white' : 'green'"
+        icon="brightness_medium"
+        @click="toggleTheme"
+      />
+      <q-btn
+        flat
+        round
+        :color="$q.dark.isActive ? 'white' : 'green'"
+        v-show="!$q.platform.is.mobile"
+        @click="$q.fullscreen.toggle()"
+        :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
+      />
     </q-toolbar>
 
+    <History v-model:showDialog="showHistory"  />
   </q-header>
 </template>
 
 <script>
 import { setCssVar } from 'quasar'
 import { i18n } from '../boot/i18n'
+import History from '../components/History'
 
 export default {
   name: 'Header',
   data() {
     return {
+      showHistory: false,
       logo: require('../assets/Vivitek Logo.png'),
       logo_white: require('../assets/Vivitek Logo_white.png')
     }
+  },
+  components: {
+    History
   },
   methods: {
     changeLanguage(lan) {
