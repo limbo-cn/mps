@@ -13,3 +13,7 @@ export function SET_UNIT_LABEL(state, unitLabel) {
 export function SET_UNIT_RATIO(state, unitRatio) {
     state.unitRatio = unitRatio
 }
+
+export function SET_IS_LOADING_MODEL(state, isLoadingModel) {
+    state.isLoadingModel = isLoadingModel
+}

@@ -109,7 +109,7 @@ export default {
     },
     planeAspectRatio: {
       get() {
-        return this.$store.state.screen.plane.aspectRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].plane.aspectRatio
       },
       set(val) {
         this.SET_PLANE_ASPECT_RATIO(val)
@@ -117,7 +117,7 @@ export default {
     },
     planeDiagonal: {
       get() {
-        return this.$store.state.screen.plane.diagonal
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].plane.diagonal
       },
       set(val) {
         this.SET_PLANE_DIAGONAL(val)
@@ -125,7 +125,7 @@ export default {
     },
     planeWdith: {
       get() {
-        return (this.$store.state.screen.plane.width * this.$store.state.common.unitRatio)
+        return (this.$store.state.screen.screens[this.$store.state.screen.screenPosition].plane.width * this.$store.state.common.unitRatio)
       },
       set(val) {
         this.SET_PLANE_WIDTH(val / this.$store.state.common.unitRatio)
@@ -133,7 +133,7 @@ export default {
     },
     planeHeight: {
       get() {
-        return (this.$store.state.screen.plane.height * this.$store.state.common.unitRatio)
+        return (this.$store.state.screen.screens[this.$store.state.screen.screenPosition].plane.height * this.$store.state.common.unitRatio)
       },
       set(val) {
         this.SET_PLANE_HEIGHT(val / this.$store.state.common.unitRatio)
@@ -161,7 +161,8 @@ export default {
       this.setScreen()
     },
     changePlaneSize() {
-      const diagonal = Math.sqrt(Math.pow(this.$store.state.screen.plane.width, 2) + Math.pow(this.$store.state.screen.plane.height, 2)) * unitRatio.inch
+      const screen = this.$store.state.screen.screens[this.$store.state.screen.screenPosition]
+      const diagonal = Math.sqrt(Math.pow(screen.plane.width, 2) + Math.pow(screen.plane.height, 2)) * unitRatio.inch
       this.SET_PLANE_DIAGONAL(diagonal.toFixed(2))
       this.setScreen()
     }

@@ -10,69 +10,106 @@
 
       <q-page-container style="min-width:800px">
         <q-page class="text-black" id="pdf-card" style="overflow:auto">
-        <div class="row">
-          <div class="col">
-            <div class="q-pa-sm row items-start q-gutter-sm">
-              <div class="text-h6">
-                {{ $t('report') }}
-                <img
-                  :src="logo"
-                  class="rounded-borders absolute-top-right"
-                  style="height: 30px;padding: 2px; margin:24px;"
-                />
+          <div class="row">
+            <div class="col">
+              <div class="q-pa-sm row items-start q-gutter-sm">
+                <div class="text-h6">
+                  {{ $t('report') }}
+                  <img
+                    :src="logo"
+                    class="rounded-borders absolute-top-right"
+                    style="height: 30px;padding: 2px; margin:24px;"
+                  />
+                </div>
               </div>
-            </div>
-             <div class="q-pl-md row items-start q-gutter-sm">
+              <div class="q-pl-md row items-start q-gutter-sm">
                 <div class="text-body1">{{ $t('room') }}</div>
               </div>
               <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
-                <div class="text-body2">{{ $t('width') }}<span style="font-weight: bold;">(R1)</span>:{{ roomWidth }}{{ unitLabel }}</div>
-                <div class="text-body2">{{ $t('height') }}<span style="font-weight: bold;">(R2)</span>:{{ roomHeight }}{{ unitLabel }}</div>
-                <div class="text-body2">{{ $t('depth') }}<span style="font-weight: bold;">(R3)</span>:{{ roomDepth }}{{ unitLabel }}</div>
+                <div class="text-body2">
+                  {{ $t('width') }}
+                  <span style="font-weight: bold;">(R1)</span>
+                  :{{ roomWidth }}{{ unitLabel }}
+                </div>
+                <div class="text-body2">
+                  {{ $t('height') }}
+                  <span style="font-weight: bold;">(R2)</span>
+                  :{{ roomHeight }}{{ unitLabel }}
+                </div>
+                <div class="text-body2">
+                  {{ $t('depth') }}
+                  <span style="font-weight: bold;">(R3)</span>
+                  :{{ roomDepth }}{{ unitLabel }}
+                </div>
               </div>
-                   <div class="q-pl-md row items-start q-gutter-sm">
+              <div class="q-pl-md row items-start q-gutter-sm">
                 <div class="text-body1">{{ $t('screen') }}</div>
               </div>
-              <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
-                <div class="text-body2">{{ $t('screenType') }}:{{ screenTypeLabel }}</div>
-                <template v-if="screenType === 0">
-                  <div class="text-body2">{{ $t('aspectRatio') }}:{{ planeAspectRatio }}</div>
-                  <div class="text-body2">{{ $t('diagonal') }}:{{ planeDiagonal }}</div>
+              <template v-for="(screen, index) in screens" :key="index">
+                <template v-if="screen.screenType !== 100">
+                  <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
+                    <div
+                      class="text-body2"
+                    >{{ $t('screenType') }}:{{ screenTypeLabel(screen.screenType) }}</div>
+                    <template v-if="screen.screenType === 0">
+                      <div
+                        class="text-body2"
+                      >{{ $t('aspectRatio') }}:{{ aspectRatio(screen.plane.aspectRatio) }}</div>
+                      <div class="text-body2">{{ $t('diagonal') }}:{{ screen.plane.diagonal }}''</div>
+                    </template>
+                    <template v-if="screen.screenType === 1">
+                      <div
+                        class="text-body2"
+                      >{{ $t('aspectRatio') }}:{{ aspectRatio(screen.curved.aspectRatio) }}</div>
+                      <div class="text-body2">{{ $t('diagonal') }}:{{ screen.curved.diagonal }}''</div>
+                      <div
+                        class="text-body2"
+                      >{{ $t('radius') }}:{{ toUnitRatio(screen.curved.radius) }}{{ unitLabel }}</div>
+                    </template>
+                    <template v-if="screen.screenType === 2">
+                      <div
+                        class="text-body2"
+                      >{{ $t('radius') }}:{{ toUnitRatio(screen.sphere.radius) }}{{ unitLabel }}</div>
+                    </template>
+                  </div>
+                  <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
+                    <div class="text-body2">
+                      X
+                      <span style="font-weight: bold;color: cornflowerblue;">(S1)</span>
+                      {{ toUnitRatio(screen.x) }}{{ unitLabel }}
+                    </div>
+                    <div class="text-body2">
+                      Y
+                      <span style="font-weight: bold;color: cornflowerblue;">(S2)</span>
+                      :{{ toUnitRatio(screen.y) }}{{ unitLabel }}
+                    </div>
+                    <div class="text-body2">
+                      Z
+                      <span style="font-weight: bold;color: cornflowerblue;">(S3)</span>
+                      :{{ toUnitRatio(screen.z) }}{{ unitLabel }}
+                    </div>
+                    <!-- <div class="text-body2">{{ $t('rotateX') }}:{{ screen.rotateX }}</div>
+                  <div class="text-body2">{{ $t('rotateY') }}:{{ screen.rotateY }}</div>
+                    <div class="text-body2">{{ $t('rotateZ') }}:{{ screen.rotateZ }}</div>-->
+                  </div>
                 </template>
-                <template v-if="screenType === 1">
-                  <div class="text-body2">{{ $t('aspectRatio') }}:{{ curvedAspectRatio }}</div>
-                  <div class="text-body2">{{ $t('diagonal') }}:{{ curvedDiagonal }}</div>
-                  <div class="text-body2">{{ $t('radius') }}:{{ curvedRadius }}</div>
-                </template>
-              </div>
-                 <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
-                  <div class="text-body2">X<span style="font-weight: bold;color: cornflowerblue;">(S1)</span>{{ screenX }}{{ unitLabel }}</div>
-                  <div class="text-body2">Y<span style="font-weight: bold;color: cornflowerblue;">(S2)</span>:{{ screenY }}{{ unitLabel }}</div>
-                  <div class="text-body2">Z<span style="font-weight: bold;color: cornflowerblue;">(S3)</span>:{{ screenZ }}{{ unitLabel }}</div>
-                  <!-- <div class="text-body2">{{ $t('rotateX') }}:{{ rotateX }}</div>
-                  <div class="text-body2">{{ $t('rotateY') }}:{{ rotateY }}</div>
-                  <div class="text-body2">{{ $t('rotateZ') }}:{{ rotateZ }}</div> -->
-              </div>
-          </div>
-          <div class="col">
+              </template>
+            </div>
+            <div class="col" v-if="isContainPlane">
               <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
-                  <q-img
-                    v-if="screenType === 0"
-                    src="../assets/xyz_plane.jpg"
-                    style="width: 300px;"
-                  />
-                  <q-img
-                    v-if="screenType === 1"
-                    src="../assets/xyz_curved.jpg"
-                    style="width: 300px;"
-                  />
-                  <q-img
-                    v-if="screenType === 2"
-                    src="../assets/xyz_sphere.jpg"
-                    style="width: 300px;"
-                  />
-                </div>
-          </div>
+                <q-img src="../assets/xyz_plane.jpg" style="width: 300px;" />
+              </div>
+            </div>
+            <div class="col" v-if="isContainCurved">
+              <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
+                <q-img src="../assets/xyz_curved.jpg" style="width: 300px;" />
+              </div>
+            </div>
+            <div class="col" v-if="isContainSphere">
+              <div class="q-pa-sm q-pl-md row items-start q-gutter-sm">
+                <q-img src="../assets/xyz_sphere.jpg" style="width: 300px;" />
+              </div>
+            </div>
           </div>
           <div class="q-pl-md row items-start q-gutter-sm">
             <div class="text-body1">{{ $t('projectors') }}</div>
@@ -168,6 +205,9 @@ export default {
     roomDepth() {
       return this.$store.state.room.depth * this.$store.state.common.unitRatio
     },
+    screens() {
+      return this.$store.state.screen.screens
+    },
     aspectRatios() {
       return [
         { label: '16:9', value: 16 / 9 },
@@ -182,46 +222,14 @@ export default {
     screenType() {
       return this.$store.state.screen.screenType
     },
-    screenTypeLabel() {
-      return [
-        { label: this.$t('planeScreen'), value: screenType.plane },
-        { label: this.$t('curvedScreen'), value: screenType.curved },
-        { label: this.$t('SphereScreen'), value: screenType.sphere },
-        { label: this.$t('custom'), value: screenType.custom }
-      ].find(o => o.value === this.screenType).label
+    isContainPlane() {
+      return this.screens.findIndex(screen => screen.screenType === screenType.plane) >= 0
     },
-    screenX() {
-      return this.$store.state.screen.x * this.$store.state.common.unitRatio
+    isContainCurved() {
+      return this.screens.findIndex(screen => screen.screenType === screenType.curved) >= 0
     },
-    screenY() {
-      return this.$store.state.screen.y * this.$store.state.common.unitRatio
-    },
-    screenZ() {
-      return this.$store.state.screen.z * this.$store.state.common.unitRatio
-    },
-    rotateX() {
-      return this.$store.state.screen.rotateX
-    },
-    rotateY() {
-      return this.$store.state.screen.rotateY
-    },
-    rotateZ() {
-      return this.$store.state.screen.rotateZ
-    },
-    planeAspectRatio() {
-      return this.aspectRatios.find(o => o.value === this.$store.state.screen.plane.aspectRatio).label
-    },
-    planeDiagonal() {
-      return this.$store.state.screen.plane.diagonal
-    },
-    curvedAspectRatio() {
-      return this.aspectRatios.find(o => o.value === this.$store.state.screen.curved.aspectRatio).label
-    },
-    curvedDiagonal() {
-      return this.$store.state.screen.curved.diagonal
-    },
-    curvedRadius() {
-      return this.$store.state.screen.curved.radius * this.$store.state.common.unitRatio
+    isContainSphere() {
+      return this.screens.findIndex(screen => screen.screenType === screenType.sphere) >= 0
     },
     columns() {
       return [
@@ -293,7 +301,7 @@ export default {
       this.downloadingPDF = true
 
       const canvasP = await html2canvas(document.querySelector('#pdf-card'))
-      pdf.addImage(canvasP.toDataURL('image/png', 1), 'PNG', 5, 5, 200, 300)
+      pdf.addImage(canvasP.toDataURL('image/png', 1), 'PNG', 5, 5, 200, 250, '', 'NONE')
 
       pdf.save(`${this.pdfName}.pdf`)
 
@@ -306,6 +314,20 @@ export default {
       const dataURI = canvas.toDataURL('image/png', 1)
       downloadFile(`${this.pdfName}.png`, dataURI)
       this.savingImage = false
+    },
+    screenTypeLabel(type) {
+      return [
+        { label: this.$t('planeScreen'), value: screenType.plane },
+        { label: this.$t('curvedScreen'), value: screenType.curved },
+        { label: this.$t('SphereScreen'), value: screenType.sphere },
+        { label: this.$t('custom'), value: screenType.custom }
+      ].find(o => o.value === type).label
+    },
+    aspectRatio(aspectRatio) {
+      return this.aspectRatios.find(o => o.value === aspectRatio).label
+    },
+    toUnitRatio(val) {
+      return val * this.$store.state.common.unitRatio
     }
   }
 }

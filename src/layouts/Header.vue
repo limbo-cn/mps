@@ -23,7 +23,9 @@
         icon="history"
         v-show="!$q.platform.is.mobile"
         @click="showHistory = true"
-      />
+      >
+        <q-tooltip>{{ $t('history') }}</q-tooltip>
+      </q-btn>
 
       <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" icon="language">
         <q-menu>
@@ -49,7 +51,7 @@
             <q-item clickable v-close-popup @click="changeLanguage(`it`)">
               <q-item-section>Italiana</q-item-section>
             </q-item>
-            <q-item clickable v-close-popup @click="changeLanguage(`jp`)">
+            <q-item clickable v-close-popup @click="changeLanguage(`ja`)">
               <q-item-section>日本語</q-item-section>
             </q-item>
             <q-item clickable v-close-popup @click="changeLanguage(`kr`)">
@@ -60,6 +62,7 @@
             </q-item>
           </q-list>
         </q-menu>
+        <q-tooltip>{{ $t('language') }}</q-tooltip>
       </q-btn>
 
       <q-btn
@@ -68,7 +71,9 @@
         :color="$q.dark.isActive ? 'white' : 'green'"
         icon="brightness_medium"
         @click="toggleTheme"
-      />
+      >
+        <q-tooltip>{{ $t('theme') }}</q-tooltip>
+      </q-btn>
       <q-btn
         flat
         round
@@ -76,10 +81,12 @@
         v-show="!$q.platform.is.mobile"
         @click="$q.fullscreen.toggle()"
         :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'"
-      />
+      >
+        <q-tooltip>{{ $t('fullScreen') }}</q-tooltip>
+      </q-btn>
     </q-toolbar>
 
-    <History v-model:showDialog="showHistory"  />
+    <History v-model:showDialog="showHistory" />
   </q-header>
 </template>
 
@@ -102,7 +109,6 @@ export default {
   },
   methods: {
     changeLanguage(lan) {
-      console.log(i18n)
       i18n.global.locale = lan
       switch (lan) {
         case 'en-us': import('quasar/lang/en-US').then(lang => { this.$q.lang.set(lang.default) }); break
@@ -112,7 +118,7 @@ export default {
         case 'es': import('quasar/lang/es').then(lang => { this.$q.lang.set(lang.default) }); break
         case 'de': import('quasar/lang/de').then(lang => { this.$q.lang.set(lang.default) }); break
         case 'it': import('quasar/lang/it').then(lang => { this.$q.lang.set(lang.default) }); break
-        case 'jp': import('quasar/lang/ja').then(lang => { this.$q.lang.set(lang.default) }); break
+        case 'ja': import('quasar/lang/ja').then(lang => { this.$q.lang.set(lang.default) }); break
         case 'kr': import('quasar/lang/ko-KR').then(lang => { this.$q.lang.set(lang.default) }); break
         case 'vi': import('quasar/lang/vi').then(lang => { this.$q.lang.set(lang.default) }); break
       }

@@ -1,14 +1,38 @@
 <template>
-  <q-footer reveal :style="{background:$q.dark.isActive?'#1e1f26':'#3aaa35'}">
+  <q-footer reveal :style="{ background: $q.dark.isActive ? '#1e1f26' : '#3aaa35' }">
     <q-toolbar class="glossy" style="height:30px;min-height:30px;">
       <q-toolbar-title class="text-caption text-left">
-        <q-btn flat dense icon-right="arrow_drop_up" v-show="showProjectorDetail === false" @click="showProjectorDetail = !showProjectorDetail">
-          <q-badge align="middle" class="q-mr-sm" color="white" :text-color="$q.dark.isActive?'black':'primary'" :label="`${projectors.length}`" />
-          <span>{{$t('projectors')}}</span>
+        <q-btn
+          flat
+          dense
+          icon-right="arrow_drop_up"
+          v-show="showProjectorDetail === false"
+          @click="showProjectorDetail = !showProjectorDetail"
+        >
+          <q-badge
+            align="middle"
+            class="q-mr-sm"
+            color="white"
+            :text-color="$q.dark.isActive ? 'black' : 'primary'"
+            :label="`${projectors.length}`"
+          />
+          <span>{{ $t('projectors') }}</span>
         </q-btn>
-        <q-btn flat dense icon-right="arrow_drop_down" v-show="showProjectorDetail === true" @click="showProjectorDetail = !showProjectorDetail">
-          <q-badge align="middle" class="q-mr-sm" color="white" :text-color="$q.dark.isActive?'black':'primary'" :label="`${projectors.length}`" />
-          <span>{{$t('projectors')}}</span>
+        <q-btn
+          flat
+          dense
+          icon-right="arrow_drop_down"
+          v-show="showProjectorDetail === true"
+          @click="showProjectorDetail = !showProjectorDetail"
+        >
+          <q-badge
+            align="middle"
+            class="q-mr-sm"
+            color="white"
+            :text-color="$q.dark.isActive ? 'black' : 'primary'"
+            :label="`${projectors.length}`"
+          />
+          <span>{{ $t('projectors') }}</span>
         </q-btn>
       </q-toolbar-title>
       <q-toolbar-title class="text-caption text-right">
@@ -18,8 +42,13 @@
               <li></li>
             </ul>
           </q-tooltip>
-        </q-btn> -->
-        MPS v 1.0.0 © Copyright 2021 Vivitek. All Rights Reserved.
+        </q-btn>-->
+        MPS v 1.0.0 © Copyright 2021 Vivitek. All Rights Reserved. |
+        <a
+          href="https://www.vivitek.eu/support/contact-support"
+          target="_blank"
+         class="text-white"
+        >Contact Us</a>
       </q-toolbar-title>
     </q-toolbar>
   </q-footer>
@@ -52,5 +81,4 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-
 </style>

@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: 'Chiều rộng',
   height: 'Chiều cao',
   depth: 'Chiều sâu',
@@ -36,7 +35,6 @@ export default {
   screenGain: 'Khuếch đại màn hình',
   ambientContrast: 'Độ tương phản xung quanh',
   brightnessOnScreenNit: 'Nit độ sáng trên màn hình',
-  // projector
   projectorSettings: 'Cài đặt máy chiếu',
   addProjector: 'Thêm máy chiếu',
   copyProjector: 'Sao chép máy chiếu',
@@ -77,15 +75,7 @@ export default {
   resolution: 'Độ phân giải',
   weight: 'Trọng lượng',
   frontView: 'Mặt trước',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: 'Kích thước phòng',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: 'Màn hình',
   screenShape: 'Hình dạng màn hình',
   screenType: 'Loại màn hình',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: 'Từng bốn mặt',
   halfSphere: 'Nửa hình cầu',
   partialSphere: 'Một phần hình cầu',
-  // screen position
   screenPosition: 'Vị trí màn hình',
   autoAdjust: 'Chỉnh tự động',
   rotateX: 'Xoay trục X',
   rotateY: 'Xoay trục Y',
   rotateZ: 'Xoay trục Z',
-  // report
   report: 'Báo cáo mô phỏng',
   room: 'Phòng',
   threeDView: 'Xem 3D',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: 'Từ trái',
   fromFrontWall: 'Từ phía trước',
   fromFloor: 'Từ sàn',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

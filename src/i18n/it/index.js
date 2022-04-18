@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: 'Larghezza',
   height: 'Altezza',
   depth: 'Profondità',
@@ -36,7 +35,6 @@ export default {
   screenGain: 'Guadagno schermo',
   ambientContrast: 'Contrasto ambiente',
   brightnessOnScreenNit: 'Luminosità a schermo Nit',
-  // projector
   projectorSettings: 'Impostazioni proiettore',
   addProjector: 'Aggiungi proiettore',
   copyProjector: 'Copia proiettore',
@@ -77,15 +75,7 @@ export default {
   resolution: 'Risoluzione',
   weight: 'Peso',
   frontView: 'Vista anteriore',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: 'Dimensioni stanza',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: 'Schermata',
   screenShape: 'Forma schermata',
   screenType: 'Tipo schermata',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: 'Parete su quattro lati',
   halfSphere: 'Semisfera',
   partialSphere: 'Sfera parziale',
-  // screen position
   screenPosition: 'Posizione schermo',
   autoAdjust: 'Regolazione automatico',
   rotateX: 'Rotazione X',
   rotateY: 'Rotazione Y',
   rotateZ: 'Rotazione Z',
-  // report
   report: 'Simulazione report',
   room: 'Stanza',
   threeDView: 'Vista 3D',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: 'Da sinistra',
   fromFrontWall: 'Da davanti',
   fromFloor: 'Dal pavimento',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

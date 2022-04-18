@@ -63,14 +63,14 @@
                       icon="delete_outline"
                       @click.prevent="deleteItem(item.uId)"
                     />
-                    <q-btn
+                    <!-- <q-btn
                       :color="$q.dark.isActive ? 'primary' : 'positive'"
                       round
                       flat
                       label
                       icon="compare_arrows"
                       @click.prevent="updateItem(item.uId)"
-                    />
+                    />-->
                     <q-btn
                       :color="$q.dark.isActive ? 'primary' : 'positive'"
                       round
@@ -180,7 +180,7 @@ export default {
       this.SET_ROOM_HISTORY(history.room)
       this.$bus.emit('setRoomSize')
       this.SET_SCREEN_HISTORY(history.screen)
-      this.$bus.emit('setScreen', history.screen.screenType)
+      this.$bus.emit('setScreens', history.screen.screens)
       history.projector.projectors.forEach(projector => {
         this.ADD_PROJECTOR(projector)
       })

@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-    // common
     width: '宽度',
     height: '高度',
     depth: '深度',
@@ -36,7 +35,6 @@ export default {
     screenGain: '屏幕增益',
     ambientContrast: '环境对比度',
     brightnessOnScreenNit: '屏幕亮度(Nit)',
-    // projector
     projectorSettings: '投影机设置',
     addProjector: '添加投影机',
     copyProjector: '复制投影机',
@@ -77,15 +75,7 @@ export default {
     resolution: '分辨率',
     weight: '重量',
     frontView: '正面视角',
-    sideView: '侧视图',
-    topView: '俯视图',
-    // room settings
     roomSize: '房间大小',
-    showReference: '显示参考坐标系',
-    showProjectorInterfere: '显示(投影机/投影)干涉',
-    showProjectionDistanceRefrence: '显示投影距离参考',
-    light: '灯光',
-    // screen settings
     screen: '屏幕',
     screenShape: '屏幕形状',
     screenType: '屏幕类型',
@@ -104,13 +94,11 @@ export default {
     fourSideWall: '四面',
     halfSphere: '半球',
     partialSphere: '部分球面',
-    // screen position
     screenPosition: '屏幕位置',
     autoAdjust: '自动调节',
     rotateX: 'X旋转',
     rotateY: 'Y旋转',
     rotateZ: 'Z旋转',
-    // report
     report: '模拟报告',
     room: '房间',
     threeDView: '3D视图',
@@ -119,7 +107,21 @@ export default {
     fromLeftWall: '距离左墙',
     fromFrontWall: '距离前方墙',
     fromFloor: '距离地板',
+    showReference: '显示参考坐标系',
+    showProjectorInterfere: '显示(投影机/投影)干涉',
+    showProjectionDistanceRefrence: '显示投影距离参考',
+    light: '灯光',
+    sideView: '侧视图',
+    topView: '俯视图',
     ScreenMap: '屏幕纹理',
     mapPattern: '纹理样式',
-    history: '存储'
+    history: '存储',
+    delete: '删除',
+    edit: '编辑',
+    copy: '复制',
+    language: '语言',
+    theme: '主题',
+    front: '前方',
+    back: '后方',
+    none: '无'
 }

@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: '너비',
   height: '높이',
   depth: '깊이',
@@ -36,7 +35,6 @@ export default {
   screenGain: '스크린게인',
   ambientContrast: '주변 대비',
   brightnessOnScreenNit: '스크린 니트 밝기',
-  // projector
   projectorSettings: '프로젝터 설정',
   addProjector: '프로젝터 추가',
   copyProjector: '프로젝터 복사',
@@ -77,15 +75,7 @@ export default {
   resolution: '해상도',
   weight: '무게',
   frontView: '전면 보기',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: '공간 크기',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: '스크린',
   screenShape: '스크린 모양',
   screenType: '스크린 유형',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: '4면 벽',
   halfSphere: '반구',
   partialSphere: '부분구',
-  // screen position
   screenPosition: '스크린 위치',
   autoAdjust: '자동 조정',
   rotateX: 'X회전',
   rotateY: 'Y회전',
   rotateZ: 'Z회전',
-  // report
   report: '시뮬레이션 보고',
   room: '공간',
   threeDView: '3D 뷰',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: '좌측에서',
   fromFrontWall: '전면에서',
   fromFloor: '바닥에서',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

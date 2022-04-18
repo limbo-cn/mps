@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: '幅',
   height: '高さ',
   depth: '奥行',
@@ -36,7 +35,6 @@ export default {
   screenGain: 'スクリーンのゲイン',
   ambientContrast: '周囲のコントラスト',
   brightnessOnScreenNit: 'スクリーン上の輝度（ニット）',
-  // projector
   projectorSettings: 'プロジェクターの設定',
   addProjector: 'プロジェクターの追加',
   copyProjector: 'プロジェクターのコピー',
@@ -77,15 +75,7 @@ export default {
   resolution: '解像度',
   weight: '重量',
   frontView: '前面図',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: '部屋のサイズ',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: 'スクリーン',
   screenShape: 'スクリーンの形状',
   screenType: 'スクリーンのタイプ',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: '4つの側面',
   halfSphere: '半球',
   partialSphere: '球冠',
-  // screen position
   screenPosition: 'スクリーンの位置',
   autoAdjust: '自動調整',
   rotateX: '回転X',
   rotateY: '回転Y',
   rotateZ: '回転Z',
-  // report
   report: 'シミュレーションレポート',
   room: '部屋',
   threeDView: '3Dビュー',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: '左から',
   fromFrontWall: '前から',
   fromFloor: '床から',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

@@ -1,55 +1,68 @@
 <template>
   <div class="row q-pa-sm">
     <q-item dense class="full-width">
-      <q-item-section class="text-h6">{{$t('room')}}</q-item-section>
+      <q-item-section class="text-h6">{{ $t('room') }}</q-item-section>
     </q-item>
     <q-item clickable dense class="full-width">
-      <q-item-section>{{$t('width')}}</q-item-section>
-      <q-item-section>{{roomHeight}}{{unitLabel}}</q-item-section>
+      <q-item-section>{{ $t('width') }}</q-item-section>
+      <q-item-section>{{ roomHeight }}{{ unitLabel }}</q-item-section>
     </q-item>
     <q-item clickable dense class="full-width">
-      <q-item-section>{{$t('height')}}</q-item-section>
-      <q-item-section>{{roomHeight}}{{unitLabel}}</q-item-section>
+      <q-item-section>{{ $t('height') }}</q-item-section>
+      <q-item-section>{{ roomHeight }}{{ unitLabel }}</q-item-section>
     </q-item>
     <q-item clickable dense class="full-width">
-      <q-item-section>{{$t('depth')}}</q-item-section>
-      <q-item-section>{{roomDepth}}{{unitLabel}}</q-item-section>
+      <q-item-section>{{ $t('depth') }}</q-item-section>
+      <q-item-section>{{ roomDepth }}{{ unitLabel }}</q-item-section>
     </q-item>
 
     <q-item dense class="full-width">
-      <q-item-section class="text-h6">{{$t('screen')}}</q-item-section>
+      <q-item-section class="text-h6">{{ $t('screen') }}</q-item-section>
     </q-item>
-    <q-item clickable dense class="full-width">
-      <q-item-section> {{$t('screenType')}}</q-item-section>
-      <q-item-section>{{screenTypeLabel}}</q-item-section>
-    </q-item>
-    <template v-if="screenType === 0">
-      <q-item clickable dense class="full-width">
-        <q-item-section>{{$t('aspectRatio')}}</q-item-section>
-        <q-item-section>{{planeAspectRatio}}</q-item-section>
-      </q-item>
-      <q-item clickable dense class="full-width">
-        <q-item-section>{{$t('diagonal')}}</q-item-section>
-        <q-item-section>{{planeDiagonal}}''</q-item-section>
-      </q-item>
-    </template>
-    <template v-if="screenType === 1">
-      <q-item clickable dense class="full-width">
-        <q-item-section>{{$t('aspectRatio')}}</q-item-section>
-        <q-item-section>{{curvedAspectRatio}}</q-item-section>
-      </q-item>
-      <q-item clickable dense class="full-width">
-        <q-item-section>{{$t('diagonal')}}</q-item-section>
-        <q-item-section>{{curvedDiagonal}}''</q-item-section>
-      </q-item>
-      <q-item clickable dense class="full-width">
-        <q-item-section>{{$t('radius')}}</q-item-section>
-        <q-item-section>{{curvedRadius}}{{unitLabel}}</q-item-section>
-      </q-item>
+    <template v-for="(screen, index) in screens" :key="index">
+      <template v-if="screen.screenType !== 100">
+        <q-item clickable dense class="full-width text-center">
+          <q-item-section>{{ screenPositionLabel(index) }}</q-item-section>
+        </q-item>
+        <q-item clickable dense class="full-width">
+          <q-item-section>{{ $t('screenType') }}</q-item-section>
+          <q-item-section>{{ screenTypeLabel(screen.screenType) }}</q-item-section>
+        </q-item>
+        <template v-if="screen.screenType === 0">
+          <q-item clickable dense class="full-width">
+            <q-item-section>{{ $t('aspectRatio') }}</q-item-section>
+            <q-item-section>{{ aspectRatio(screen.plane.aspectRatio) }}</q-item-section>
+          </q-item>
+          <q-item clickable dense class="full-width">
+            <q-item-section>{{ $t('diagonal') }}</q-item-section>
+            <q-item-section>{{ screen.plane.diagonal }}''</q-item-section>
+          </q-item>
+        </template>
+        <template v-if="screen.screenType === 1">
+          <q-item clickable dense class="full-width">
+            <q-item-section>{{ $t('aspectRatio') }}</q-item-section>
+            <q-item-section>{{ aspectRatio(screen.curved.aspectRatio) }}</q-item-section>
+          </q-item>
+          <q-item clickable dense class="full-width">
+            <q-item-section>{{ $t('diagonal') }}</q-item-section>
+            <q-item-section>{{ screen.curved.diagonal }}''</q-item-section>
+          </q-item>
+          <q-item clickable dense class="full-width">
+            <q-item-section>{{ $t('radius') }}</q-item-section>
+            <q-item-section>{{ toUnitRatio(screen.curved.radius) }}{{ unitLabel }}</q-item-section>
+          </q-item>
+        </template>
+        <template v-if="screen.screenType === 2">
+          <q-item clickable dense class="full-width">
+            <q-item-section>{{ $t('radius') }}</q-item-section>
+            <q-item-section>{{ toUnitRatio(screen.sphere.radius) }}{{ unitLabel }}</q-item-section>
+          </q-item>
+        </template>
+      </template>
     </template>
 
     <q-item dense class="full-width">
-      <q-item-section class="text-h6">{{$t('projectors')}}</q-item-section>
+      <q-item-section class="text-h6">{{ $t('projectors') }}</q-item-section>
     </q-item>
 
     <q-item dense class="full-width">
@@ -61,78 +74,80 @@
             </div>
             <q-card>
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('customName')}}</div>
-                <div class="col-6">{{ props.row.customName}}</div>
+                <div class="col-6">{{ $t('customName') }}</div>
+                <div class="col-6">{{ props.row.customName }}</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('modelName')}}</div>
-                <div class="col-6">{{ props.row.modelName}}</div>
+                <div class="col-6">{{ $t('modelName') }}</div>
+                <div class="col-6">{{ props.row.modelName }}</div>
               </q-card-section>
               <q-separator />
               <template v-if="!!props.row.lensName">
                 <q-card-section class="text-center q-pa-sm row">
-                  <div class="col-6">{{$t('lensName')}}</div>
-                  <div class="col-6">{{ props.row.lensName}}</div>
+                  <div class="col-6">{{ $t('lensName') }}</div>
+                  <div class="col-6">{{ props.row.lensName }}</div>
                 </q-card-section>
                 <q-separator />
               </template>
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('throwRatio')}}</div>
-                <div class="col-6">{{ props.row.throwRatio}}</div>
+                <div class="col-6">{{ $t('throwRatio') }}</div>
+                <div class="col-6">{{ props.row.throwRatio }}</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">x({{$t('fromLeftWall')}})</div>
-                <div class="col-6">{{Number(props.row.x * unitRatio).toFixed(2)}}{{unitLabel}}</div>
+                <div class="col-6">x({{ $t('fromLeftWall') }})</div>
+                <div class="col-6">{{ Number(props.row.x * unitRatio).toFixed(2) }}{{ unitLabel }}</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">y({{$t('fromFloor')}})</div>
-                <div class="col-6">{{Number(props.row.y * unitRatio).toFixed(2)}}{{unitLabel}}</div>
+                <div class="col-6">y({{ $t('fromFloor') }})</div>
+                <div class="col-6">{{ Number(props.row.y * unitRatio).toFixed(2) }}{{ unitLabel }}</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">z({{$t('fromFrontWall')}})</div>
-                <div class="col-6">{{Number(props.row.z * unitRatio).toFixed(2)}}{{unitLabel}}</div>
+                <div class="col-6">z({{ $t('fromFrontWall') }})</div>
+                <div class="col-6">{{ Number(props.row.z * unitRatio).toFixed(2) }}{{ unitLabel }}</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('rotateX')}}</div>
-                <div class="col-6">{{props.row.rotateX}}°</div>
+                <div class="col-6">{{ $t('rotateX') }}</div>
+                <div class="col-6">{{ props.row.rotateX }}°</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('rotateY')}}</div>
-                <div class="col-6">{{ props.row.rotateY}}°</div>
+                <div class="col-6">{{ $t('rotateY') }}</div>
+                <div class="col-6">{{ props.row.rotateY }}°</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('rotateZ')}}</div>
-                <div class="col-6">{{ props.row.rotateZ}}°</div>
+                <div class="col-6">{{ $t('rotateZ') }}</div>
+                <div class="col-6">{{ props.row.rotateZ }}°</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('lensShiftH')}}</div>
-                <div class="col-6">{{ props.row.lensShiftH}}%</div>
+                <div class="col-6">{{ $t('lensShiftH') }}</div>
+                <div class="col-6">{{ props.row.lensShiftH }}%</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('lensShiftV')}}</div>
-                <div class="col-6">{{ props.row.lensShiftV}}%</div>
+                <div class="col-6">{{ $t('lensShiftV') }}</div>
+                <div class="col-6">{{ props.row.lensShiftV }}%</div>
               </q-card-section>
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('brightnessOnScreenNit')}}</div>
-                <div class="col-6">{{ props.row.brightnessOnScreenNit}}</div>
+                <div class="col-6">{{ $t('brightnessOnScreenNit') }}</div>
+                <div class="col-6">{{ props.row.brightnessOnScreenNit }}</div>
               </q-card-section>
               <q-separator />
               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('ambientContrast')}}</div>
-                <div class="col-6">{{ props.row.ambientContrast}}:1</div>
+                <div class="col-6">{{ $t('ambientContrast') }}</div>
+                <div class="col-6">{{ props.row.ambientContrast }}:1</div>
               </q-card-section>
-               <q-card-section class="text-center q-pa-sm row">
-                <div class="col-6">{{$t('blending')}}</div>
-                <div class="col-6">{{ props.row.isShowBlendingGuideLine ?`↑${props.row.blendingGuideLineT}% →${props.row.blendingGuideLineR}% ↓${props.row.blendingGuideLineB}% ←${props.row.blendingGuideLineL}%` :'N/A'}}</div>
+              <q-card-section class="text-center q-pa-sm row">
+                <div class="col-6">{{ $t('blending') }}</div>
+                <div
+                  class="col-6"
+                >{{ props.row.isShowBlendingGuideLine ? `↑${props.row.blendingGuideLineT}% →${props.row.blendingGuideLineR}% ↓${props.row.blendingGuideLineB}% ←${props.row.blendingGuideLineL}%` : 'N/A' }}</div>
               </q-card-section>
               <q-separator />
             </q-card>
@@ -141,11 +156,10 @@
       </q-table>
     </q-item>
   </div>
-
 </template>
 
 <script>
-import { screenType } from 'src/helper/enum'
+import { ScreenPosition, screenType } from 'src/helper/enum'
 
 export default {
   name: 'LeftSide-RoomSize',
@@ -180,31 +194,8 @@ export default {
         { label: this.$t('custom'), value: 0 }
       ]
     },
-    screenType() {
-      return this.$store.state.screen.screenType
-    },
-    screenTypeLabel() {
-      return [
-        { label: this.$t('planeScreen'), value: screenType.plane },
-        { label: this.$t('curvedScreen'), value: screenType.curved },
-        { label: this.$t('SphereScreen'), value: screenType.sphere },
-        { label: this.$t('custom'), value: screenType.custom }
-      ].find(o => o.value === this.screenType).label
-    },
-    planeAspectRatio() {
-      return this.aspectRatios.find(o => o.value === this.$store.state.screen.plane.aspectRatio).label
-    },
-    planeDiagonal() {
-      return this.$store.state.screen.plane.diagonal
-    },
-    curvedAspectRatio() {
-      return this.aspectRatios.find(o => o.value === this.$store.state.screen.curved.aspectRatio).label
-    },
-    curvedDiagonal() {
-      return this.$store.state.screen.curved.diagonal
-    },
-    curvedRadius() {
-      return this.$store.state.screen.curved.radius * this.$store.state.common.unitRatio
+    screens() {
+      return this.$store.state.screen.screens
     },
     columns() {
       return [
@@ -253,10 +244,38 @@ export default {
     }
   },
   methods: {
-
+    screenTypeLabel(type) {
+      return [
+        { label: this.$t('planeScreen'), value: screenType.plane },
+        { label: this.$t('curvedScreen'), value: screenType.curved },
+        { label: this.$t('SphereScreen'), value: screenType.sphere },
+        { label: this.$t('custom'), value: screenType.custom },
+        { label: '', value: screenType.none }
+      ].find(o => o.value === type).label
+    },
+    screenPositionLabel(type) {
+      if (type === ScreenPosition.front) {
+        return this.$t('front')
+      } else if (type === ScreenPosition.left) {
+        return this.$t('left')
+      } else if (type === ScreenPosition.right) {
+        return this.$t('right')
+      } else if (type === ScreenPosition.back) {
+        return this.$t('back')
+      } else if (type === ScreenPosition.top) {
+        return this.$t('top')
+      } else if (type === ScreenPosition.bottom) {
+        return this.$t('bottom')
+      }
+    },
+    aspectRatio(aspectRatio) {
+      return this.aspectRatios.find(o => o.value === aspectRatio).label
+    },
+    toUnitRatio(val) {
+      return val * this.$store.state.common.unitRatio
+    }
   }
 }
 </script>
 <style lang="scss">
-
 </style>

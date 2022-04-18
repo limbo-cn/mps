@@ -107,7 +107,7 @@ export default {
     },
     x: {
       get() {
-        return this.$store.state.screen.x * this.$store.state.common.unitRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].x * this.$store.state.common.unitRatio
       },
       set(val) {
         const x = val / this.$store.state.common.unitRatio
@@ -116,7 +116,7 @@ export default {
     },
     y: {
       get() {
-        return this.$store.state.screen.y * this.$store.state.common.unitRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].y * this.$store.state.common.unitRatio
       },
       set(val) {
         const y = val / this.$store.state.common.unitRatio
@@ -125,7 +125,7 @@ export default {
     },
     z: {
       get() {
-        return this.$store.state.screen.z * this.$store.state.common.unitRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].z * this.$store.state.common.unitRatio
       },
       set(val) {
         const z = val / this.$store.state.common.unitRatio
@@ -134,7 +134,7 @@ export default {
     },
     rotateX: {
       get() {
-        return this.$store.state.screen.rotateX
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].rotateX
       },
       set(val) {
         this.SET_ROTATE_X(val)
@@ -142,7 +142,7 @@ export default {
     },
     rotateY: {
       get() {
-        return this.$store.state.screen.rotateY
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].rotateY
       },
       set(val) {
         this.SET_ROTATE_Y(val)
@@ -150,7 +150,7 @@ export default {
     },
     rotateZ: {
       get() {
-        return this.$store.state.screen.rotateZ
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].rotateZ
       },
       set(val) {
         this.SET_ROTATE_Z(val)

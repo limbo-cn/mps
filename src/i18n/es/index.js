@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: 'Anchura',
   height: 'Altura',
   depth: 'Profundidad',
@@ -36,7 +35,6 @@ export default {
   screenGain: 'Ganancia de la pantalla',
   ambientContrast: 'Contaste del entorno',
   brightnessOnScreenNit: 'Brillo en pantalla (nits)',
-  // projector
   projectorSettings: 'Configuración del proyector',
   addProjector: 'Agregar proyector',
   copyProjector: 'Copiar proyector',
@@ -77,15 +75,7 @@ export default {
   resolution: 'Resolución',
   weight: 'Peso',
   frontView: 'Vista frontal',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: 'Tamaño de la sala',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: 'Pantalla',
   screenShape: 'Forma de la pantalla',
   screenType: 'Tipo de pantalla',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: 'Pared de cuatro lados',
   halfSphere: 'Media esfera',
   partialSphere: 'Esfera parcial',
-  // screen position
   screenPosition: 'Posición de la pantalla',
   autoAdjust: 'Ajuste automático',
   rotateX: 'RotarX',
   rotateY: 'RotarY',
   rotateZ: 'RotarZ',
-  // report
   report: 'Informe de simulación',
   room: 'Habitación',
   threeDView: 'Vista 3D',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: 'Desde la izquierda',
   fromFrontWall: 'Desde la derecha',
   fromFloor: 'Desde el suelo',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

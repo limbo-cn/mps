@@ -22,10 +22,19 @@ export default class ThreeView extends ThreeBase {
     }
 
     setScreen(type) {
-        this._screenType = type
-        this._initScreen()
+        this._screens[store.state.screen.screenPosition].screenType = type
+        this._initScreen(this._screens[store.state.screen.screenPosition])
 
-        this._screen.object.updateMatrixWorld()
+        this._screens[store.state.screen.screenPosition].screenObject.object.updateMatrixWorld()
+
+        this._createAllBoundLine()
+    }
+
+    setScreens(screens) {
+        screens.forEach((screen, index) => {
+            this._screens[index].screenType = screen.screenType
+        })
+        this._initScreen()
 
         this._createAllBoundLine()
     }
@@ -36,19 +45,22 @@ export default class ThreeView extends ThreeBase {
     }
 
     setScreenPosition() {
-        this._screen.object.position.x = store.state.screen.x * this._roomSize.ratio
-        this._screen.object.position.y = store.state.screen.y * this._roomSize.ratio
-        this._screen.object.position.z = store.state.screen.z * this._roomSize.ratio
-        this._screen.object.rotation.x = store.state.screen.rotateX / 180 * Math.PI
-        this._screen.object.rotation.y = store.state.screen.rotateY / 180 * Math.PI
-        this._screen.object.rotation.z = store.state.screen.rotateZ / 180 * Math.PI
+        const screenState = store.state.screen.screens[store.state.screen.screenPosition]
 
-        this._screen.object.updateMatrixWorld()
+        this._screens[store.state.screen.screenPosition].screenObject.object.position.x = screenState.x * this._roomSize.ratio
+        this._screens[store.state.screen.screenPosition].screenObject.object.position.y = screenState.y * this._roomSize.ratio
+        this._screens[store.state.screen.screenPosition].screenObject.object.position.z = screenState.z * this._roomSize.ratio
+        this._screens[store.state.screen.screenPosition].screenObject.object.rotation.x = screenState.rotateX / 180 * Math.PI
+        this._screens[store.state.screen.screenPosition].screenObject.object.rotation.y = screenState.rotateY / 180 * Math.PI
+        this._screens[store.state.screen.screenPosition].screenObject.object.rotation.z = screenState.rotateZ / 180 * Math.PI
+
+        this._screens[store.state.screen.screenPosition].screenObject.object.updateMatrixWorld()
 
         this._createAllBoundLine()
     }
 
     addProjector(uId) {
+        store.commit('common/SET_IS_LOADING_MODEL', true)
         this._addProjector(uId).then(projector => {
             this._projectors.push(projector)
             store.commit('projector/SET_SELECTED_PROJECTOR_X', projector.position.x / this._roomSize.ratio)
@@ -57,6 +69,7 @@ export default class ThreeView extends ThreeBase {
 
             this._createAllBoundLine()
         })
+        store.commit('common/SET_IS_LOADING_MODEL', false)
     }
 
     async addProjectorsHistory(projectors) {
@@ -138,22 +151,22 @@ export default class ThreeView extends ThreeBase {
         if (!this._textures[patternSrc] && !!patternSrc) {
             this._loadTexture(patternSrc, isVideo).then(texture => {
                 this._textures[patternSrc] = texture
-                this._screen.material = new MeshBasicMaterial({
+                this._screens[store.state.screen.screenPosition].screenObject.material = new MeshBasicMaterial({
                     map: texture,
                     side: DoubleSide,
                     transparent: true,
                     opacity: 0.8
                 })
-                this._initScreen()
+                this._initScreen(this._screens[store.state.screen.screenPosition])
             })
         } else {
-            this._screen.material = new MeshBasicMaterial({
+            this._screens[store.state.screen.screenPosition].screenObject.material = new MeshBasicMaterial({
                 map: this._textures[patternSrc],
                 side: DoubleSide,
                 transparent: true,
                 opacity: 0.8
             })
-            this._initScreen()
+            this._initScreen(this._screens[store.state.screen.screenPosition])
         }
     }
 

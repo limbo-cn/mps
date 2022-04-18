@@ -64,7 +64,7 @@ export default ({
   },
   computed: {
     screenType() {
-      return this.$store.state.screen.screenType
+      return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].screenType
     },
     selectedRows: {
       get() {
@@ -154,9 +154,10 @@ export default ({
       this.setProjectors(this.selectedRows)
     },
     fullscreen() {
-      const screenWidth = this.$store.state.screen.plane.width
-      const screenHeight = this.$store.state.screen.plane.height
-      const screenAspectratio = this.$store.state.screen.plane.width / this.$store.state.screen.plane.height
+      const screen = this.$store.state.screen.screens[this.$store.state.screen.screenPosition]
+      const screenWidth = screen.plane.width
+      const screenHeight = screen.plane.height
+      const screenAspectratio = screen.plane.width / screen.plane.height
       const projectionAspectratio = this.selectedProjector.aspectRatio
       let targetProjectionDistance = 0
       if (screenAspectratio > projectionAspectratio) {
@@ -186,9 +187,9 @@ export default ({
       const xOffset = Math.sin(fixedAngleCenterH) * targetProjectionDistance
 
       // console.log(this.selectedProjector.projectionDistance, targetProjectionDistance)
-      this.SET_SELECTED_PROJECTOR_X(this.$store.state.screen.x + xOffset)
-      this.SET_SELECTED_PROJECTOR_Y(this.$store.state.screen.y - yOffset)
-      this.SET_SELECTED_PROJECTOR_Z(this.$store.state.screen.z + zOffset)
+      this.SET_SELECTED_PROJECTOR_X(screen.x + xOffset)
+      this.SET_SELECTED_PROJECTOR_Y(screen.y - yOffset)
+      this.SET_SELECTED_PROJECTOR_Z(screen.z + zOffset)
       this.SET_SELECTED_PROJECTOR_ROTATE_X(0)
       this.SET_SELECTED_PROJECTOR_ROTATE_Y(0)
       this.SET_SELECTED_PROJECTOR_ROTATE_Z(0)

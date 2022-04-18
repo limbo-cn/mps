@@ -91,7 +91,7 @@ export default {
     },
     sphereRadius: {
       get() {
-        return this.$store.state.screen.sphere.radius * this.$store.state.common.unitRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].sphere.radius * this.$store.state.common.unitRatio
       },
       set(val) {
         this.SET_SPHERE_RADIUS(val / this.$store.state.common.unitRatio)
@@ -99,7 +99,7 @@ export default {
     },
     spherePhiStart: {
       get() {
-        return this.$store.state.screen.sphere.phiStart
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].sphere.phiStart
       },
       set(val) {
         this.SET_SPHERE_PHI_START(val)
@@ -107,7 +107,7 @@ export default {
     },
     spherePhiLength: {
       get() {
-        return this.$store.state.screen.sphere.phiLength
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].sphere.phiLength
       },
       set(val) {
         this.SET_SPHERE_PHI_LENGTH(val)
@@ -115,7 +115,7 @@ export default {
     },
     sphereThetaStart: {
       get() {
-        return this.$store.state.screen.sphere.thetaStart
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].sphere.thetaStart
       },
       set(val) {
         this.SET_SPHERE_THETA_START(val)
@@ -123,7 +123,7 @@ export default {
     },
     sphereThetaEnd: {
       get() {
-        return this.$store.state.screen.sphere.thetaEnd
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].sphere.thetaEnd
       },
       set(val) {
         this.SET_SPHERE_THETA_END(val)

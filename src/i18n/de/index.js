@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: 'Breite',
   height: 'Höhe',
   depth: 'Tiefe',
@@ -36,7 +35,6 @@ export default {
   screenGain: 'Bildschirmverstärkung',
   ambientContrast: 'Umgebungskontrast',
   brightnessOnScreenNit: 'Helligkeit am Bildschirm Nits',
-  // projector
   projectorSettings: 'Projektoreinstellungen',
   copyProjector: 'Projektor kopieren',
   addProjector: 'Projektor zufügen',
@@ -77,15 +75,7 @@ export default {
   resolution: 'Auflösung',
   weight: 'Gewicht',
   frontView: 'Ansicht von vorne',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: 'Raumgröße',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: 'Leinwand',
   screenShape: 'Leinwandform',
   screenType: 'Leinwandtyp',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: 'Vierseitige Wand',
   halfSphere: 'Halbkugel',
   partialSphere: 'Partielle Kugel',
-  // screen position
   screenPosition: 'Leinwandposition',
   autoAdjust: 'Automatisch anpassen',
   rotateX: 'X drehen',
   rotateY: 'Y drehen',
   rotateZ: 'Z drehen',
-  // report
   report: 'Simulationsbericht',
   room: 'Raum',
   threeDView: '3D-Ansicht',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: 'Von links',
   fromFrontWall: 'Von vorne',
   fromFloor: 'Vom Boden',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

@@ -2,7 +2,6 @@
 // so you can safely delete all default props below
 
 export default {
-  // common
   width: 'Width',
   height: 'Height',
   depth: 'Depth',
@@ -36,7 +35,6 @@ export default {
   screenGain: 'Screen Gain',
   ambientContrast: 'Ambient Contrast',
   brightnessOnScreenNit: 'Brightness On Screen Nit',
-  // projector
   projectorSettings: 'Projector Settings',
   addProjector: 'Add Projector',
   copyProjector: 'Copy Projector',
@@ -77,15 +75,7 @@ export default {
   resolution: 'Resolution',
   weight: 'Weight',
   frontView: 'Front View',
-  sideView: 'Side View',
-  topView: 'Top View',
-  // room settings
   roomSize: 'Room Size',
-  showReference: 'Show Axes Reference',
-  showProjectorInterfere: 'Show Projector/Projection Interfere',
-  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
-  light: 'Light',
-  // screen settings
   screen: 'Screen',
   screenShape: 'Screen Shape',
   screenType: 'Screen Type',
@@ -104,13 +94,11 @@ export default {
   fourSideWall: 'Four Side Wall',
   halfSphere: 'Half Sphere',
   partialSphere: 'Partial Sphere',
-  // screen position
   screenPosition: 'Screen Position',
   autoAdjust: 'Auto Adjust',
   rotateX: 'RotateX',
   rotateY: 'RotateY',
   rotateZ: 'RotateZ',
-  // report
   report: 'Simulation Report',
   room: 'Room',
   threeDView: '3D View',
@@ -119,7 +107,21 @@ export default {
   fromLeftWall: 'From Left',
   fromFrontWall: 'From Front',
   fromFloor: 'From Floor',
+  showReference: 'Show Axes Reference',
+  showProjectorInterfere: 'Show Projector/Projection Interfere',
+  showProjectionDistanceRefrence: 'Show Projection Distance Range Reference',
+  light: 'Light',
+  sideView: 'Side View',
+  topView: 'Top View',
   ScreenMap: 'Screen Texture',
   mapPattern: 'Texture Pattern',
-  history: 'Storage'
+  history: 'Storage',
+  delete: 'Delete',
+  edit: 'Edit',
+  copy: 'Copy',
+  language: 'Language',
+  theme: 'Theme',
+  front: 'Front',
+  back: 'Back',
+  none: 'None'
 }

@@ -18,5 +18,15 @@ export const screenType = {
     plane: 0,
     curved: 1,
     sphere: 2,
-    custom: 3
+    custom: 3,
+    none: 100
+}
+
+export const ScreenPosition = {
+    front: 0,
+    left: 1,
+    right: 2,
+    back: 3,
+    top: 4,
+    bottom: 5
 }

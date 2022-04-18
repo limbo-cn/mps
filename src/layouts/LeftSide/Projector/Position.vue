@@ -1,13 +1,29 @@
 <template>
   <div class="q-pa-sm q-pl-md">
-    <q-input input-class="mps-input-class" :model-value="selectedProjector.x.toFixed(2)" @update:modelValue="setX" :suffix="unitLabel" :title="`${selectedProjector.x}${unitLabel}`" dense type="number" step="0.1" style="width:95%">
+    <q-input
+      input-class="mps-input-class"
+      :model-value="selectedProjector.x.toFixed(2)"
+      @update:modelValue="setX"
+      :suffix="unitLabel"
+      :title="`${selectedProjector.x}${unitLabel}`"
+      dense
+      type="number"
+      :step="0.1 * unitRatio"
+      :min="0"
+      :max="roomWidth"
+      style="width:95%"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          X:
-        </div>
+        <div class="text-subtitle2">X:</div>
         <div style="width:200px" class="q-pl-sm q-pr-sm row">
           <div class="col-9">
-            <q-slider :model-value="selectedProjector.x" @update:modelValue="setX" :step="0.1*unitRatio" :min="(-15*unitRatio)" :max="(15*unitRatio)" />
+            <q-slider
+              :model-value="selectedProjector.x"
+              @update:modelValue="setX"
+              :step="0.1 * unitRatio"
+              :min="0"
+              :max="roomWidth"
+            />
           </div>
           <div class="col">
             <q-btn flat color="primary" @click="resetX" icon="refresh" />
@@ -15,14 +31,30 @@
         </div>
       </template>
     </q-input>
-    <q-input input-class="mps-input-class" :model-value="selectedProjector.y.toFixed(2)" @update:modelValue="setY" :suffix="unitLabel" :title="`${selectedProjector.y}${unitLabel}`" dense type="number" step="0.1" style="width:95%">
+    <q-input
+      input-class="mps-input-class"
+      :model-value="selectedProjector.y.toFixed(2)"
+      @update:modelValue="setY"
+      :suffix="unitLabel"
+      :title="`${selectedProjector.y}${unitLabel}`"
+      dense
+      type="number"
+      :step="0.1 * unitRatio"
+      :min="0"
+      :max="roomHeight"
+      style="width:95%"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          Y:
-        </div>
+        <div class="text-subtitle2">Y:</div>
         <div style="width:200px" class="q-pl-sm q-pr-sm row">
           <div class="col-9">
-            <q-slider :model-value="selectedProjector.y" @update:modelValue="setY" :step="0.1*unitRatio" :min="(-10*unitRatio)" :max="(10*unitRatio)" />
+            <q-slider
+              :model-value="selectedProjector.y"
+              @update:modelValue="setY"
+              :step="0.1 * unitRatio"
+              :min="0"
+              :max="roomHeight"
+            />
           </div>
           <div class="col">
             <q-btn flat color="primary" @click="resetY" icon="refresh" />
@@ -30,57 +62,118 @@
         </div>
       </template>
     </q-input>
-    <q-input input-class="mps-input-class" :model-value="selectedProjector.z.toFixed(2)" @update:modelValue="setZ" :title="`${selectedProjector.z}${unitLabel}`" dense type="number" step="0.1" :suffix="unitLabel" style="width:95%">
+    <q-input
+      input-class="mps-input-class"
+      :model-value="selectedProjector.z.toFixed(2)"
+      @update:modelValue="setZ"
+      :title="`${selectedProjector.z}${unitLabel}`"
+      dense
+      type="number"
+      :step="0.1 * unitRatio"
+      :suffix="unitLabel"
+      style="width:95%"
+      :min="0"
+      :max="roomDepth"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          Z:
-        </div>
+        <div class="text-subtitle2">Z:</div>
         <div style="width:200px" class="q-pl-sm q-pr-sm row">
-          <q-slider :model-value="selectedProjector.z" @update:modelValue="setZ" :step="0.1*unitRatio" :min="0" :max="(20*unitRatio)" />
+          <q-slider
+            :model-value="selectedProjector.z"
+            @update:modelValue="setZ"
+            :step="0.1 * unitRatio"
+            :min="0"
+            :max="roomDepth"
+          />
         </div>
       </template>
     </q-input>
-    <q-input input-class="mps-input-class" :model-value="selectedProjector.rotateX" @update:modelValue="setRotateX" :title="`${selectedProjector.rotateX}°`" dense type="number" step="2" min="-180" max="180" suffix="°" style="width:95%">
+    <q-input
+      input-class="mps-input-class"
+      :model-value="selectedProjector.rotateX"
+      @update:modelValue="setRotateX"
+      :title="`${selectedProjector.rotateX}°`"
+      dense
+      type="number"
+      step="2"
+      min="-180"
+      max="180"
+      suffix="°"
+      style="width:95%"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          {{$t('rotateX')}}:
-        </div>
+        <div class="text-subtitle2">{{ $t('rotateX') }}:</div>
         <div style="width:150px" class="q-pl-sm q-pr-sm row">
           <div class="col-9">
-            <q-slider :model-value="selectedProjector.rotateX" @update:modelValue="setRotateX" :min="-180" :max="180" />
+            <q-slider
+              :model-value="selectedProjector.rotateX"
+              @update:modelValue="setRotateX"
+              :min="-180"
+              :max="180"
+            />
           </div>
           <div class="col">
-            <q-btn flat color="primary" @click="()=>{setRotateX(0)}" icon="refresh" />
+            <q-btn flat color="primary" @click="() => { setRotateX(0) }" icon="refresh" />
           </div>
         </div>
       </template>
     </q-input>
-    <q-input input-class="mps-input-class" :model-value="selectedProjector.rotateY" @update:modelValue="setRotateY" :title="`${selectedProjector.rotateY}°`" dense type="number" step="2" min="-180" max="180" suffix="°" style="width:95%">
+    <q-input
+      input-class="mps-input-class"
+      :model-value="selectedProjector.rotateY"
+      @update:modelValue="setRotateY"
+      :title="`${selectedProjector.rotateY}°`"
+      dense
+      type="number"
+      step="2"
+      min="-180"
+      max="180"
+      suffix="°"
+      style="width:95%"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          {{$t('rotateY')}}:
-        </div>
+        <div class="text-subtitle2">{{ $t('rotateY') }}:</div>
         <div style="width:150px" class="q-pl-sm q-pr-sm row">
           <div class="col-9">
-            <q-slider :model-value="selectedProjector.rotateY" @update:modelValue="setRotateY" :min="-180" :max="180" />
+            <q-slider
+              :model-value="selectedProjector.rotateY"
+              @update:modelValue="setRotateY"
+              :min="-180"
+              :max="180"
+            />
           </div>
           <div class="col">
-            <q-btn flat color="primary" @click="()=>{setRotateY(0)}" icon="refresh" />
+            <q-btn flat color="primary" @click="() => { setRotateY(0) }" icon="refresh" />
           </div>
         </div>
       </template>
     </q-input>
-    <q-input input-class="mps-input-class" :model-value="selectedProjector.rotateZ" @update:modelValue="setRotateZ" :title="`${selectedProjector.rotateZ}°`" dense type="number" step="2" min="-180" max="180" suffix="°" style="width:95%">
+    <q-input
+      input-class="mps-input-class"
+      :model-value="selectedProjector.rotateZ"
+      @update:modelValue="setRotateZ"
+      :title="`${selectedProjector.rotateZ}°`"
+      dense
+      type="number"
+      step="2"
+      min="-180"
+      max="180"
+      suffix="°"
+      style="width:95%"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          {{$t('rotateZ')}}:
-        </div>
+        <div class="text-subtitle2">{{ $t('rotateZ') }}:</div>
         <div style="width:150px" class="q-pl-sm q-pr-sm row">
           <div class="col-9">
-            <q-slider :model-value="selectedProjector.rotateZ" @update:modelValue="setRotateZ" :min="-180" :max="180" />
+            <q-slider
+              :model-value="selectedProjector.rotateZ"
+              @update:modelValue="setRotateZ"
+              :min="-180"
+              :max="180"
+            />
           </div>
           <div class="col">
-            <q-btn flat color="primary" @click="()=>{setRotateZ(0)}" icon="refresh" />
+            <q-btn flat color="primary" @click="() => { setRotateZ(0) }" icon="refresh" />
           </div>
         </div>
       </template>
@@ -107,6 +200,15 @@ export default ({
     },
     selectedProjector() {
       return this.$store.getters['projector/selectedProjector']
+    },
+    roomWidth() {
+      return this.$store.state.room.width * this.$store.state.common.unitRatio
+    },
+    roomHeight() {
+      return this.$store.state.room.height * this.$store.state.common.unitRatio
+    },
+    roomDepth() {
+      return this.$store.state.room.depth * this.$store.state.common.unitRatio
     }
   },
   methods: {
@@ -151,5 +253,4 @@ export default ({
 })
 </script>
 <style lang="scss" scoped>
-
 </style>

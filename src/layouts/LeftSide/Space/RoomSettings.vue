@@ -93,7 +93,7 @@ export default {
 }
 .mps-three-label{
   color:white;
-  background-color: transparent;
+  background-color: grey;
   border-radius: 5px;
   padding:0 3px;
 }

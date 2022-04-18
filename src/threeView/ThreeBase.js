@@ -9,11 +9,11 @@ import {
     FrontSide, PlaneGeometry, Mesh, SphereGeometry, CylinderGeometry,
     Color, TextureLoader, MeshLambertMaterial, MeshBasicMaterial,
     Vector2, Raycaster, Vector3, BufferGeometry, BufferAttribute,
-    VideoTexture, Cache, ArrowHelper, PointLightHelper, NormalBlending
+    VideoTexture, Cache, ArrowHelper, NormalBlending
 } from 'three'
 import { MeshLine, MeshLineMaterial } from 'meshline'
 import { Dark } from 'quasar'
-import { screenType, unitRatio } from 'src/helper/enum'
+import { ScreenPosition, screenType, unitRatio } from 'src/helper/enum'
 import { CalcAmbientContrast, CalcBrightnessOnScreenNit } from 'src/helper/util'
 
 export default class ThreeBase {
@@ -58,32 +58,182 @@ export default class ThreeBase {
             ratio: 10
         }
 
-        this._screenType = screenType.plane
-        this._screen = {
-            material: null,
-            geometry: null,
-            object: null
-        }
-        this._planeScreen = {
-            diagonal: 0,
-            aspectRatio: 0
-        }
-        this._curvedScreen = {
-            diagonal: 0,
-            aspectRatio: 0,
-            radius: 0,
-            radialSegments: 3,
-            isSmooth: true
-        }
-        this._sphereScreen = {
-            radius: 0,
-            phiStart: 0,
-            phiLength: 100
-        }
-        this._customScreen = {
-            geometry: '',
-            material: ''
-        }
+        this._screens = [
+            {
+                screenPosition: ScreenPosition.front,
+                screenType: screenType.plane,
+                screenObject: {
+                    material: null,
+                    geometry: null,
+                    object: null
+                },
+                planeScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0
+                },
+                curvedScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0,
+                    radius: 0,
+                    radialSegments: 3,
+                    isSmooth: true
+                },
+                sphereScreen: {
+                    radius: 0,
+                    phiStart: 0,
+                    phiLength: 100
+                },
+                customScreen: {
+                    geometry: '',
+                    material: ''
+                }
+            },
+            {
+                screenPosition: ScreenPosition.left,
+                screenType: screenType.none,
+                screenObject: {
+                    material: null,
+                    geometry: null,
+                    object: null
+                },
+                planeScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0
+                },
+                curvedScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0,
+                    radius: 0,
+                    radialSegments: 3,
+                    isSmooth: true
+                },
+                sphereScreen: {
+                    radius: 0,
+                    phiStart: 0,
+                    phiLength: 100
+                },
+                customScreen: {
+                    geometry: '',
+                    material: ''
+                }
+            },
+            {
+                screenPosition: ScreenPosition.right,
+                screenType: screenType.none,
+                screenObject: {
+                    material: null,
+                    geometry: null,
+                    object: null
+                },
+                planeScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0
+                },
+                curvedScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0,
+                    radius: 0,
+                    radialSegments: 3,
+                    isSmooth: true
+                },
+                sphereScreen: {
+                    radius: 0,
+                    phiStart: 0,
+                    phiLength: 100
+                },
+                customScreen: {
+                    geometry: '',
+                    material: ''
+                }
+            },
+            {
+                screenPosition: ScreenPosition.back,
+                screenType: screenType.none,
+                screenObject: {
+                    material: null,
+                    geometry: null,
+                    object: null
+                },
+                planeScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0
+                },
+                curvedScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0,
+                    radius: 0,
+                    radialSegments: 3,
+                    isSmooth: true
+                },
+                sphereScreen: {
+                    radius: 0,
+                    phiStart: 0,
+                    phiLength: 100
+                },
+                customScreen: {
+                    geometry: '',
+                    material: ''
+                }
+            },
+            {
+                screenPosition: ScreenPosition.top,
+                screenType: screenType.none,
+                screenObject: {
+                    material: null,
+                    geometry: null,
+                    object: null
+                },
+                planeScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0
+                },
+                curvedScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0,
+                    radius: 0,
+                    radialSegments: 3,
+                    isSmooth: true
+                },
+                sphereScreen: {
+                    radius: 0,
+                    phiStart: 0,
+                    phiLength: 100
+                },
+                customScreen: {
+                    geometry: '',
+                    material: ''
+                }
+            },
+            {
+                screenPosition: ScreenPosition.bottom,
+                screenType: screenType.none,
+                screenObject: {
+                    material: null,
+                    geometry: null,
+                    object: null
+                },
+                planeScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0
+                },
+                curvedScreen: {
+                    diagonal: 0,
+                    aspectRatio: 0,
+                    radius: 0,
+                    radialSegments: 3,
+                    isSmooth: true
+                },
+                sphereScreen: {
+                    radius: 0,
+                    phiStart: 0,
+                    phiLength: 100
+                },
+                customScreen: {
+                    geometry: '',
+                    material: ''
+                }
+            }
+        ]
 
         this._controls = null
     }
@@ -220,10 +370,6 @@ export default class ThreeBase {
         this._light = new PointLight(0xffffff, 1, 0, 2)
         this._light.position.set(this._roomSize.widthDraw / 2, this._roomSize.heightDraw, this._roomSize.depthDraw / 2)
         this._scene.add(this._light)
-
-        const sphereSize = 1
-        const pointLightHelper = new PointLightHelper(this._light, sphereSize)
-        this._scene.add(pointLightHelper)
     }
 
     _initControls() {
@@ -344,7 +490,9 @@ export default class ThreeBase {
                     transparent: true,
                     opacity: 0.8
                 })
-                this._screen.material = screenMaterial
+                this._screens.forEach(screen => {
+                    screen.screenObject.material = screenMaterial
+                })
                 resolve(texture)
             }, null, error => {
                 reject(error)
@@ -452,21 +600,46 @@ export default class ThreeBase {
         this._scene.add(this._room.objects.right)
     }
 
-    _initScreen() {
-        this._screen.geometry && this._screen.geometry.dispose()
-        this._screen.object && this._scene.remove(this._screen.object)
+    _initScreen(screen) {
+        if (!screen) {
+            this._screens.forEach(screen => {
+                screen.screenObject.geometry && screen.screenObject.geometry.dispose()
+                screen.screenObject.object && this._scene.remove(screen.screenObject.object)
 
-        this._screenType === screenType.plane && this._createPlaneScreen()
-        this._screenType === screenType.curved && this._createCurveScreen()
-        this._screenType === screenType.sphere && this._createSphereScreen()
-        this._screenType === screenType.custom && this._createCustomScreen()
+                screen.screenType === screenType.plane && this._createPlaneScreen(screen)
+                screen.screenType === screenType.curved && this._createCurveScreen(screen)
+                screen.screenType === screenType.sphere && this._createSphereScreen(screen)
+                screen.screenType === screenType.custom && this._createCustomScreen(screen)
 
-        this.adjustScreenPosition()
+                store.commit('screen/SET_SCREEN_POSTION', screen.screenPosition)
+
+                this.adjustScreenPosition(screen)
+            })
+
+            store.commit('screen/SET_SCREEN_POSTION', ScreenPosition.front)
+        } else {
+            screen.screenObject.geometry && screen.screenObject.geometry.dispose()
+            screen.screenObject.object && this._scene.remove(screen.screenObject.object)
+
+            screen.screenType === screenType.plane && this._createPlaneScreen(screen)
+            screen.screenType === screenType.curved && this._createCurveScreen(screen)
+            screen.screenType === screenType.sphere && this._createSphereScreen(screen)
+            screen.screenType === screenType.custom && this._createCustomScreen(screen)
+
+            this.adjustScreenPosition(screen)
+        }
     }
 
-    adjustScreenPosition() {
-        const positionArray = this._screen.geometry.attributes.position.array
-        const pointLength = this._screen.geometry.attributes.position.count
+    adjustScreenPosition(screen) {
+        if (!screen) {
+            screen = this._screens[store.state.screen.screenPosition]
+        }
+        if (screen.screenType === screenType.none) {
+            return
+        }
+        const positionArray = screen.screenObject.geometry.attributes.position.array
+        const pointLength = screen.screenObject.geometry.attributes.position.count
+
         let xMin = 0, xMax = 0, yMin = 0, yMax = 0, zMax = 0, zMin = 0
         for (let i = 0; i < pointLength; i++) {
             const [x, y, z] = [positionArray[i * 3], positionArray[i * 3 + 1], positionArray[i * 3 + 2]]
@@ -478,87 +651,152 @@ export default class ThreeBase {
             z < zMin && (zMin = z)
         }
 
-        this._screen.object.position.x = (this._roomSize.widthDraw / 2 - xMax) - (xMin - (-this._roomSize.widthDraw / 2))
-        this._screen.object.position.y = (this._roomSize.heightDraw / 2 - yMax) - (yMin - (-this._roomSize.heightDraw / 2))
-        this._screen.object.position.z = (1 * this._roomSize.ratio) - zMin
+        // 因为都经过旋转，所以都以Z来判断边界
+        if (screen.screenPosition === ScreenPosition.front) {
+            screen.screenObject.object.position.x = this._roomSize.widthDraw / 2
+            screen.screenObject.object.position.y = this._roomSize.heightDraw / 2
+            screen.screenObject.object.position.z = (1 * this._roomSize.ratio) - zMin
+        } else if (screen.screenPosition === ScreenPosition.left) {
+            screen.screenObject.object.position.x = (0.5 * this._roomSize.ratio) - zMin
+            screen.screenObject.object.position.y = this._roomSize.heightDraw / 2
+            screen.screenObject.object.position.z = this._roomSize.depthDraw / 2
+        } else if (screen.screenPosition === ScreenPosition.right) {
+            screen.screenObject.object.position.x = this._roomSize.widthDraw + zMin - (0.5 * this._roomSize.ratio)
+            screen.screenObject.object.position.y = this._roomSize.heightDraw / 2
+            screen.screenObject.object.position.z = this._roomSize.depthDraw / 2
+        } else if (screen.screenPosition === ScreenPosition.back) {
+            screen.screenObject.object.position.x = this._roomSize.widthDraw / 2
+            screen.screenObject.object.position.y = this._roomSize.heightDraw / 2
+            screen.screenObject.object.position.z = this._roomSize.depthDraw + zMin - (1 * this._roomSize.ratio)
+        } else if (screen.screenPosition === ScreenPosition.top) {
+            screen.screenObject.object.position.x = this._roomSize.widthDraw / 2
+            screen.screenObject.object.position.y = this._roomSize.heightDraw + zMin - (0.5 * this._roomSize.ratio)
+            screen.screenObject.object.position.z = this._roomSize.depthDraw / 2
+        } else if (screen.screenPosition === ScreenPosition.bottom) {
+            screen.screenObject.object.position.x = this._roomSize.widthDraw / 2
+            screen.screenObject.object.position.y = (0.5 * this._roomSize.ratio) - zMin
+            screen.screenObject.object.position.z = this._roomSize.depthDraw / 2
+        }
 
-        // 暂时不考虑xy
-        this._screen.object.position.x = this._roomSize.widthDraw / 2
-        this._screen.object.position.y = this._roomSize.heightDraw / 2
-        this._screen.object.position.z = (1 * this._roomSize.ratio) - zMin
+        store.commit('screen/SET_X', screen.screenObject.object.position.x / this._roomSize.ratio)
+        store.commit('screen/SET_Y', screen.screenObject.object.position.y / this._roomSize.ratio)
+        store.commit('screen/SET_Z', screen.screenObject.object.position.z / this._roomSize.ratio)
+        store.commit('screen/SET_ROTATE_X', screen.screenObject.object.rotation.x / Math.PI * 180)
+        store.commit('screen/SET_ROTATE_Y', screen.screenObject.object.rotation.y / Math.PI * 180)
+        store.commit('screen/SET_ROTATE_Z', screen.screenObject.object.rotation.z / Math.PI * 180)
 
-        store.commit('screen/SET_X', this._screen.object.position.x / this._roomSize.ratio)
-        store.commit('screen/SET_Y', this._screen.object.position.y / this._roomSize.ratio)
-        store.commit('screen/SET_Z', this._screen.object.position.z / this._roomSize.ratio)
-        store.commit('screen/SET_ROTATE_X', this._screen.object.rotation.x / Math.PI * 180)
-        store.commit('screen/SET_ROTATE_Y', this._screen.object.rotation.y / Math.PI * 180)
-        store.commit('screen/SET_ROTATE_Z', this._screen.object.rotation.z / Math.PI * 180)
+        screen.screenObject.object.updateMatrixWorld()
 
-        this._screen.object.updateMatrixWorld()
         this._createAllBoundLine()
     }
 
-    _createPlaneScreen() {
-        this._planeScreen.diagonal = store.state.screen.plane.diagonal
-        this._planeScreen.aspectRatio = store.state.screen.plane.aspectRatio
-        if (this._planeScreen.aspectRatio === 0) { // custom
-            this._planeScreen.aspectRatio = store.state.screen.plane.width / store.state.screen.plane.height
+    _createPlaneScreen(screen) {
+        const screenState = store.state.screen.screens[screen.screenPosition]
+        screen.planeScreen.diagonal = screenState.plane.diagonal
+        screen.planeScreen.aspectRatio = screenState.plane.aspectRatio
+
+        if (screen.planeScreen.aspectRatio === 0) { // custom
+            screen.planeScreen.aspectRatio = screenState.plane.width / screenState.plane.height
         }
 
-        const diagonalM = this._planeScreen.diagonal / unitRatio.inch
-        const aspectAngle = Math.atan(this._planeScreen.aspectRatio)
+        const diagonalM = screen.planeScreen.diagonal / unitRatio.inch
+        const aspectAngle = Math.atan(screen.planeScreen.aspectRatio)
         const screenWidth = diagonalM * Math.sin(aspectAngle)
-        const screenHeight = screenWidth / this._planeScreen.aspectRatio
+        const screenHeight = screenWidth / screen.planeScreen.aspectRatio
 
-        this._screen.geometry = new PlaneGeometry(screenWidth * this._roomSize.ratio, screenHeight * this._roomSize.ratio)
-        this._screen.object = new Mesh(this._screen.geometry, this._screen.material)
-        this._scene.add(this._screen.object)
+        screen.screenObject.geometry = new PlaneGeometry(screenWidth * this._roomSize.ratio, screenHeight * this._roomSize.ratio)
+        screen.screenObject.object = new Mesh(screen.screenObject.geometry, screen.screenObject.material)
+
+        if (screen.screenPosition === ScreenPosition.left) {
+            screen.screenObject.object.rotation.y = Math.PI * 0.5
+        } else if (screen.screenPosition === ScreenPosition.right) {
+            screen.screenObject.object.rotation.y = Math.PI * 1.5
+        } else if (screen.screenPosition === ScreenPosition.back) {
+            screen.screenObject.object.rotation.y = Math.PI
+        } else if (screen.screenPosition === ScreenPosition.top) {
+            screen.screenObject.object.rotation.x = Math.PI * 0.5
+        } else if (screen.screenPosition === ScreenPosition.bottom) {
+            screen.screenObject.object.rotation.x = Math.PI * 1.5
+        }
+        this._scene.add(screen.screenObject.object)
     }
 
-    _createCurveScreen() {
-        this._curvedScreen.diagonal = store.state.screen.curved.diagonal
-        this._curvedScreen.aspectRatio = store.state.screen.curved.aspectRatio
-        this._curvedScreen.radius = store.state.screen.curved.radius * this._roomSize.ratio
-        this._curvedScreen.radialSegments = store.state.screen.curved.radialSegments
-        this._curvedScreen.isSmooth = store.state.screen.curved.isSmooth
+    _createCurveScreen(screen) {
+        const screenState = store.state.screen.screens[screen.screenPosition]
 
-        if (this._curvedScreen.aspectRatio === 0) { // custom
-            this._curvedScreen.aspectRatio = store.state.screen.curved.width / store.state.screen.curved.height
+        screen.curvedScreen.diagonal = screenState.curved.diagonal
+        screen.curvedScreen.aspectRatio = screenState.curved.aspectRatio
+        screen.curvedScreen.radius = screenState.curved.radius * this._roomSize.ratio
+        screen.curvedScreen.radialSegments = screenState.curved.radialSegments
+        screen.curvedScreen.isSmooth = screenState.curved.isSmooth
+
+        if (screen.curvedScreen.aspectRatio === 0) { // custom
+            screen.curvedScreen.aspectRatio = screenState.curved.width / screenState.curved.height
         }
 
-        const diagonalM = this._curvedScreen.diagonal / unitRatio.inch
-        const aspectAngle = Math.atan(this._curvedScreen.aspectRatio)
+        const diagonalM = screen.curvedScreen.diagonal / unitRatio.inch
+        const aspectAngle = Math.atan(screen.curvedScreen.aspectRatio)
         const screenWidth = diagonalM * Math.sin(aspectAngle)
-        const screenHeight = screenWidth / this._curvedScreen.aspectRatio
+        const screenHeight = screenWidth / screen.curvedScreen.aspectRatio
 
-        const radian = screenWidth * this._roomSize.ratio / this._curvedScreen.radius // 弧长 = 弧度 * 半径
+        const radian = screenWidth * this._roomSize.ratio / screen.curvedScreen.radius // 弧长 = 弧度 * 半径
 
-        this._screen.geometry = new CylinderGeometry(this._curvedScreen.radius, this._curvedScreen.radius,
-            screenHeight * this._roomSize.ratio, this._curvedScreen.isSmooth ? 128 : this._curvedScreen.radialSegments,
+        screen.screenObject.geometry = new CylinderGeometry(screen.curvedScreen.radius, screen.curvedScreen.radius,
+            screenHeight * this._roomSize.ratio, screen.curvedScreen.isSmooth ? 128 : screen.curvedScreen.radialSegments,
             1, true, Math.PI - radian / 2, radian)
-        this._screen.object = new Mesh(this._screen.geometry, this._screen.material)
-        this._scene.add(this._screen.object)
+        screen.screenObject.object = new Mesh(screen.screenObject.geometry, screen.screenObject.material)
+
+        if (screen.screenPosition === ScreenPosition.left) {
+            screen.screenObject.object.rotation.y = Math.PI * 0.5
+        } else if (screen.screenPosition === ScreenPosition.right) {
+            screen.screenObject.object.rotation.y = Math.PI * 1.5
+        } else if (screen.screenPosition === ScreenPosition.back) {
+            screen.screenObject.object.rotation.y = Math.PI
+        } else if (screen.screenPosition === ScreenPosition.top) {
+            screen.screenObject.object.rotation.x = Math.PI * 0.5
+        } else if (screen.screenPosition === ScreenPosition.bottom) {
+            screen.screenObject.object.rotation.x = Math.PI * 1.5
+        }
+
+        this._scene.add(screen.screenObject.object)
     }
 
-    _createSphereScreen() {
-        this._sphereScreen.radius = store.state.screen.sphere.radius * this._roomSize.ratio
-        this._sphereScreen.phiStart = Math.PI + store.state.screen.sphere.phiStart / 180 * Math.PI
-        this._sphereScreen.phiLength = store.state.screen.sphere.phiLength / 180 * Math.PI
-        this._sphereScreen.thetaStart = store.state.screen.sphere.thetaStart / 180 * Math.PI
-        this._sphereScreen.thetaLength = (1 - store.state.screen.sphere.thetaEnd / 180 - store.state.screen.sphere.thetaStart / 180) * Math.PI
+    _createSphereScreen(screen) {
+        const screenState = store.state.screen.screens[screen.screenPosition]
 
-        this._screen.geometry = new SphereGeometry(this._sphereScreen.radius, 16, 16,
-            this._sphereScreen.phiStart, this._sphereScreen.phiLength,
-            this._sphereScreen.thetaStart, this._sphereScreen.thetaLength)
-        this._screen.object = new Mesh(this._screen.geometry, this._screen.material)
-        this._scene.add(this._screen.object)
+        screen.sphereScreen.radius = screenState.sphere.radius * this._roomSize.ratio
+        screen.sphereScreen.phiStart = Math.PI + screenState.sphere.phiStart / 180 * Math.PI
+        screen.sphereScreen.phiLength = screenState.sphere.phiLength / 180 * Math.PI
+        screen.sphereScreen.thetaStart = screenState.sphere.thetaStart / 180 * Math.PI
+        screen.sphereScreen.thetaLength = (1 - screenState.sphere.thetaEnd / 180 - screenState.sphere.thetaStart / 180) * Math.PI
+
+        screen.screenObject.geometry = new SphereGeometry(screen.sphereScreen.radius, 16, 16,
+            screen.sphereScreen.phiStart, screen.sphereScreen.phiLength,
+            screen.sphereScreen.thetaStart, screen.sphereScreen.thetaLength)
+        screen.screenObject.object = new Mesh(screen.screenObject.geometry, screen.screenObject.material)
+
+        if (screen.screenPosition === ScreenPosition.left) {
+            screen.screenObject.object.rotation.y = Math.PI * 0.5
+        } else if (screen.screenPosition === ScreenPosition.right) {
+            screen.screenObject.object.rotation.y = Math.PI * 1.5
+        } else if (screen.screenPosition === ScreenPosition.back) {
+            screen.screenObject.object.rotation.y = Math.PI
+        } else if (screen.screenPosition === ScreenPosition.top) {
+            screen.screenObject.object.rotation.x = Math.PI * 0.5
+        } else if (screen.screenPosition === ScreenPosition.bottom) {
+            screen.screenObject.object.rotation.x = Math.PI * 1.5
+        }
+
+        this._scene.add(screen.screenObject.object)
     }
 
-    _createCustomScreen() {
-        const geometrySrc = store.state.screen.custom.geometrySrc
-        const materialSrc = store.state.screen.custom.materialSrc
+    _createCustomScreen(screen) {
+        const screenState = store.state.screen.screens[screen.screenPosition]
+
+        const geometrySrc = screenState.custom.geometrySrc
+        const materialSrc = screenState.custom.materialSrc
         if (geometrySrc === '') {
-            this._screen.object = new Mesh()
+            screen.screenObject.object = new Mesh()
             return
         }
         const mtlLoader = new MTLLoader()
@@ -571,9 +809,9 @@ export default class ThreeBase {
                     object.geometry.center()
                 })
                 objects.isScreen = true
-                this._screen.object = objects
+                screen.screenObject.object = objects
                 this._scene.add(objects)
-                this.adjustScreenPosition()
+                this.adjustScreenPosition(screen)
             })
         })
     }
@@ -989,9 +1227,18 @@ export default class ThreeBase {
             })
         }
 
+        const screenObjects = []
+        this._screens.forEach(screen => {
+            if (screen.screenType !== screenType.none) {
+                screenObjects.push(screen.screenObject.object)
+                screen.screenObject.object.children.forEach(child => {
+                    screenObjects.push(child)
+                })
+            }
+        })
+
         const objects = [this._room.objects.back, this._room.objects.front, this._room.objects.left,
-        this._room.objects.right, this._room.objects.top, this._room.objects.bottom, this._screen.object,
-        ...this._screen.object.children, ...otherProjectorMesh]
+        this._room.objects.right, this._room.objects.top, this._room.objects.bottom, ...screenObjects, ...otherProjectorMesh]
 
         const hitPoints = ray.intersectObjects(objects)
 

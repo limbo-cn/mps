@@ -38,7 +38,7 @@ export default {
   computed: {
     geometry: {
       get() {
-        return this.$store.state.screen.custom.geometrySrc
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].custom.geometrySrc
       },
       set(src) {
         this.SET_CUSTOM_GEOMETRY_SRC(src)
@@ -46,7 +46,7 @@ export default {
     },
     material: {
       get() {
-        return this.$store.state.screen.custom.materialSrc
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].custom.materialSrc
       },
       set(src) {
         this.SET_CUSTOM_MATERIAL_SRC(src)

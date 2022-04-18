@@ -3,6 +3,7 @@ export default function () {
     unitRatio: 1,
     unitLabel: 'm',
     showProjectorDetail: false,
-    threeViewImage: ''
+    threeViewImage: '',
+    isLoadingModel: false
   }
 }

@@ -1,18 +1,34 @@
 <template>
   <div class="q-pa-sm q-pl-md row">
-    <q-select dense v-model="screenType" @update:modelValue="setScreen" :options="screenTypes" emit-value map-options option-value="value" option-label="label" style="width:95%" behavior="menu">
+    <q-select
+      dense
+      v-model="screenType"
+      @update:modelValue="setScreen"
+      :options="screenTypes"
+      emit-value
+      map-options
+      option-value="value"
+      option-label="label"
+      style="width:95%"
+      behavior="menu"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          {{$t('screenType')}}:
-        </div>
+        <div class="text-subtitle2">{{ $t('screenType') }}:</div>
       </template>
     </q-select>
 
-    <q-input v-model.number="screenGain" suffix="lx" dense type="number" step="1" :min="0" style="width: 95%">
+    <q-input
+      v-show="screenType !== 100"
+      v-model.number="screenGain"
+      suffix="lx"
+      dense
+      type="number"
+      step="1"
+      :min="0"
+      style="width: 95%"
+    >
       <template v-slot:prepend>
-        <div class="text-subtitle2">
-          {{$t('screenGain')}}:
-        </div>
+        <div class="text-subtitle2">{{ $t('screenGain') }}:</div>
       </template>
     </q-input>
 
@@ -20,7 +36,6 @@
     <CurvedScreen v-if="screenType === 1" :aspectRatios="aspectRatios" :unitLabel="unitLabel" />
     <Sphere v-if="screenType === 2" :unitLabel="unitLabel" />
     <Custom v-if="screenType === 3" />
-
   </div>
 </template>
 
@@ -59,7 +74,7 @@ export default {
     },
     screenType: {
       get() {
-        return this.$store.state.screen.screenType
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].screenType
       },
       set(val) {
         this.SET_SCREEN_TYPE(val)
@@ -75,6 +90,7 @@ export default {
     },
     screenTypes() {
       return [
+        { label: this.$t('none'), value: screenType.none },
         { label: this.$t('planeScreen'), value: screenType.plane },
         { label: this.$t('curvedScreen'), value: screenType.curved },
         { label: this.$t('SphereScreen'), value: screenType.sphere },
@@ -94,5 +110,4 @@ export default {
 }
 </script>
 <style lang="scss">
-
 </style>

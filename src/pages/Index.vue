@@ -59,6 +59,7 @@ export default ({
   },
   created() {
     this.$bus.on('setScreen', this.setScreen)
+    this.$bus.on('setScreens', this.setScreens)
     this.$bus.on('setScreenPosition', this.setScreenPosition)
     this.$bus.on('autoAdjustScreenPosition', this.autoAdjustScreenPosition)
     this.$bus.on('setRoomSize', this.setRoomSize)
@@ -80,6 +81,7 @@ export default ({
   },
   beforeUnmount() {
     this.$bus.off('setScreen', this.setScreen)
+    this.$bus.off('setScreens', this.setScreens)
     this.$bus.off('setScreenPosition', this.setScreenPosition)
     this.$bus.off('autoAdjustScreenPosition', this.autoAdjustScreenPosition)
     this.$bus.off('setRoomSize', this.setRoomSize)
@@ -121,6 +123,9 @@ export default ({
     },
     setScreen(val) {
       view.setScreen(val)
+    },
+    setScreens(val) {
+      view.setScreens(val)
     },
     setScreenPosition() {
       view.setScreenPosition()

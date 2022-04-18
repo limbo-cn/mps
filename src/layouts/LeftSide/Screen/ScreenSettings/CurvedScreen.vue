@@ -100,7 +100,7 @@ export default {
     },
     curvedAspectRatio: {
       get() {
-        return this.$store.state.screen.curved.aspectRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.aspectRatio
       },
       set(val) {
         this.SET_CURVED_ASPECT_RATIO(val)
@@ -108,7 +108,7 @@ export default {
     },
     curvedDiagonal: {
       get() {
-        return this.$store.state.screen.curved.diagonal
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.diagonal
       },
       set(val) {
         this.SET_CURVED_DIAGONAL(val)
@@ -116,7 +116,7 @@ export default {
     },
     radialSegments: {
       get() {
-        return this.$store.state.screen.curved.radialSegments
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.radialSegments
       },
       set(val) {
         this.SET_CURVED_RADIAL_SEGMENTS(val)
@@ -124,7 +124,7 @@ export default {
     },
     isSmooth: {
       get() {
-        return this.$store.state.screen.curved.isSmooth
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.isSmooth
       },
       set(val) {
         this.SET_CURVED_IS_SMOOTH(val)
@@ -132,7 +132,7 @@ export default {
     },
     curvedWdith: {
       get() {
-        return (this.$store.state.screen.curved.width * this.$store.state.common.unitRatio)
+        return (this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.width * this.$store.state.common.unitRatio)
       },
       set(val) {
         this.SET_CURVED_WIDTH(val / this.$store.state.common.unitRatio)
@@ -140,7 +140,7 @@ export default {
     },
     curvedHeight: {
       get() {
-        return (this.$store.state.screen.curved.height * this.$store.state.common.unitRatio)
+        return (this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.height * this.$store.state.common.unitRatio)
       },
       set(val) {
         this.SET_CURVED_HEIGHT(val / this.$store.state.common.unitRatio)
@@ -148,7 +148,7 @@ export default {
     },
     curvedRadius: {
       get() {
-        return this.$store.state.screen.curved.radius * this.$store.state.common.unitRatio
+        return this.$store.state.screen.screens[this.$store.state.screen.screenPosition].curved.radius * this.$store.state.common.unitRatio
       },
       set(val) {
         this.SET_CURVED_RADIUS(val / this.$store.state.common.unitRatio)
@@ -216,7 +216,8 @@ export default {
       this.setScreen()
     },
     changeCurvedSize() {
-      const diagonal = Math.sqrt(Math.pow(this.$store.state.screen.curved.width, 2) + Math.pow(this.$store.state.screen.curved.height, 2)) * unitRatio.inch
+      const screen = this.$store.state.screen.screens[this.$store.state.screen.screenPosition]
+      const diagonal = Math.sqrt(Math.pow(screen.curved.width, 2) + Math.pow(screen.curved.height, 2)) * unitRatio.inch
       this.SET_CURVED_DIAGONAL(diagonal.toFixed(2))
       this.setScreen()
     }

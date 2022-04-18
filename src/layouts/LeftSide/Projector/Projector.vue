@@ -1,68 +1,130 @@
 <template>
   <div class="row q-pl-md q-pa-sm">
     <div class="q-mb-sm" :class="`col-12`">
-      <q-btn id="leftside-addprojector" outline color="white" text-color="primary" :label="$t('addProjector')" @click="()=>{showDlgChooseProjector = true; isEdit = false}" icon="add" style="width: 95%" />
+      <q-btn
+        id="leftside-addprojector"
+        outline
+        color="white"
+        text-color="primary"
+        :label="$t('addProjector')"
+        @click="() => { showDlgChooseProjector = true; isEdit = false }"
+        icon="add"
+        style="width: 95%"
+      />
     </div>
     <template v-if="projectors.length > 0">
-      <div class="col-4" v-show="projectors.length>0">
-        <q-btn @click="deleteProjector" outline color="primary" icon="delete_outline" style="width: 90%" />
+      <div class="col-4" v-show="projectors.length > 0">
+        <q-btn
+          @click="deleteProjector"
+          outline
+          color="primary"
+          icon="delete_outline"
+          style="width: 90%"
+        >
+          <q-tooltip>{{ $t('delete') }}</q-tooltip>
+        </q-btn>
       </div>
       <div class="col-4">
-        <q-btn @click="showDlgCopyProjector = true" outline color="primary" icon="file_copy" style="width: 90%" />
+        <q-btn
+          @click="showDlgCopyProjector = true"
+          outline
+          color="primary"
+          icon="file_copy"
+          style="width: 90%"
+        >
+          <q-tooltip>{{ $t('copy') }}</q-tooltip>
+        </q-btn>
       </div>
       <div class="col-4">
-        <q-btn outline color="primary" @click="editProjector" icon="loop" style="width: 90%" />
+        <q-btn outline color="primary" @click="editProjector" icon="loop" style="width: 90%">
+          <q-tooltip>{{ $t('edit') }}</q-tooltip>
+        </q-btn>
       </div>
       <div class="col-12">
-        <q-select dense v-model="selectedProjectorId" @update:modelValue="changeSelectedProjector" :options="projectors" emit-value map-options option-value="value" option-label="label" style="width:95%" behavior="menu">
+        <q-select
+          dense
+          v-model="selectedProjectorId"
+          @update:modelValue="changeSelectedProjector"
+          :options="projectors"
+          emit-value
+          map-options
+          option-value="value"
+          option-label="label"
+          style="width:95%"
+          behavior="menu"
+        >
           <template v-slot:prepend>
-            <div class="text-subtitle2">
-              {{$t('selectedProjector')}}:
-            </div>
+            <div class="text-subtitle2">{{ $t('selectedProjector') }}:</div>
           </template>
         </q-select>
       </div>
-
     </template>
     <template v-if="selectedProjectorOptionalLenss && selectedProjectorOptionalLenss.length > 0">
-      <q-select dense :model-value="selectedProjector.lensName" @update:modelValue="changeSelectedProjectorLens" :options="selectedProjectorOptionalLenss" style="width:95%" behavior="menu">
+      <q-select
+        dense
+        :model-value="selectedProjector.lensName"
+        @update:modelValue="changeSelectedProjectorLens"
+        :options="selectedProjectorOptionalLenss"
+        style="width:95%"
+        behavior="menu"
+      >
         <template v-slot:prepend>
-          <div class="text-subtitle2">
-            {{$t('selectedLens')}}:
-          </div>
+          <div class="text-subtitle2">{{ $t('selectedLens') }}:</div>
         </template>
       </q-select>
     </template>
   </div>
 
-  <q-expansion-item v-if="selectedProjector" dense :header-class="$q.dark.isActive? 'left-header-dark' : 'left-header-light'" default-opened :label="$t('layout')">
+  <q-expansion-item
+    v-if="selectedProjector"
+    dense
+    :header-class="$q.dark.isActive ? 'left-header-dark' : 'left-header-light'"
+    default-opened
+    :label="$t('layout')"
+  >
     <Layout />
   </q-expansion-item>
 
-  <q-expansion-item v-if="selectedProjector" dense :header-class="$q.dark.isActive? 'left-header-dark' : 'left-header-light'" default-opened :label="$t('position')">
+  <q-expansion-item
+    v-if="selectedProjector"
+    dense
+    :header-class="$q.dark.isActive ? 'left-header-dark' : 'left-header-light'"
+    default-opened
+    :label="$t('position')"
+  >
     <Position />
   </q-expansion-item>
 
-  <q-expansion-item v-if="selectedProjector" dense :header-class="$q.dark.isActive? 'left-header-dark' : 'left-header-light'" default-opened :label="$t('projection')">
+  <q-expansion-item
+    v-if="selectedProjector"
+    dense
+    :header-class="$q.dark.isActive ? 'left-header-dark' : 'left-header-light'"
+    default-opened
+    :label="$t('projection')"
+  >
     <Projection />
   </q-expansion-item>
 
-  <q-expansion-item v-if="selectedProjector" dense :header-class="$q.dark.isActive? 'left-header-dark' : 'left-header-light'" default-opened :label="$t('blending')">
+  <q-expansion-item
+    v-if="selectedProjector"
+    dense
+    :header-class="$q.dark.isActive ? 'left-header-dark' : 'left-header-light'"
+    default-opened
+    :label="$t('blending')"
+  >
     <Blending />
   </q-expansion-item>
 
   <q-dialog v-model="showDlgCopyProjector" @show="initDlgCopyProjector">
     <q-card style="width: 700px; max-width: 80vw;">
       <q-card-section>
-        <div class="text-h5">{{$t('copyProjector')}}</div>
+        <div class="text-h5">{{ $t('copyProjector') }}</div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
         <q-input v-model="copyName" style="width:100%">
           <template v-slot:prepend>
-            <div class="text-subtitle2">
-              {{$t('customName')}}:
-            </div>
+            <div class="text-subtitle2">{{ $t('customName') }}:</div>
           </template>
         </q-input>
       </q-card-section>
@@ -77,94 +139,132 @@
   <q-dialog v-model="showDlgChooseProjector" @show="initDlgChooseProjector">
     <q-card style="width: 700px; max-width: 80vw;">
       <q-card-section v-show="!isEdit">
-        <div class="text-h5">{{$t('addProjector')}}</div>
+        <div class="text-h5">{{ $t('addProjector') }}</div>
       </q-card-section>
       <q-card-section v-show="isEdit">
-        <div class="text-h5">{{$t('editProjector')}}</div>
+        <div class="text-h5">{{ $t('editProjector') }}</div>
       </q-card-section>
 
       <q-card-section class="q-pa-sm q-ma-sm" style="border:1px solid #ccc;border-radius:5px">
-        <div class="row q-mb-md q-ml-lg text-h6">
-          {{$t('installationCondition')}}
-        </div>
+        <div class="row q-mb-md q-ml-lg text-h6">{{ $t('installationCondition') }}</div>
         <div class="row q-mb-md">
-          <q-input outlined dense v-model="throwDistance" class="q-pl-md" type="number" :suffix="unitLabel" min="0" style="width:50%">
+          <q-input
+            outlined
+            dense
+            v-model="throwDistance"
+            class="q-pl-md"
+            type="number"
+            :suffix="unitLabel"
+            min="0"
+            style="width:50%"
+          >
             <template v-slot:prepend>
-              <div class="text-subtitle2">
-                {{$t('throwDistance')}}:
-              </div>
+              <div class="text-subtitle2">{{ $t('throwDistance') }}:</div>
             </template>
           </q-input>
           <q-checkbox v-model="lensShiftOnly" :label="$t('lensShiftOnly')" />
           <q-checkbox v-model="optionalLensOnly" :label="$t('optionalLensOnly')" />
         </div>
         <div class="row q-mb-md">
-          <q-select clearable outlined dense v-model="brightness" :options="brightnessOptions" class="q-pl-md" suffix="Lumen" style="width:50%">
+          <q-select
+            clearable
+            outlined
+            dense
+            v-model="brightness"
+            :options="brightnessOptions"
+            class="q-pl-md"
+            suffix="Lumen"
+            style="width:50%"
+          >
             <template v-slot:prepend>
-              <div class="text-subtitle2">
-                {{$t('brightness')}}:
-              </div>
+              <div class="text-subtitle2">{{ $t('brightness') }}:</div>
             </template>
           </q-select>
-          <q-select clearable outlined dense v-model="resolution" :options="resolutionOptions" class="q-pl-md q-pr-md" style="width:50%">
+          <q-select
+            clearable
+            outlined
+            dense
+            v-model="resolution"
+            :options="resolutionOptions"
+            class="q-pl-md q-pr-md"
+            style="width:50%"
+          >
             <template v-slot:prepend>
-              <div class="text-subtitle2">
-                {{$t('resolution')}}:
-              </div>
+              <div class="text-subtitle2">{{ $t('resolution') }}:</div>
             </template>
           </q-select>
         </div>
         <div class="row q-mb-md">
-          <q-select clearable outlined dense v-model="throwRatio" :options="throwRatioOptions" class="q-pl-md" style="width:33%">
+          <q-select
+            clearable
+            outlined
+            dense
+            v-model="throwRatio"
+            :options="throwRatioOptions"
+            class="q-pl-md"
+            style="width:33%"
+          >
             <template v-slot:prepend>
-              <div class="text-subtitle2">
-                {{$t('throwRatio')}}:
-              </div>
+              <div class="text-subtitle2">{{ $t('throwRatio') }}:</div>
             </template>
           </q-select>
-          <q-select clearable outlined dense v-model="aspectRatio" :options="aspectRatioOptions" class="q-pl-md" style="width:33%">
+          <q-select
+            clearable
+            outlined
+            dense
+            v-model="aspectRatio"
+            :options="aspectRatioOptions"
+            class="q-pl-md"
+            style="width:33%"
+          >
             <template v-slot:prepend>
-              <div class="text-subtitle2">
-                {{$t('aspectRatio')}}:
-              </div>
+              <div class="text-subtitle2">{{ $t('aspectRatio') }}:</div>
             </template>
           </q-select>
-          <q-select clearable outlined dense v-model="weight" :options="weightOptions" suffix="kg" class="q-pl-md" style="width:33%">
+          <q-select
+            clearable
+            outlined
+            dense
+            v-model="weight"
+            :options="weightOptions"
+            suffix="kg"
+            class="q-pl-md"
+            style="width:33%"
+          >
             <template v-slot:prepend>
-              <div class="text-subtitle2">
-                {{$t('weight')}}:
-              </div>
+              <div class="text-subtitle2">{{ $t('weight') }}:</div>
             </template>
           </q-select>
         </div>
       </q-card-section>
 
       <q-card-section class="q-pt-none">
-        <q-select v-model="addProjectorModelName" @update:modelValue="changeProjectorName" :options="projectorModels" style="width:100%" behavior="menu">
+        <q-select
+          v-model="addProjectorModelName"
+          @update:modelValue="changeProjectorName"
+          :options="projectorModels"
+          style="width:100%"
+          behavior="menu"
+        >
           <template v-slot:prepend>
-            <div class="text-subtitle2">
-              {{$t('modelName')}}:
-            </div>
+            <div class="text-subtitle2">{{ $t('modelName') }}:</div>
           </template>
         </q-select>
       </q-card-section>
       <q-card-section class="q-pt-none">
         <q-input v-model="addCustomName" style="width:100%">
           <template v-slot:prepend>
-            <div class="text-subtitle2">
-              {{$t('customName')}}:
-            </div>
+            <div class="text-subtitle2">{{ $t('customName') }}:</div>
           </template>
         </q-input>
       </q-card-section>
 
       <q-card-actions align="right">
         <q-btn flat :label="$t('cancel')" color="primary" v-close-popup />
-        <q-btn flat :label="$t('yes')" color="primary" @click="addModel" />
+        <q-btn flat :label="$t('yes')" color="primary" :loading="loadingAdd" @click="addModel" />
       </q-card-actions>
     </q-card>
   </q-dialog>
-
 </template>
 
 <script>
@@ -206,7 +306,9 @@ export default {
       showDlgChooseProjector: false,
       addProjectorModelName: '',
       addCustomName: '',
-      isEdit: false
+      isEdit: false,
+      loadingAdd: false,
+      interval: null
     }
   },
   computed: {
@@ -223,6 +325,9 @@ export default {
           value: o.uId
         }
       })
+    },
+    isLoadingModel() {
+      return this.$store.state.common.isLoadingModel
     },
     selectedProjectorId: {
       get() {
@@ -317,6 +422,8 @@ export default {
         return
       }
 
+      this.loadingAdd = true
+
       const projector = new Projector()
 
       projector.uId = uid()
@@ -364,7 +471,13 @@ export default {
         this.$bus.emit('addProjector', projector.uId)
       }
 
-      this.showDlgChooseProjector = false
+      this.interval = setInterval(() => {
+        if (!this.isLoadingModel) {
+          this.loadingAdd = false
+          this.showDlgChooseProjector = false
+          clearInterval(this.interval)
+        }
+      }, 500)
     },
     deleteProjector() {
       showConfirm(this.$t('sureToDelete'), this.$t('yes'), this.$t('cancel'), () => {
@@ -400,5 +513,4 @@ export default {
 }
 </script>
 <style lang="scss">
-
 </style>
