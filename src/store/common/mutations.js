@@ -17,3 +17,11 @@ export function SET_UNIT_RATIO(state, unitRatio) {
 export function SET_IS_LOADING_MODEL(state, isLoadingModel) {
     state.isLoadingModel = isLoadingModel
 }
+
+export function SET_SHOW_UNDO(state, showUndo) {
+    state.showUndo = showUndo
+}
+
+export function SET_SHOW_REDO(state, showRedo) {
+    state.showRedo = showRedo
+}

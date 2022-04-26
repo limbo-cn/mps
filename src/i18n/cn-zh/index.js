@@ -123,5 +123,9 @@ export default {
     theme: '主题',
     front: '前方',
     back: '后方',
-    none: '无'
+    none: '无',
+    contrastRatio: '对比度',
+    distance: '投射距离',
+    offset: '投射偏移',
+    showProjectorLightBound: '显示投射光线'
 }

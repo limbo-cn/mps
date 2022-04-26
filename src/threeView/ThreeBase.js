@@ -37,6 +37,7 @@ export default class ThreeBase {
 
         this._isInterfere = false
         this._isShowDistanceRefrence = false
+        this._isShowLightBound = true
 
         this._projectors = []
 
@@ -379,6 +380,7 @@ export default class ThreeBase {
         this._camera.lookAt(0, 0, 0)
 
         this._controls.addEventListener('change', () => {
+
         })
     }
 
@@ -387,6 +389,25 @@ export default class ThreeBase {
         this._transformControl.size = 0.5
         this._transformControl.addEventListener('dragging-changed', event => {
             this._controls.enabled = !event.value
+
+            const projectorObject = this._transformControl.object
+            !projectorObject.historyPoints && (projectorObject.historyPoints = [])
+            // 相同就不記錄
+            if (projectorObject.historyPoints.length > 0) {
+                const lastPoint = projectorObject.historyPoints[projectorObject.historyPoints.length - 1]
+                if (lastPoint.x === projectorObject.position.x && lastPoint.y === projectorObject.position.y && lastPoint.z === projectorObject.position.z) {
+                    return
+                }
+            }
+            if (projectorObject.historyIndex && projectorObject.historyIndex !== projectorObject.historyPoints.length - 1) {
+                projectorObject.historyPoints.splice(projectorObject.historyIndex)
+            }
+            projectorObject.historyPoints.push({ x: projectorObject.position.x, y: projectorObject.position.y, z: projectorObject.position.z })
+            projectorObject.historyIndex = projectorObject.historyPoints.length - 1
+
+            if (projectorObject) {
+                this._analyzeUndoRedo(projectorObject)
+            }
         })
         let throttleCount = 0
         this._transformControl.addEventListener('change', event => {
@@ -959,14 +980,14 @@ export default class ThreeBase {
             // projectorObject.lightBoundC = this._createRayLine(projectorObject.position, directionCenter, isSelected)
             if (projectionDistance >= projector.minDistance && projectionDistance <= projector.maxDistance) {
                 // projectorObject.lightBoundC.object.material.color.g = 1
-                projectorObject.screenBoundL.object.material.color.g = 1
-                projectorObject.screenBoundR.object.material.color.g = 1
-                projectorObject.screenBoundT.object.material.color.g = 1
-                projectorObject.screenBoundB.object.material.color.g = 1
-                projectorObject.lightBoundLT.object.material.color.g = 1
-                projectorObject.lightBoundRT.object.material.color.g = 1
-                projectorObject.lightBoundLB.object.material.color.g = 1
-                projectorObject.lightBoundRB.object.material.color.g = 1
+                // projectorObject.screenBoundL.object.material.color.g = 1
+                // projectorObject.screenBoundR.object.material.color.g = 1
+                // projectorObject.screenBoundT.object.material.color.g = 1
+                // projectorObject.screenBoundB.object.material.color.g = 1
+                // projectorObject.lightBoundLT.object.material.color.g = 1
+                // projectorObject.lightBoundRT.object.material.color.g = 1
+                // projectorObject.lightBoundLB.object.material.color.g = 1
+                // projectorObject.lightBoundRB.object.material.color.g = 1
             } else {
                 // projectorObject.lightBoundC.object.material.color.r = 1
                 projectorObject.screenBoundL.object.material.color.r = 1
@@ -1190,9 +1211,9 @@ export default class ThreeBase {
         object3D.geometry.setPoints(points)
         const lightBoundMaterial = new MeshLineMaterial({
             color: 0x50504e,
-            lineWidth: isSelected ? 0.2 : 0,
-            transparent: !isSelected,
-            opacity: 0
+            lineWidth: this._isShowLightBound ? 0.2 : 0,
+            transparent: !isSelected || !this._isShowLightBound,
+            opacity: this._isShowLightBound ? 0.2 : 0
         })
         object3D.object = new Mesh(object3D.geometry, lightBoundMaterial)
 
@@ -1260,5 +1281,18 @@ export default class ThreeBase {
         this._currentHitPoint = hitPoint
         this._currentHitDirection = direction
         return hitPoint.distanceTo(originPoint)
+    }
+
+    _analyzeUndoRedo(projectorObject) {
+        if (projectorObject?.historyIndex > 0) {
+            store.commit('common/SET_SHOW_UNDO', true)
+        } else {
+            store.commit('common/SET_SHOW_UNDO', false)
+        }
+        if (projectorObject?.historyIndex < projectorObject?.historyPoints?.length - 1) {
+            store.commit('common/SET_SHOW_REDO', true)
+        } else {
+            store.commit('common/SET_SHOW_REDO', false)
+        }
     }
 }

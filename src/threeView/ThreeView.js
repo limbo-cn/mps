@@ -102,6 +102,10 @@ export default class ThreeView extends ThreeBase {
         projectorObject.rotation.y = Math.PI + projector.rotateY / 180 * Math.PI
         projectorObject.rotation.z = projector.rotateZ / 180 * Math.PI
 
+        if (this._isInterfere) {
+            this._analyzeInterfere()
+        }
+
         this._createAllBoundLine()
     }
 
@@ -196,6 +200,67 @@ export default class ThreeView extends ThreeBase {
         this._controls.target.copy(new Vector3(this._roomSize.widthDraw / 2, 0, this._roomSize.depthDraw / 2))
     }
 
+    undo() {
+        const projectorObject = this._transformControl.object
+        if (projectorObject.historyIndex > 0) {
+            const point = projectorObject.historyPoints[projectorObject.historyIndex - 1]
+
+            store.commit('projector/SET_SELECTED_PROJECTOR_X', point.x / this._roomSize.ratio)
+            store.commit('projector/SET_SELECTED_PROJECTOR_Y', point.y / this._roomSize.ratio)
+            store.commit('projector/SET_SELECTED_PROJECTOR_Z', point.z / this._roomSize.ratio)
+
+            projectorObject.position.x = point.x
+            projectorObject.position.y = point.y
+            projectorObject.position.z = point.z
+
+            if (this._isInterfere) {
+                this._analyzeInterfere()
+            }
+
+            this._createBoundLine(this._transformControl.object.name)
+
+            projectorObject.historyIndex--
+
+            if (projectorObject) {
+                this._analyzeUndoRedo(projectorObject)
+            }
+        }
+    }
+
+    redo() {
+        const projectorObject = this._transformControl.object
+        if (projectorObject.historyPoints?.length - 1 > projectorObject.historyIndex) {
+            const point = projectorObject.historyPoints[projectorObject.historyIndex + 1]
+
+            store.commit('projector/SET_SELECTED_PROJECTOR_X', point.x / this._roomSize.ratio)
+            store.commit('projector/SET_SELECTED_PROJECTOR_Y', point.y / this._roomSize.ratio)
+            store.commit('projector/SET_SELECTED_PROJECTOR_Z', point.z / this._roomSize.ratio)
+
+            projectorObject.position.x = point.x
+            projectorObject.position.y = point.y
+            projectorObject.position.z = point.z
+
+            if (this._isInterfere) {
+                this._analyzeInterfere()
+            }
+
+            this._createBoundLine(this._transformControl.object.name)
+
+            projectorObject.historyIndex++
+
+            this._analyzeUndoRedo(projectorObject)
+        }
+    }
+
+    changeSelectedProjector(val) {
+        const projectorObject = this._projectors.find(o => o.name === val)
+        if (projectorObject) {
+            this._analyzeUndoRedo(projectorObject)
+        } else {
+            this._analyzeUndoRedo({})
+        }
+    }
+
     updateShowRefrence(val) {
         if (val) {
             this._scene.add(this._axesX)
@@ -224,6 +289,11 @@ export default class ThreeView extends ThreeBase {
 
     updateShowProjectionDistanceRefrence(val) {
         this._isShowDistanceRefrence = val
+        this._createAllBoundLine()
+    }
+
+    updateShowLightBound(val) {
+        this._isShowLightBound = val
         this._createAllBoundLine()
     }
 

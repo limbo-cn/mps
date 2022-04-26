@@ -123,5 +123,9 @@ export default {
   theme: 'Theme',
   front: 'Front',
   back: 'Back',
-  none: 'None'
+  none: 'None',
+  contrastRatio: 'Contrast Ratio',
+  distance: 'Projection Distance',
+  offset: 'Projection Offset',
+  showProjectorLightBound: 'Show Projector Light Bound'
 }

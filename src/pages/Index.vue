@@ -1,41 +1,23 @@
 <template>
   <q-page class="flex flex-center" :style-fn="stylePage">
     <div class="fit" id="threeView">
-      <q-btn
-        push
-        dense
-        text-color="primary"
-        :color="$q.dark.isActive ? 'grey-8' : 'white'"
-        icon="crop_din"
-        class="q-ml-sm q-mt-sm absolute-top-left"
-        style="z-index:10"
-        @click="frontCamera"
-      >
+      <q-btn push dense text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'" icon="crop_din"
+        class="q-ml-sm q-mt-sm absolute-top-left" style="z-index:10" @click="frontCamera">
         <q-tooltip>{{ $t('frontView') }}</q-tooltip>
       </q-btn>
-      <q-btn
-        push
-        dense
-        text-color="primary"
-        :color="$q.dark.isActive ? 'grey-8' : 'white'"
-        icon="navigate_before"
-        style="z-index:10;top:40px;"
-        class="q-ml-sm q-mt-sm absolute-top-left"
-        @click="sideCamera"
-      >
+      <q-btn push dense text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'" icon="navigate_before"
+        style="z-index:10;top:40px;" class="q-ml-sm q-mt-sm absolute-top-left" @click="sideCamera">
         <q-tooltip>{{ $t('sideView') }}</q-tooltip>
       </q-btn>
-      <q-btn
-        push
-        dense
-        text-color="primary"
-        :color="$q.dark.isActive ? 'grey-8' : 'white'"
-        icon="expand_more"
-        style="z-index:10;top:80px;"
-        class="q-ml-sm q-mt-sm absolute-top-left"
-        @click="topCamera"
-      >
+      <q-btn push dense text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'" icon="expand_more"
+        style="z-index:10;top:80px;" class="q-ml-sm q-mt-sm absolute-top-left" @click="topCamera">
         <q-tooltip>{{ $t('topView') }}</q-tooltip>
+      </q-btn>
+      <q-btn push dense v-show="showUndo" text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'"
+        icon="undo" style="z-index:999;right:40px" class="q-mr-sm q-mb-sm absolute-bottom-right" @click="undo">
+      </q-btn>
+      <q-btn push dense v-show="showRedo" text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'"
+        icon="redo" style="z-index:999;" class="q-mr-sm q-mb-sm absolute-bottom-right" @click="redo">
       </q-btn>
       <ProjectorDetail />
       <q-resize-observer @resize="resizeCanvas" debounce="100" />
@@ -76,8 +58,10 @@ export default ({
     this.$bus.on('updateShowRefrence', this.updateShowRefrence)
     this.$bus.on('updateShowProjectorInterfere', this.updateShowProjectorInterfere)
     this.$bus.on('updateShowProjectionDistanceRefrence', this.updateShowProjectionDistanceRefrence)
+    this.$bus.on('updateShowLightBound', this.updateShowLightBound)
     this.$bus.on('updateRoomBrightness', this.updateRoomBrightness)
     this.$bus.on('setLight', this.setLight)
+    this.$bus.on('changeSelectedProjector', this.changeSelectedProjector)
   },
   beforeUnmount() {
     this.$bus.off('setScreen', this.setScreen)
@@ -98,8 +82,10 @@ export default ({
     this.$bus.off('updateShowRefrence', this.updateShowRefrence)
     this.$bus.off('updateShowProjectorInterfere', this.updateShowProjectorInterfere)
     this.$bus.off('updateShowProjectionDistanceRefrence', this.updateShowProjectionDistanceRefrence)
+    this.$bus.off('updateShowLightBound', this.updateShowLightBound)
     this.$bus.off('updateRoomBrightness', this.updateRoomBrightness)
     this.$bus.off('setLight', this.setLight)
+    this.$bus.off('changeSelectedProjector', this.changeSelectedProjector)
   },
   mounted() {
     view = new ThreeView('#threeView')
@@ -108,6 +94,14 @@ export default ({
   data() {
     return {
       view: null
+    }
+  },
+  computed: {
+    showUndo() {
+      return this.$store.state.common.showUndo
+    },
+    showRedo() {
+      return this.$store.state.common.showRedo
     }
   },
   methods: {
@@ -170,6 +164,12 @@ export default ({
     topCamera() {
       view.topCamera()
     },
+    undo() {
+      view.undo()
+    },
+    redo() {
+      view.redo()
+    },
     setTheme() {
       view.setTheme()
     },
@@ -182,11 +182,17 @@ export default ({
     updateShowProjectionDistanceRefrence(val) {
       view.updateShowProjectionDistanceRefrence(val)
     },
+    updateShowLightBound(val) {
+      view.updateShowLightBound(val)
+    },
     setLight(val) {
       view.setLight(val)
     },
     updateRoomBrightness(val) {
       view.updateRoomBrightness(val)
+    },
+    changeSelectedProjector(val) {
+      view.changeSelectedProjector(val)
     }
   }
 })

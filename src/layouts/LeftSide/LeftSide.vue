@@ -39,14 +39,14 @@
             >
               <RoomSettings />
             </q-expansion-item>
-            <q-expansion-item
+            <!-- <q-expansion-item
               dense
               :header-class="$q.dark.isActive ? 'left-header-dark' : 'left-header-light'"
               default-opened
               :label="$t('light')"
             >
               <Light />
-            </q-expansion-item>
+            </q-expansion-item> -->
           </q-list>
         </q-tab-panel>
 
@@ -171,7 +171,7 @@
 import Projector from './Projector/Projector'
 import RoomSettings from './Space/RoomSettings'
 import BasicSettings from './Space/BasicSettings'
-import Light from './Space/Light'
+// import Light from './Space/Light'
 import ScreenBasicSettings from './Screen/BasicSettings'
 import ScreenSettings from './Screen/ScreenSettings/ScreenSettings'
 import ScreenPosition from './Screen/ScreenPosition'
@@ -186,7 +186,7 @@ export default {
     Projector,
     RoomSettings,
     BasicSettings,
-    Light,
+    // Light,
     ScreenBasicSettings,
     ScreenSettings,
     ScreenPosition,

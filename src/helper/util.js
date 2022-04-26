@@ -111,6 +111,10 @@ export const filterThrowDistance = (o, input) => {
     return o.Distance.min <= throwDistance && o.Distance.max >= throwDistance
 }
 
+export const filterModelName = (o, input) => {
+    return o.ModelName.toLowerCase().includes(input.toLowerCase())
+}
+
 export const filterBrightness = (o, input) => {
     const [min, max] = input.split('-')
     return o.Brightness.value >= +min && o.Brightness.value <= +max

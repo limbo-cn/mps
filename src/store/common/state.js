@@ -4,6 +4,8 @@ export default function () {
     unitLabel: 'm',
     showProjectorDetail: false,
     threeViewImage: '',
-    isLoadingModel: false
+    isLoadingModel: false,
+    showUndo: false,
+    showRedo: false
   }
 }
