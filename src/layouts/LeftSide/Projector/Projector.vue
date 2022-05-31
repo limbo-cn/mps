@@ -16,7 +16,7 @@
         </q-btn>
       </div>
       <div class="col-4">
-        <q-btn outline color="primary" @click="editProjector" icon="loop" style="width: 90%">
+        <q-btn outline color="primary" @click="editProjector" icon="edit" style="width: 90%">
           <q-tooltip>{{ $t('edit') }}</q-tooltip>
         </q-btn>
       </div>
@@ -83,6 +83,30 @@
               }}</span><br />
               <span v-if="selectedProjectorLens.Offset !== null">{{
                 `${$t('offset')}: ${selectedProjectorLens.Offset} %`
+              }}<br /></span>
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </div>
+    </template>
+    <template v-if="!selectedProjectorOptionalLenss && selectedProjector">
+      <div class="col-12">
+        <q-card-section horizontal>
+          <q-card-section class="col-5 flex flex-center" style="padding:5px">
+            <q-img :src="svgSrc" :img-style="{ 'background-size': 'contain' }" style="height:100px;width:100px"
+              :style="{ background: $q.dark.isActive ? '' : 'black' }" />
+          </q-card-section>
+          <q-card-section class="q-pt-xs" style="padding:5px 0px 5px 10px;width:100%">
+            <div class="text-h5 q-mt-sm q-mb-xs text-weight-bolder">{{ $t('fixed') }}</div>
+            <div class="text-caption" :class="{ 'text-grey-4': $q.dark.isActive, 'text-grey-8': !$q.dark.isActive }">
+              <span v-if="selectedProjectorModel['Throw Ratio']">{{
+                  `${$t('throwRatio')}: ${selectedProjectorModel['Throw Ratio'].min}-${selectedProjectorModel['Throw Ratio'].max}` }}<br /></span>
+              <span v-if="selectedProjectorModel.Distance">{{
+                `${$t('distance')}:
+                          ${selectedProjectorModel.Distance.min}-${selectedProjectorModel.Distance.max} m`
+              }}<br /></span>
+              <span v-if="selectedProjectorModel.Offset">{{
+                `${$t('offset')}: ${selectedProjectorModel.Offset} %`
               }}<br /></span>
             </div>
           </q-card-section>
@@ -244,8 +268,19 @@ export default {
     Blending,
     Layout
   },
+  created() {
+    this.$bus.on('clickDeleteProjector', this.deleteProjector)
+    this.$bus.on('clickCopyProjector', () => { this.showDlgCopyProjector = true })
+    this.$bus.on('clickEditProjector', this.editProjector)
+  },
+  beforeUnmount() {
+    this.$bus.off('clickDeleteProjector', this.deleteProjector)
+    this.$bus.off('clickCopyProjector', () => { this.showDlgCopyProjector = true })
+    this.$bus.off('clickEditProjector', this.editProjector)
+  },
   data() {
     return {
+      svgSrc: require('../../../assets/Lens/Lens shutter.svg'),
       lensShiftOnly: false,
       optionalLensOnly: false,
       throwDistance: '',

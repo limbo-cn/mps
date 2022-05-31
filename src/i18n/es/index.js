@@ -127,5 +127,10 @@ export default {
   contrastRatio: 'Contrast Ratio',
   distance: 'Projection Distance',
   offset: 'Projection Offset',
-  showProjectorLightBound: 'Show Projector Light Bound'
+  showProjectorLightBound: 'Show Projector Light Bound',
+  fixed: 'Fixed',
+  feet: 'Feet',
+  showGrid: 'Show Grid Reference',
+  gridSize: 'Grid Reference Size',
+  showDistanceHelper: 'Show Distance Helper(Choose Projecor First)'
 }

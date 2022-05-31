@@ -1,6 +1,7 @@
 import store from '../store'
 import ThreeBase from './ThreeBase.js'
-import { DoubleSide, MeshBasicMaterial, Vector3 } from 'three'
+import { DoubleSide, MeshBasicMaterial, Quaternion, Vector3 } from 'three'
+import { screenType } from 'src/helper/enum'
 
 export default class ThreeView extends ThreeBase {
     constructor(domSelector) {
@@ -33,8 +34,24 @@ export default class ThreeView extends ThreeBase {
     setScreens(screens) {
         screens.forEach((screen, index) => {
             this._screens[index].screenType = screen.screenType
+
+            this._screens[index].screenObject.geometry && this._screens[index].screenObject.geometry.dispose()
+            this._screens[index].screenObject.object && this._scene.remove(this._screens[index].screenObject.object)
+
+            this._screens[index].screenType === screenType.plane && this._createPlaneScreen(this._screens[index])
+            this._screens[index].screenType === screenType.curved && this._createCurveScreen(this._screens[index])
+            this._screens[index].screenType === screenType.sphere && this._createSphereScreen(this._screens[index])
+            this._screens[index].screenType === screenType.custom && this._createCustomScreen(this._screens[index])
+
+            if (this._screens[index].screenObject.object) {
+                this._screens[index].screenObject.object.position.x = screen.x * this._roomSize.ratio
+                this._screens[index].screenObject.object.position.y = screen.y * this._roomSize.ratio
+                this._screens[index].screenObject.object.position.z = screen.z * this._roomSize.ratio
+                this._screens[index].screenObject.object.rotation.x = screen.rotateX / 180 * Math.PI
+                this._screens[index].screenObject.object.rotation.y = screen.rotateY / 180 * Math.PI
+                this._screens[index].screenObject.object.rotation.z = screen.rotateZ / 180 * Math.PI
+            }
         })
-        this._initScreen()
 
         this._createAllBoundLine()
     }
@@ -76,10 +93,15 @@ export default class ThreeView extends ThreeBase {
         for (const projector of projectors) {
             await this._addProjector(projector.uId).then(projectorObj => {
                 this._projectors.push(projectorObj)
-                store.commit('projector/SET_SELECTED_PROJECTOR_UID', projector.uId)
-                this.setProjector(projector)
+
+                this.applayProjectorPosition(projectorObj, projector)
+
+                this.applayProjectorRotation(projectorObj, projector)
             })
         }
+
+        store.commit('projector/SET_SELECTED_PROJECTOR_UID', projectors[projectors.length - 1].uId)
+
         this._createAllBoundLine()
     }
 
@@ -95,12 +117,10 @@ export default class ThreeView extends ThreeBase {
         this._setTransformControl(projector.uId)
 
         const projectorObject = this._projectors.find(o => o.name === projector.uId)
-        projectorObject.position.x = projector.x * this._roomSize.ratio
-        projectorObject.position.y = projector.y * this._roomSize.ratio
-        projectorObject.position.z = projector.z * this._roomSize.ratio
-        projectorObject.rotation.x = projector.rotateX / 180 * Math.PI
-        projectorObject.rotation.y = Math.PI + projector.rotateY / 180 * Math.PI
-        projectorObject.rotation.z = projector.rotateZ / 180 * Math.PI
+
+        this.applayProjectorPosition(projectorObject, projector)
+
+        this.applayProjectorRotation(projectorObject, projector)
 
         if (this._isInterfere) {
             this._analyzeInterfere()
@@ -112,15 +132,49 @@ export default class ThreeView extends ThreeBase {
     setProjectors(projectors) {
         projectors.forEach(projector => {
             const projectorObject = this._projectors.find(o => o.name === projector.uId)
-            projectorObject.position.x = projector.x * this._roomSize.ratio
-            projectorObject.position.y = projector.y * this._roomSize.ratio
-            projectorObject.position.z = projector.z * this._roomSize.ratio
-            projectorObject.rotation.x = projector.rotateX / 180 * Math.PI
-            projectorObject.rotation.y = Math.PI + projector.rotateY / 180 * Math.PI
-            projectorObject.rotation.z = projector.rotateZ / 180 * Math.PI
+
+            this.applayProjectorPosition(projectorObject, projector)
+
+            this.applayProjectorRotation(projectorObject, projector)
         })
 
         this._createAllBoundLine()
+    }
+
+    applayProjectorPosition(projectorObject, projectorState) {
+        projectorObject.position.x = projectorState.x * this._roomSize.ratio
+        projectorObject.position.y = projectorState.y * this._roomSize.ratio
+        projectorObject.position.z = projectorState.z * this._roomSize.ratio
+    }
+
+    applayProjectorRotation(projectorObject, projectorState) {
+        projectorObject.rotation.x = 0
+        projectorObject.rotation.y = 0
+        projectorObject.rotation.z = 0
+
+        // projectorObject.rotateX(-projectorState.rotateX / 180 * Math.PI)
+
+        // projectorObject.rotateY(Math.PI + projectorState.rotateY / 180 * Math.PI)
+
+        // projectorObject.rotateZ(-projectorState.rotateZ / 180 * Math.PI)
+        if (projectorObject.directionCenter && projectorState.rotateZ !== 0) {
+            const quaternions = new Quaternion()
+            quaternions.setFromUnitVectors(new Vector3(0, 0, 1), projectorObject.directionCenter.normalize())
+
+            projectorObject.setRotationFromQuaternion(quaternions)
+        } else {
+            const axisX = new Vector3(1, 0, 0)
+            const axisY = new Vector3(0, 1, 0)
+            const axisZ = new Vector3(0, 0, 1)
+
+            axisX.applyAxisAngle(axisY, Math.PI + projectorState.rotateY / 180 * Math.PI)
+
+            axisZ.applyAxisAngle(axisY, Math.PI + projectorState.rotateY / 180 * Math.PI)
+
+            projectorObject.rotateOnAxis(axisX, projectorState.rotateX / 180 * Math.PI)
+            projectorObject.rotateOnAxis(axisY, Math.PI + projectorState.rotateY / 180 * Math.PI)
+            projectorObject.rotateOnAxis(axisZ, projectorState.rotateZ / 180 * Math.PI)
+        }
     }
 
     deleteProjector(uId) {
@@ -132,6 +186,9 @@ export default class ThreeView extends ThreeBase {
         }
 
         this._disposeBoundLine(uId)
+        this._disposeDistanceHelperObject(projectorObject)
+        this._disposeDistanceHelperLabel(projectorObject)
+        this._disposeProjectionSizeLabel(projectorObject)
 
         document.getElementById(uId).remove()
 
@@ -295,6 +352,21 @@ export default class ThreeView extends ThreeBase {
     updateShowLightBound(val) {
         this._isShowLightBound = val
         this._createAllBoundLine()
+    }
+
+    updateShowDistanceHelper(val) {
+        if (val !== undefined) {
+            this._isShowDistanceHelper = val
+        }
+        this._createAllBoundLine()
+    }
+
+    updateShowGrid(val) {
+        if (val) {
+            this._scene.add(this._gridHelper)
+        } else {
+            this._scene.remove(this._gridHelper)
+        }
     }
 
     updateRoomBrightness(val) {

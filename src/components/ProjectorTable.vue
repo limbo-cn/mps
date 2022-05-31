@@ -1,11 +1,14 @@
 <template>
   <div class="absolute absolute-bottom-left detail-wrapper" v-show="showProjectorDetail" style="z-index:10">
     <q-card class="fit">
-      <q-table @row-click="clickRow" v-model:selected="selectedRows" :rows="projectors" :columns="columns" row-key="uId" :class="$q.dark.isActive?`my-sticky-header-table-dark`:`my-sticky-header-table`" selection="multiple" :pagination="{rowsPerPage :100}" hide-bottom dense flat bordered square>
+      <q-table @row-click="clickRow" v-model:selected="selectedRows" :rows="projectors" :columns="columns" row-key="uId"
+        :class="$q.dark.isActive ? `my-sticky-header-table-dark` : `my-sticky-header-table`" selection="multiple"
+        :pagination="{ rowsPerPage: 100 }" hide-bottom dense flat bordered square>
         <template v-slot:body-cell="props">
-          <q-td :props="props" :class="props.row.uId === selectedProjector?.uId?$q.dark.isActive?'bg-grey-8':'bg-grey-4':''">
-            <span v-if="props.row.uId === selectedProjector?.uId" class="text-primary">{{props.value}}</span>
-            <span v-else>{{props.value}}</span>
+          <q-td :props="props"
+            :class="props.row.uId === selectedProjector?.uId ? $q.dark.isActive ? 'bg-grey-8' : 'bg-grey-4' : ''">
+            <span v-if="props.row.uId === selectedProjector?.uId" class="text-primary">{{ props.value }}</span>
+            <span v-else>{{ props.value }}</span>
           </q-td>
         </template>
       </q-table>
@@ -65,6 +68,11 @@ export default ({
       return this.$store.getters['projector/selectedProjector']
     }
   },
+  watch: {
+    selectedRows() {
+      this.$bus.emit('updateShowDistanceHelper')
+    }
+  },
   methods: {
     ...mapMutations('projector', ['SET_SELECTED_PROJECTOR_UID', 'ADD_PROJECTOR', 'SET_SELECTED_PROJECTORS']),
     copyProjector() {
@@ -87,17 +95,17 @@ export default ({
 })
 </script>
 <style lang="scss" scoped>
-.detail-wrapper{
-    width: 100%;
-    height: 200px;
-    opacity: 0.8;
+.detail-wrapper {
+  width: 100%;
+  height: 200px;
+  opacity: 0.8;
 }
 </style>
 <style lang="scss" scoped>
-.list-wrapper{
-    width: 100%;
-    height: 200px;
-    opacity: 0.8;
+.list-wrapper {
+  width: 100%;
+  height: 200px;
+  opacity: 0.8;
 }
 </style>
 <style lang="sass">

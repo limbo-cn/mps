@@ -19,6 +19,29 @@
       <q-btn push dense v-show="showRedo" text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'"
         icon="redo" style="z-index:999;" class="q-mr-sm q-mb-sm absolute-bottom-right" @click="redo">
       </q-btn>
+      <q-list v-show="isShowContextmenu" class="absolute" @contextmenu.prevent=""
+        :style="{ background: $q.dark.isActive ? '#121212' : '#ffffff', left: contextmenuLeft, top: contextmenuTop }"
+        style="max-width: 350px ;z-index:10;" bordered>
+        <q-item clickable v-ripple @mousedown="clickDeleteProjector">
+          <q-item-section>{{ $t('delete') }}</q-item-section>
+          <q-item-section avatar>
+            <q-icon name="delete_outline" color="primary" />
+          </q-item-section>
+        </q-item>
+        <q-item clickable v-ripple @mousedown="clickCopyProjector">
+          <q-item-section>{{ $t('copy') }}</q-item-section>
+          <q-item-section avatar>
+            <q-icon name="file_copy" color="primary" />
+          </q-item-section>
+        </q-item>
+
+        <q-item clickable v-ripple @mousedown="clickEditProjector">
+          <q-item-section>{{ $t('edit') }}</q-item-section>
+          <q-item-section avatar>
+            <q-icon name="edit" color="primary" />
+          </q-item-section>
+        </q-item>
+      </q-list>
       <ProjectorDetail />
       <q-resize-observer @resize="resizeCanvas" debounce="100" />
     </div>
@@ -26,6 +49,7 @@
 </template>
 
 <script>
+import { MOUSE } from 'three'
 import { mapMutations } from 'vuex'
 
 import ProjectorDetail from '../components/ProjectorTable'
@@ -59,6 +83,8 @@ export default ({
     this.$bus.on('updateShowProjectorInterfere', this.updateShowProjectorInterfere)
     this.$bus.on('updateShowProjectionDistanceRefrence', this.updateShowProjectionDistanceRefrence)
     this.$bus.on('updateShowLightBound', this.updateShowLightBound)
+    this.$bus.on('updateShowDistanceHelper', this.updateShowDistanceHelper)
+    this.$bus.on('updateShowGrid', this.updateShowGrid)
     this.$bus.on('updateRoomBrightness', this.updateRoomBrightness)
     this.$bus.on('setLight', this.setLight)
     this.$bus.on('changeSelectedProjector', this.changeSelectedProjector)
@@ -83,6 +109,8 @@ export default ({
     this.$bus.off('updateShowProjectorInterfere', this.updateShowProjectorInterfere)
     this.$bus.off('updateShowProjectionDistanceRefrence', this.updateShowProjectionDistanceRefrence)
     this.$bus.off('updateShowLightBound', this.updateShowLightBound)
+    this.$bus.off('updateShowDistanceHelper', this.updateShowDistanceHelper)
+    this.$bus.off('updateShowGrid', this.updateShowGrid)
     this.$bus.off('updateRoomBrightness', this.updateRoomBrightness)
     this.$bus.off('setLight', this.setLight)
     this.$bus.off('changeSelectedProjector', this.changeSelectedProjector)
@@ -90,10 +118,25 @@ export default ({
   mounted() {
     view = new ThreeView('#threeView')
     view.animate()
+
+    document.getElementById('threeView').addEventListener('mousedown', e => {
+      if (e.button === MOUSE.RIGHT) {
+        if (this.$store.state.common.isToShowContextmenu) {
+          this.contextmenuLeft = `${e.offsetX}px`
+          this.contextmenuTop = `${e.offsetY}px`
+          this.isShowContextmenu = true
+        }
+      } if (e.button === MOUSE.LEFT && this.isShowContextmenu) {
+        this.isShowContextmenu = false
+      }
+    })
   },
   data() {
     return {
-      view: null
+      view: null,
+      isShowContextmenu: false,
+      contextmenuLeft: '0px',
+      contextmenuTop: '0px'
     }
   },
   computed: {
@@ -185,6 +228,12 @@ export default ({
     updateShowLightBound(val) {
       view.updateShowLightBound(val)
     },
+    updateShowGrid(val) {
+      view.updateShowGrid(val)
+    },
+    updateShowDistanceHelper(val) {
+      view.updateShowDistanceHelper(val)
+    },
     setLight(val) {
       view.setLight(val)
     },
@@ -193,6 +242,18 @@ export default ({
     },
     changeSelectedProjector(val) {
       view.changeSelectedProjector(val)
+    },
+    clickDeleteProjector() {
+      this.$bus.emit('clickDeleteProjector')
+      this.isShowContextmenu = false
+    },
+    clickCopyProjector() {
+      this.$bus.emit('clickCopyProjector')
+      this.isShowContextmenu = false
+    },
+    clickEditProjector() {
+      this.$bus.emit('clickEditProjector')
+      this.isShowContextmenu = false
     }
   }
 })

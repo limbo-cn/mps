@@ -9,12 +9,12 @@ import {
     FrontSide, PlaneGeometry, Mesh, SphereGeometry, CylinderGeometry,
     Color, TextureLoader, MeshLambertMaterial, MeshBasicMaterial,
     Vector2, Raycaster, Vector3, BufferGeometry, BufferAttribute,
-    VideoTexture, Cache, ArrowHelper, NormalBlending
+    VideoTexture, Cache, ArrowHelper, NormalBlending, GridHelper
 } from 'three'
 import { MeshLine, MeshLineMaterial } from 'meshline'
-import { Dark } from 'quasar'
+import { Dark, extend } from 'quasar'
 import { ScreenPosition, screenType, unitRatio } from 'src/helper/enum'
-import { CalcAmbientContrast, CalcBrightnessOnScreenNit } from 'src/helper/util'
+import { CalcAmbientContrast, CalcBrightnessOnScreenNit, randomColor } from 'src/helper/util'
 
 export default class ThreeBase {
     constructor() {
@@ -24,6 +24,8 @@ export default class ThreeBase {
         this._camera = null
         this._scene = null
         this._light = null
+
+        this._gridHelper = null
 
         this._axesX = null
         this._axesY = null
@@ -38,6 +40,7 @@ export default class ThreeBase {
         this._isInterfere = false
         this._isShowDistanceRefrence = false
         this._isShowLightBound = true
+        this._isShowDistanceHelper = false
 
         this._projectors = []
 
@@ -304,6 +307,11 @@ export default class ThreeBase {
     _initScene() {
         this._scene = new Scene()
 
+        const size = 500
+        const divisions = 50
+
+        this._gridHelper = new GridHelper(size, divisions)
+
         this._initRoomSize()
         this._initAxes()
         this._initLight()
@@ -329,14 +337,6 @@ export default class ThreeBase {
         this._scene.add(this._axesX)
         this._scene.add(this._axesY)
         this._scene.add(this._axesZ)
-
-        // const labelDivOrigin = document.createElement('div')
-        // labelDivOrigin.className = 'mps-three-label axex-refer'
-        // labelDivOrigin.textContent = '(0,0,0)'
-        // labelDivOrigin.style = 'background-color:transparent;color:#aaa;font-weight:bold'
-        // const labelOrigin = new CSS2DObject(labelDivOrigin)
-        // labelOrigin.position.set(0, -3, 0)
-        // this._scene.add(labelOrigin)
 
         const labelDivX = document.createElement('div')
         labelDivX.className = 'mps-three-label axex-refer'
@@ -453,6 +453,11 @@ export default class ThreeBase {
                 })
             }
         })
+        if (this._hotProjectorUid && !store.state.common.isToShowContextmenu) {
+            store.commit('common/SET_IS_TO_SHOW_CONTEXTMENU', true)
+        } else if (!this._hotProjectorUid && store.state.common.isToShowContextmenu) {
+            store.commit('common/SET_IS_TO_SHOW_CONTEXTMENU', false)
+        }
 
         this._renderer.render(this._scene, this._camera)
         this._labelRenderer.render(this._scene, this._camera)
@@ -889,8 +894,6 @@ export default class ThreeBase {
         projectorObject.lightBoundLB?.object && this._scene.remove(projectorObject.lightBoundLB?.object)
         projectorObject.lightBoundRB?.geometry && projectorObject.lightBoundRB?.geometry.dispose()
         projectorObject.lightBoundRB?.object && this._scene.remove(projectorObject.lightBoundRB?.object)
-        projectorObject.lightBoundC?.geometry && projectorObject.lightBoundC?.geometry.dispose()
-        projectorObject.lightBoundC?.object && this._scene.remove(projectorObject.lightBoundC?.object)
 
         projectorObject.screenBoundL?.geometry && projectorObject.screenBoundL?.geometry.dispose()
         projectorObject.screenBoundL?.object && this._scene.remove(projectorObject.screenBoundL?.object)
@@ -943,22 +946,22 @@ export default class ThreeBase {
         const directionLT = new Vector3()
         directionLT.set(Math.tan(fixedAngleLeft * Math.PI / 180), Math.tan(fixedAngleTop * Math.PI / 180), 1)
         const directionOriginLT = directionLT.clone()
-        this._applayDirectionRotation(directionLT, projectorObject)
+        this._applayDirectionRotation(directionLT, projector)
         const directionRT = new Vector3()
         directionRT.set(-Math.tan(fixedAngleRight * Math.PI / 180), Math.tan(fixedAngleTop * Math.PI / 180), 1)
         const directionOriginRT = directionRT.clone()
-        this._applayDirectionRotation(directionRT, projectorObject)
+        this._applayDirectionRotation(directionRT, projector)
         const directionLB = new Vector3()
         directionLB.set(Math.tan(fixedAngleLeft * Math.PI / 180), -Math.tan(fixedAngleBottom * Math.PI / 180), 1)
         const directionOriginLB = directionLB.clone()
-        this._applayDirectionRotation(directionLB, projectorObject)
+        this._applayDirectionRotation(directionLB, projector)
         const directionRB = new Vector3()
         directionRB.set(-Math.tan(fixedAngleRight * Math.PI / 180), -Math.tan(fixedAngleBottom * Math.PI / 180), 1)
         const directionOriginRB = directionRB.clone()
-        this._applayDirectionRotation(directionRB, projectorObject)
+        this._applayDirectionRotation(directionRB, projector)
         const directionCenter = new Vector3()
         directionCenter.set(Math.tan(fixedAngleCenterH * Math.PI / 180), Math.tan(fixedAngleCenterV * Math.PI / 180), 1)
-        this._applayDirectionRotation(directionCenter, projectorObject)
+        this._applayDirectionRotation(directionCenter, projector)
 
         projectorObject.lightBoundLT = this._createRayLine(projectorObject.position, directionLT, isSelected)
         projectorObject.lightBoundRT = this._createRayLine(projectorObject.position, directionRT, isSelected)
@@ -967,19 +970,19 @@ export default class ThreeBase {
 
         const projectionDistance = this._calcHitDistance(projectorObject.position, directionCenter) / this._roomSize.ratio
         store.commit('projector/SET_SELECTED_PROJECTOR_PROJECTION_DISTANCE', projectionDistance)
+        projectorObject.directionCenter = directionCenter
+        projectorObject.projectionDistance = projectionDistance
 
         store.commit('projector/SET_SELECTED_PROJECTOR_AMBITENT_CONTRAST', CalcAmbientContrast(uId))
         store.commit('projector/SET_SELECTED_PROJECTOR_BRIGHTNESS_NIT', CalcBrightnessOnScreenNit(uId))
 
-        projectorObject.screenBoundL = this._createScreenBoundLine(projectorObject.position, directionOriginLT, directionOriginLB, 'y', projectorObject, isSelected)
-        projectorObject.screenBoundR = this._createScreenBoundLine(projectorObject.position, directionOriginRT, directionOriginRB, 'y', projectorObject, isSelected)
-        projectorObject.screenBoundT = this._createScreenBoundLine(projectorObject.position, directionOriginLT, directionOriginRT, 'x', projectorObject, isSelected)
-        projectorObject.screenBoundB = this._createScreenBoundLine(projectorObject.position, directionOriginLB, directionOriginRB, 'x', projectorObject, isSelected)
+        projectorObject.screenBoundL = this._createScreenBoundLine(projectorObject.position, directionOriginLT, directionOriginLB, 'y', projector, isSelected)
+        projectorObject.screenBoundR = this._createScreenBoundLine(projectorObject.position, directionOriginRT, directionOriginRB, 'y', projector, isSelected)
+        projectorObject.screenBoundT = this._createScreenBoundLine(projectorObject.position, directionOriginLT, directionOriginRT, 'x', projector, isSelected)
+        projectorObject.screenBoundB = this._createScreenBoundLine(projectorObject.position, directionOriginLB, directionOriginRB, 'x', projector, isSelected)
 
         if (this._isShowDistanceRefrence) {
-            // projectorObject.lightBoundC = this._createRayLine(projectorObject.position, directionCenter, isSelected)
             if (projectionDistance >= projector.minDistance && projectionDistance <= projector.maxDistance) {
-                // projectorObject.lightBoundC.object.material.color.g = 1
                 // projectorObject.screenBoundL.object.material.color.g = 1
                 // projectorObject.screenBoundR.object.material.color.g = 1
                 // projectorObject.screenBoundT.object.material.color.g = 1
@@ -989,7 +992,6 @@ export default class ThreeBase {
                 // projectorObject.lightBoundLB.object.material.color.g = 1
                 // projectorObject.lightBoundRB.object.material.color.g = 1
             } else {
-                // projectorObject.lightBoundC.object.material.color.r = 1
                 projectorObject.screenBoundL.object.material.color.r = 1
                 projectorObject.screenBoundR.object.material.color.r = 1
                 projectorObject.screenBoundT.object.material.color.r = 1
@@ -1019,13 +1021,18 @@ export default class ThreeBase {
             blendingDirectionOriginLB.y -= deltaB
             blendingDirectionOriginRB.x -= deltaR
             blendingDirectionOriginRB.y -= deltaB
-            projectorObject.blendingGuideLineL = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginLT, blendingDirectionOriginLB, 'y', projectorObject, isSelected)
-            projectorObject.blendingGuideLineR = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginRT, blendingDirectionOriginRB, 'y', projectorObject, isSelected)
-            projectorObject.blendingGuideLineT = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginLT, blendingDirectionOriginRT, 'x', projectorObject, isSelected)
-            projectorObject.blendingGuideLineB = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginLB, blendingDirectionOriginRB, 'x', projectorObject, isSelected)
+            projectorObject.blendingGuideLineL = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginLT, blendingDirectionOriginLB, 'y', projector, isSelected)
+            projectorObject.blendingGuideLineR = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginRT, blendingDirectionOriginRB, 'y', projector, isSelected)
+            projectorObject.blendingGuideLineT = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginLT, blendingDirectionOriginRT, 'x', projector, isSelected)
+            projectorObject.blendingGuideLineB = this._createBlendingGuideLine(projectorObject.position, blendingDirectionOriginLB, blendingDirectionOriginRB, 'x', projector, isSelected)
         }
 
-        projectorObject.screenPlane = this._createScreenPlane(projectorObject.position, directionOriginLT, directionOriginLB, directionOriginRB, projectorObject, projector, isSelected)
+        projectorObject.screenPlane = this._createScreenPlane(projectorObject.position, directionOriginLT, directionOriginLB, directionOriginRB, projector, isSelected)
+
+        // Distance Helper
+        this._createDistanceHelper(projectorObject, projector)
+        // Projection Size
+        this._createProjectionSize(projectorObject, projector, directionCenter)
     }
 
     _analyzeInterfere() {
@@ -1046,18 +1053,18 @@ export default class ThreeBase {
         })
     }
 
-    _applayDirectionRotation(direction, projectorObject) {
+    _applayDirectionRotation(direction, projectorState) {
         const axisX = new Vector3(1, 0, 0)
         const axisY = new Vector3(0, 1, 0)
         const axisZ = new Vector3(0, 0, 1)
 
-        direction.applyAxisAngle(axisX, projectorObject.rotation.x)
-        direction.applyAxisAngle(axisY, projectorObject.rotation.y)
-        direction.applyAxisAngle(axisZ, projectorObject.rotation.z)
+        direction.applyAxisAngle(axisX, projectorState.rotateX / 180 * Math.PI)
+        direction.applyAxisAngle(axisY, Math.PI + projectorState.rotateY / 180 * Math.PI)
+        direction.applyAxisAngle(axisZ, projectorState.rotateZ / 180 * Math.PI)
     }
 
-    _createScreenBoundLine(originPoint, directionFrom, directionTo, axis, projectorObject, isSelected) {
-        const hitPoints = this._calcDivideCutPoints(originPoint, directionFrom, directionTo, axis, projectorObject)
+    _createScreenBoundLine(originPoint, directionFrom, directionTo, axis, projectorState, isSelected) {
+        const hitPoints = this._calcDivideCutPoints(originPoint, directionFrom, directionTo, axis, projectorState)
 
         const object3D = { geometry: null, object: null }
         object3D.geometry = new MeshLine()
@@ -1075,8 +1082,8 @@ export default class ThreeBase {
         return object3D
     }
 
-    _createBlendingGuideLine(originPoint, directionFrom, directionTo, axis, projectorObject, isSelected) {
-        const hitPoints = this._calcDivideCutPoints(originPoint, directionFrom, directionTo, axis, projectorObject)
+    _createBlendingGuideLine(originPoint, directionFrom, directionTo, axis, projectorState, isSelected) {
+        const hitPoints = this._calcDivideCutPoints(originPoint, directionFrom, directionTo, axis, projectorState)
 
         const object3D = { geometry: null, object: null }
         object3D.geometry = new MeshLine()
@@ -1094,7 +1101,7 @@ export default class ThreeBase {
         return object3D
     }
 
-    _createScreenPlane(originPoint, directionOriginLT, directionOriginLB, directionOriginRB, projectorObject, projectorState, isSelected) {
+    _createScreenPlane(originPoint, directionOriginLT, directionOriginLB, directionOriginRB, projectorState, isSelected) {
         if (projectorState.imageAspectRatio > projectorState.aspectRatio) {
             const delta = (projectorState.imageAspectRatio - projectorState.aspectRatio) / projectorState.imageAspectRatio * (directionOriginLT.y - directionOriginLB.y)
             directionOriginLT.y -= delta / 2
@@ -1115,7 +1122,7 @@ export default class ThreeBase {
             directionL.y += offset * i
             const directionR = directionOriginRB.clone()
             directionR.y += offset * i
-            hitPoints[i] = this._calcDivideCutPoints(originPoint, directionL, directionR, 'x', projectorObject)
+            hitPoints[i] = this._calcDivideCutPoints(originPoint, directionL, directionR, 'x', projectorState)
         }
 
         for (let i = 0; i < hitPoints.length; i++) {
@@ -1181,7 +1188,174 @@ export default class ThreeBase {
         return object3D
     }
 
-    _calcDivideCutPoints(originPoint, directionFrom, directionTo, axis, projectorObject) {
+    _createDistanceHelper(projectorObject, projectorState) {
+        this._disposeDistanceHelperObject(projectorObject)
+        const isProjectorSelected = store.state.projector.selectedProjectors.findIndex(o => o.uId === projectorObject.name) >= 0
+
+        if (!this._isShowDistanceHelper || !isProjectorSelected) {
+            this._disposeDistanceHelperLabel(projectorObject)
+        } else {
+            const dirXLeft = new Vector3(-1, 0, 0)
+            const dirXRight = new Vector3(1, 0, 0)
+            const dirYTop = new Vector3(0, 1, 0)
+            const dirYBottom = new Vector3(0, -1, 0)
+            const dirZFront = new Vector3(0, 0, 1)
+            const dirZBack = new Vector3(0, 0, -1)
+
+            !projectorObject.distanceHelperColor && (projectorObject.distanceHelperColor = randomColor())
+
+            const positionX = extend(true, {}, projectorObject.position)
+            positionX.x /= 2
+            projectorObject.distanceHelperXLeft = new ArrowHelper(dirXLeft, positionX, projectorObject.position.x / 2, projectorObject.distanceHelperColor)
+            projectorObject.distanceHelperXRight = new ArrowHelper(dirXRight, positionX, projectorObject.position.x / 2, projectorObject.distanceHelperColor)
+
+            const positionY = extend(true, {}, projectorObject.position)
+            positionY.y /= 2
+            projectorObject.distanceHelperYTop = new ArrowHelper(dirYTop, positionY, projectorObject.position.y / 2, projectorObject.distanceHelperColor)
+            projectorObject.distanceHelperYBottom = new ArrowHelper(dirYBottom, positionY, projectorObject.position.y / 2, projectorObject.distanceHelperColor)
+
+            const positionZ = extend(true, {}, projectorObject.position)
+            positionZ.z /= 2
+            projectorObject.distanceHelperZFront = new ArrowHelper(dirZFront, positionZ, projectorObject.position.z / 2, projectorObject.distanceHelperColor)
+            projectorObject.distanceHelperZBack = new ArrowHelper(dirZBack, positionZ, projectorObject.position.z / 2, projectorObject.distanceHelperColor)
+
+            if (projectorObject.distanceHelperXLabel) {
+                projectorObject.distanceHelperXLabel.position.set(positionX.x, positionX.y + 2, positionX.z - 2)
+                const labelDivX = document.getElementById(`distance-helper-x-${projectorObject.name}`)
+                labelDivX.textContent = (projectorState.x * store.state.common.unitRatio).toFixed(2)
+            } else {
+                const labelDivX = document.createElement('div')
+                labelDivX.className = 'mps-three-label'
+                labelDivX.id = `distance-helper-x-${projectorObject.name}`
+                labelDivX.textContent = (projectorState.x * store.state.common.unitRatio).toFixed(2)
+                labelDivX.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                projectorObject.distanceHelperXLabel = new CSS2DObject(labelDivX)
+                projectorObject.distanceHelperXLabel.position.set(positionX.x, positionX.y + 2, positionX.z - 2)
+                this._scene.add(projectorObject.distanceHelperXLabel)
+            }
+
+            if (projectorObject.distanceHelperYLabel) {
+                projectorObject.distanceHelperYLabel.position.set(positionY.x + 3, positionY.y, positionY.z - 3)
+                const labelDivY = document.getElementById(`distance-helper-y-${projectorObject.name}`)
+                labelDivY.textContent = (projectorState.y * store.state.common.unitRatio).toFixed(2)
+            } else {
+                const labelDivY = document.createElement('div')
+                labelDivY.className = 'mps-three-label'
+                labelDivY.id = `distance-helper-y-${projectorObject.name}`
+                labelDivY.textContent = (projectorState.y * store.state.common.unitRatio).toFixed(2)
+                labelDivY.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                projectorObject.distanceHelperYLabel = new CSS2DObject(labelDivY)
+                projectorObject.distanceHelperYLabel.position.set(positionY.x + 3, positionY.y, positionY.z - 3)
+                this._scene.add(projectorObject.distanceHelperYLabel)
+            }
+
+            if (projectorObject.distanceHelperZLabel) {
+                projectorObject.distanceHelperZLabel.position.set(positionZ.x + 3, positionZ.y + 2, positionZ.z)
+                const labelDivZ = document.getElementById(`distance-helper-z-${projectorObject.name}`)
+                labelDivZ.textContent = (projectorState.z * store.state.common.unitRatio).toFixed(2)
+            } else {
+                const labelDivZ = document.createElement('div')
+                labelDivZ.className = 'mps-three-label'
+                labelDivZ.id = `distance-helper-z-${projectorObject.name}`
+                labelDivZ.textContent = (projectorState.y * store.state.common.unitRatio).toFixed(2)
+                labelDivZ.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                projectorObject.distanceHelperZLabel = new CSS2DObject(labelDivZ)
+                projectorObject.distanceHelperZLabel.position.set(positionZ.x + 3, positionZ.y + 2, positionZ.z)
+                this._scene.add(projectorObject.distanceHelperZLabel)
+            }
+
+            this._scene.add(projectorObject.distanceHelperXLeft)
+            this._scene.add(projectorObject.distanceHelperXRight)
+            this._scene.add(projectorObject.distanceHelperYTop)
+            this._scene.add(projectorObject.distanceHelperYBottom)
+            this._scene.add(projectorObject.distanceHelperZFront)
+            this._scene.add(projectorObject.distanceHelperZBack)
+        }
+    }
+
+    _disposeDistanceHelperObject(projectorObject) {
+        projectorObject.distanceHelperXLeft && (this._scene.remove(projectorObject.distanceHelperXLeft))
+        projectorObject.distanceHelperXRight && this._scene.remove(projectorObject.distanceHelperXRight)
+        projectorObject.distanceHelperYTop && this._scene.remove(projectorObject.distanceHelperYTop)
+        projectorObject.distanceHelperYBottom && this._scene.remove(projectorObject.distanceHelperYBottom)
+        projectorObject.distanceHelperZFront && this._scene.remove(projectorObject.distanceHelperZFront)
+        projectorObject.distanceHelperZBack && this._scene.remove(projectorObject.distanceHelperZBack)
+    }
+
+    _disposeDistanceHelperLabel(projectorObject) {
+        if (projectorObject.distanceHelperXLabel) {
+            this._scene.remove(projectorObject.distanceHelperXLabel)
+            projectorObject.distanceHelperXLabel = null
+        }
+        if (projectorObject.distanceHelperYLabel) {
+            this._scene.remove(projectorObject.distanceHelperYLabel)
+            projectorObject.distanceHelperYLabel = null
+        }
+        if (projectorObject.distanceHelperZLabel) {
+            this._scene.remove(projectorObject.distanceHelperZLabel)
+            projectorObject.distanceHelperZLabel = null
+        }
+    }
+
+    _createProjectionSize(projectorObject, projectorObjectState, directionCenter) {
+        projectorObject.lightBoundC?.geometry && projectorObject.lightBoundC?.geometry.dispose()
+        projectorObject.lightBoundC?.object && this._scene.remove(projectorObject.lightBoundC?.object)
+
+        const isProjectorSelected = store.state.projector.selectedProjectors.findIndex(o => o.uId === projectorObject.name) >= 0
+
+        if (!this._isShowDistanceHelper || !isProjectorSelected) {
+            this._disposeProjectionSizeLabel(projectorObject)
+        } else {
+            const screenWidth = projectorObject.projectionDistance / projectorObjectState.throwRatio
+            const screenHeight = screenWidth / projectorObjectState.aspectRatio
+            const screenDiagonal = Math.sqrt(Math.pow(screenWidth, 2) + Math.pow(screenHeight, 2)) * unitRatio.inch
+
+            projectorObject.lightBoundC = this._createRayLine(projectorObject.position, directionCenter, true, new Color(projectorObject.distanceHelperColor), true)
+            const hitPoint = projectorObject.lightBoundC.object.geometry.points[1]
+
+            if (projectorObject.projectionDistanceLabel) {
+                projectorObject.projectionDistanceLabel.position.set(hitPoint.x, hitPoint.y + 2, hitPoint.z)
+                const labelDivProjectionDistance = document.getElementById(`distance-helper-projection-distance-${projectorObject.name}`)
+                labelDivProjectionDistance.textContent = `${projectorObject.projectionDistance.toFixed(2)}`
+            } else {
+                const labelDivProjectionDistance = document.createElement('div')
+                labelDivProjectionDistance.className = 'mps-three-label'
+                labelDivProjectionDistance.id = `distance-helper-projection-distance-${projectorObject.name}`
+                labelDivProjectionDistance.textContent = `${projectorObject.projectionDistance.toFixed(2)}`
+                labelDivProjectionDistance.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                projectorObject.projectionDistanceLabel = new CSS2DObject(labelDivProjectionDistance)
+                projectorObject.projectionDistanceLabel.position.set(hitPoint.x, hitPoint.y + 2, hitPoint.z)
+                this._scene.add(projectorObject.projectionDistanceLabel)
+            }
+            if (projectorObject.projectionSizeLabel) {
+                projectorObject.projectionSizeLabel.position.set(hitPoint.x, hitPoint.y + 5, hitPoint.z)
+                const labelDivProjectionSize = document.getElementById(`distance-helper-projection-size-${projectorObject.name}`)
+                labelDivProjectionSize.textContent = `${screenDiagonal.toFixed(2)}''`
+            } else {
+                const labelDivProjectionSize = document.createElement('div')
+                labelDivProjectionSize.className = 'mps-three-label'
+                labelDivProjectionSize.id = `distance-helper-projection-size-${projectorObject.name}`
+                labelDivProjectionSize.textContent = `${screenDiagonal.toFixed(2)}''`
+                labelDivProjectionSize.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                projectorObject.projectionSizeLabel = new CSS2DObject(labelDivProjectionSize)
+                projectorObject.projectionSizeLabel.position.set(hitPoint.x, hitPoint.y + 5, hitPoint.z)
+                this._scene.add(projectorObject.projectionSizeLabel)
+            }
+        }
+    }
+
+    _disposeProjectionSizeLabel(projectorObject) {
+        if (projectorObject.projectionSizeLabel) {
+            this._scene.remove(projectorObject.projectionSizeLabel)
+            projectorObject.projectionSizeLabel = null
+        }
+        if (projectorObject.projectionDistanceLabel) {
+            this._scene.remove(projectorObject.projectionDistanceLabel)
+            projectorObject.projectionDistanceLabel = null
+        }
+    }
+
+    _calcDivideCutPoints(originPoint, directionFrom, directionTo, axis, projectorState) {
         const hitPoints = []
         const cutDivide = 30
         const axisX = new Vector3(1, 0, 0)
@@ -1192,9 +1366,9 @@ export default class ThreeBase {
         for (let i = 0; i <= cutDivide; i++) {
             const direction = directionFrom.clone()
             direction[axis] -= offset * i
-            direction.applyAxisAngle(axisX, projectorObject.rotation.x)
-            direction.applyAxisAngle(axisY, projectorObject.rotation.y)
-            direction.applyAxisAngle(axisZ, projectorObject.rotation.z)
+            direction.applyAxisAngle(axisX, projectorState.rotateX / 180 * Math.PI)
+            direction.applyAxisAngle(axisY, Math.PI + projectorState.rotateY / 180 * Math.PI)
+            direction.applyAxisAngle(axisZ, projectorState.rotateZ / 180 * Math.PI)
             const point = this._calcHitPoint(originPoint, direction)
             hitPoints.push(point)
         }
@@ -1202,18 +1376,22 @@ export default class ThreeBase {
         return hitPoints
     }
 
-    _createRayLine(originPoint, direction, isSelected) {
+    _createRayLine(originPoint, direction, isSelected, color = 0x50504e, isShowLightBound) {
         const hitPoint = this._calcHitPoint(originPoint, direction)
         const points = [originPoint, hitPoint]
+
+        if (!isShowLightBound) {
+            isShowLightBound = this._isShowLightBound
+        }
 
         const object3D = { geometry: null, object: null }
         object3D.geometry = new MeshLine()
         object3D.geometry.setPoints(points)
         const lightBoundMaterial = new MeshLineMaterial({
-            color: 0x50504e,
-            lineWidth: this._isShowLightBound ? 0.2 : 0,
-            transparent: !isSelected || !this._isShowLightBound,
-            opacity: this._isShowLightBound ? 0.2 : 0
+            color: color,
+            lineWidth: isShowLightBound ? 0.2 : 0,
+            transparent: !isSelected || isShowLightBound,
+            opacity: isShowLightBound ? 0.2 : 0
         })
         object3D.object = new Mesh(object3D.geometry, lightBoundMaterial)
 

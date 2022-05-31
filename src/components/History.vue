@@ -14,31 +14,17 @@
             <q-card v-if="currentItem" :key="currentItem.uId">
               <q-card-section>
                 <div class="row">
-                  <q-img
-                    :src="currentItem.threeViewImage"
-                    :img-style="{ 'background-size': 'contain' }"
-                    style="width:350px;min-height:200px"
-                  />
+                  <q-img :src="currentItem.threeViewImage" :img-style="{ 'background-size': 'contain' }"
+                    style="width:350px;min-height:200px" />
                 </div>
                 <div class="row q-mt-sm">
                   <div class="col-10">
-                    <q-input
-                      outlined
-                      dense
-                      :color="$q.dark.isActive ? 'primary' : 'positive'"
-                      v-model="currentName"
-                      :label="$t('customName')"
-                    />
+                    <q-input outlined dense :color="$q.dark.isActive ? 'primary' : 'positive'" v-model="currentName"
+                      :label="$t('customName')" />
                   </div>
                   <div class="col">
-                    <q-btn
-                      round
-                      :color="$q.dark.isActive ? 'primary' : 'positive'"
-                      flat
-                      label
-                      icon="add"
-                      @click.prevent="addItem"
-                    />
+                    <q-btn round :color="$q.dark.isActive ? 'primary' : 'positive'" flat label icon="add"
+                      @click.prevent="addItem" />
                   </div>
                 </div>
               </q-card-section>
@@ -46,23 +32,14 @@
             <q-card v-for="item in historys" :key="item.uId">
               <q-card-section>
                 <div class="row">
-                  <q-img
-                    :src="item.threeViewImage"
-                    :img-style="{ 'background-size': 'contain' }"
-                    style="width:350px;min-height:200px"
-                  />
+                  <q-img :src="item.threeViewImage" :img-style="{ 'background-size': 'contain' }"
+                    style="width:350px;min-height:200px" />
                 </div>
                 <div class="row q-mt-sm">
                   <div class="col-7" style="margin:auto">{{ item.name }}</div>
                   <div class="col">
-                    <q-btn
-                      :color="$q.dark.isActive ? 'primary' : 'positive'"
-                      round
-                      flat
-                      label
-                      icon="delete_outline"
-                      @click.prevent="deleteItem(item.uId)"
-                    />
+                    <q-btn :color="$q.dark.isActive ? 'primary' : 'positive'" round flat label icon="delete_outline"
+                      @click.prevent="deleteItem(item.uId)" />
                     <!-- <q-btn
                       :color="$q.dark.isActive ? 'primary' : 'positive'"
                       round
@@ -71,14 +48,10 @@
                       icon="compare_arrows"
                       @click.prevent="updateItem(item.uId)"
                     />-->
-                    <q-btn
-                      :color="$q.dark.isActive ? 'primary' : 'positive'"
-                      round
-                      flat
-                      label
-                      icon="check"
-                      @click.prevent="loadItem(item.uId)"
-                    />
+                    <q-btn :color="$q.dark.isActive ? 'primary' : 'positive'" round flat label icon="check"
+                      @click.prevent="loadItem(item.uId)" />
+                    <q-btn :color="$q.dark.isActive ? 'primary' : 'positive'" round flat label icon="download"
+                      @click.prevent="downloadItem(item)" />
                   </div>
                 </div>
               </q-card-section>
@@ -86,13 +59,25 @@
           </div>
         </q-page>
       </q-page-container>
+
+      <q-footer :style="{ background: $q.dark.isActive ? '#445a4d' : '#3aaa35' }">
+        <q-toolbar>
+          <div style="height:0px">
+            <input id="upload_storage" hidden type="file" accept="application/json" @change="uploadStorage" />
+          </div>
+          <q-space>
+          </q-space>
+          <q-btn class="right" flat :color="$q.dark.isActive ? 'primary' : 'white'" icon="upload"
+            @click="clickUpload" />
+        </q-toolbar>
+      </q-footer>
     </q-layout>
   </q-dialog>
 </template>
 
 <script>
 import { extend } from 'quasar'
-import { showConfirm } from 'src/helper/util'
+import { downloadJsonOrTxt, showConfirm } from 'src/helper/util'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -187,6 +172,29 @@ export default {
       this.$bus.emit('addProjectorsHistory', history.projector.projectors)
 
       this.$emit('update:showDialog', false)
+    },
+    downloadItem(item) {
+      downloadJsonOrTxt(`${item.name}.json`, JSON.stringify(item))
+    },
+    clickUpload() {
+      document.querySelector('#upload_storage').click()
+    },
+    uploadStorage(e) {
+      const files = e.target.files
+      if (files.length === 0) {
+        return
+      }
+      const file = files[0]
+      const reader = new FileReader()
+      reader.readAsText(file, 'UTF-8')
+      reader.onload = (evt) => {
+        const fileString = evt.target.result
+        const item = JSON.parse(fileString)
+        if (item.threeViewImage) {
+          item.uId = new Date().getTime()
+          this.ADD_ITEM(item)
+        }
+      }
     },
     clearProjectors() {
       const projectors = this.$store.state.projector.projectors

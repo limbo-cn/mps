@@ -150,3 +150,28 @@ export const filterWeight = (o, input) => {
     const weight = o.Weight.unit === 'kg' ? o.Weight.value : o.Weight.value / 1000
     return weight >= +min && weight <= +max
 }
+
+export const downloadJsonOrTxt = (filename, text) => {
+    const pom = document.createElement('a')
+    pom.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text))
+    pom.setAttribute('download', filename)
+    if (document.createEvent) {
+        const event = document.createEvent('MouseEvents')
+        event.initEvent('click', true, true)
+        pom.dispatchEvent(event)
+    } else {
+        pom.click()
+    }
+}
+
+export const randomColor = () => {
+    let color = '#'
+    for (let i = 0; i < 6; i++) color += parseInt(Math.random() * 16).toString(16)
+    return color
+}
+
+export const GetQueryString = (name) => {
+    const reg = new RegExp('(^|&)' + name + '=([^&]*)(&|$)')
+    const r = window.location.search.substr(1).match(reg)
+    if (r != null) return unescape(r[2]); return null
+}

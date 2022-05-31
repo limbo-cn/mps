@@ -6,6 +6,7 @@ export default function () {
     threeViewImage: '',
     isLoadingModel: false,
     showUndo: false,
-    showRedo: false
+    showRedo: false,
+    isToShowContextmenu: false
   }
 }

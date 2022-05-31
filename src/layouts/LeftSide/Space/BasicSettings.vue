@@ -7,21 +7,25 @@
           v-model="unit" :val="optionUnit.value" :label="optionUnit.label" />
       </template>
     </q-field>
-    <q-field dense borderless>
+    <q-field dense borderless style="width: 100%;">
       <q-checkbox v-model="isShowRefrence" @update:modelValue="updateShowRefrence" left-label
         :label="$t('showReference')" />
     </q-field>
-    <q-field dense borderless>
+    <q-field dense borderless style="width: 100%;">
       <q-checkbox v-model="isShowProjectorInterfere" @update:modelValue="updateShowProjectorInterfere" left-label
         :label="$t('showProjectorInterfere')" />
     </q-field>
-    <q-field dense borderless>
+    <q-field dense borderless style="width: 100%;">
       <q-checkbox v-model="isShowProjectionDistanceRefrence" @update:modelValue="updateShowProjectionDistanceRefrence"
         left-label :label="$t('showProjectionDistanceRefrence')" />
     </q-field>
-    <q-field dense borderless>
+    <q-field dense borderless style="width: 100%;">
       <q-checkbox v-model="isShowLightBound" @update:modelValue="updateShowLightBound" left-label
         :label="$t('showProjectorLightBound')" />
+    </q-field>
+    <q-field dense borderless style="width: 100%;">
+      <q-checkbox v-model="isShowDistanceHelper" @update:modelValue="updateShowDistanceHelper" left-label
+        :label="$t('showDistanceHelper')" />
     </q-field>
     <q-field dense borderless>
       <q-input input-class="mps-input-class" v-model.number="roomBrightness" @update:modelValue="updateRoomBrightness"
@@ -49,7 +53,8 @@ export default {
       isShowRefrence: true,
       isShowProjectorInterfere: false,
       isShowProjectionDistanceRefrence: false,
-      isShowLightBound: true
+      isShowLightBound: true,
+      isShowDistanceHelper: false
     }
   },
   computed: {
@@ -86,15 +91,18 @@ export default {
     updateShowLightBound(val) {
       this.$bus.emit('updateShowLightBound', val)
     },
+    updateShowDistanceHelper(val) {
+      this.$bus.emit('updateShowDistanceHelper', val)
+    },
     changeUnit(val) {
       if (val === unitType.m) {
-        this.SET_UNIT_LABEL(this.$t('m'))
+        this.SET_UNIT_LABEL('m')
         this.SET_UNIT_RATIO(unitRatio.m)
       } else if (val === unitType.cm) {
-        this.SET_UNIT_LABEL(this.$t('cm'))
+        this.SET_UNIT_LABEL('cm')
         this.SET_UNIT_RATIO(unitRatio.cm)
       } else if (val === unitType.mm) {
-        this.SET_UNIT_LABEL(this.$t('mm'))
+        this.SET_UNIT_LABEL('mm')
         this.SET_UNIT_RATIO(unitRatio.mm)
       } else if (val === unitType.inch) {
         this.SET_UNIT_LABEL(this.$t('inch'))

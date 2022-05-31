@@ -43,7 +43,7 @@
             </ul>
           </q-tooltip>
         </q-btn>-->
-        MPS v 1.0.0 © Copyright 2021 Vivitek. All Rights Reserved. |
+        MPS v 1.2.5 © Copyright 2021 Vivitek. All Rights Reserved. |
         <a
           href="https://www.vivitek.eu/support/contact-support"
           target="_blank"

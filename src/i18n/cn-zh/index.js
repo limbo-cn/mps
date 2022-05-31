@@ -127,5 +127,10 @@ export default {
     contrastRatio: '对比度',
     distance: '投射距离',
     offset: '投射偏移',
-    showProjectorLightBound: '显示投射光线'
+    showProjectorLightBound: '显示投射光线',
+    fixed: '固定镜头',
+    feet: '英尺',
+    showGrid: '显示网格参照物',
+    gridSize: '网格参照物大小',
+    showDistanceHelper: '显示距离辅助器(需先选择投影机)'
 }

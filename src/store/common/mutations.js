@@ -25,3 +25,7 @@ export function SET_SHOW_UNDO(state, showUndo) {
 export function SET_SHOW_REDO(state, showRedo) {
     state.showRedo = showRedo
 }
+
+export function SET_IS_TO_SHOW_CONTEXTMENU(state, isToShowContextmenu) {
+    state.isToShowContextmenu = isToShowContextmenu
+}
