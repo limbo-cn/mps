@@ -19,6 +19,23 @@
       <q-btn push dense v-show="showRedo" text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'"
         icon="redo" style="z-index:999;" class="q-mr-sm q-mb-sm absolute-bottom-right" @click="redo">
       </q-btn>
+
+      <!-- <q-btn fab text-color="primary" :color="$q.dark.isActive ? 'grey-8' : 'white'" label="News"
+        style="z-index:999;bottom:60px;right:20px;background-image: url('../assets/delta_btn.png');" class="q-mr-sm q-mb-sm absolute-bottom-right">
+        <q-popup-proxy>
+          <div class="q-pa-md">
+            <q-carousel animated v-model="slide" navigation infinite :autoplay="false" arrows
+              transition-prev="slide-right" transition-next="slide-left" @mouseenter="autoplay = false"
+              @mouseleave="autoplay = true" keep-alive style="width:1000px">
+              <q-carousel-slide :name="1" img-src="https://www.vivitek.eu/media/287180/Thank-You_1920x360.jpg" />
+              <q-carousel-slide :name="2" img-src="https://www.vivitek.eu/media/284346/AV-News-banner-1920x360.png" />
+              <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
+              <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
+            </q-carousel>
+          </div>
+        </q-popup-proxy>
+      </q-btn> -->
+
       <q-list v-show="isShowContextmenu" class="absolute" @contextmenu.prevent=""
         :style="{ background: $q.dark.isActive ? '#121212' : '#ffffff', left: contextmenuLeft, top: contextmenuTop }"
         style="max-width: 350px ;z-index:10;" bordered>
@@ -42,6 +59,7 @@
           </q-item-section>
         </q-item>
       </q-list>
+
       <ProjectorDetail />
       <q-resize-observer @resize="resizeCanvas" debounce="100" />
     </div>
@@ -136,7 +154,8 @@ export default ({
       view: null,
       isShowContextmenu: false,
       contextmenuLeft: '0px',
-      contextmenuTop: '0px'
+      contextmenuTop: '0px',
+      slide: 1
     }
   },
   computed: {

@@ -307,8 +307,8 @@ export default class ThreeBase {
     _initScene() {
         this._scene = new Scene()
 
-        const size = 500
-        const divisions = 50
+        const size = 1000
+        const divisions = 100
 
         this._gridHelper = new GridHelper(size, divisions)
 
@@ -1228,7 +1228,7 @@ export default class ThreeBase {
                 labelDivX.className = 'mps-three-label'
                 labelDivX.id = `distance-helper-x-${projectorObject.name}`
                 labelDivX.textContent = (projectorState.x * store.state.common.unitRatio).toFixed(2)
-                labelDivX.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                labelDivX.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold;font-size:20px`
                 projectorObject.distanceHelperXLabel = new CSS2DObject(labelDivX)
                 projectorObject.distanceHelperXLabel.position.set(positionX.x, positionX.y + 2, positionX.z - 2)
                 this._scene.add(projectorObject.distanceHelperXLabel)
@@ -1243,7 +1243,7 @@ export default class ThreeBase {
                 labelDivY.className = 'mps-three-label'
                 labelDivY.id = `distance-helper-y-${projectorObject.name}`
                 labelDivY.textContent = (projectorState.y * store.state.common.unitRatio).toFixed(2)
-                labelDivY.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                labelDivY.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold;font-size:20px`
                 projectorObject.distanceHelperYLabel = new CSS2DObject(labelDivY)
                 projectorObject.distanceHelperYLabel.position.set(positionY.x + 3, positionY.y, positionY.z - 3)
                 this._scene.add(projectorObject.distanceHelperYLabel)
@@ -1258,7 +1258,7 @@ export default class ThreeBase {
                 labelDivZ.className = 'mps-three-label'
                 labelDivZ.id = `distance-helper-z-${projectorObject.name}`
                 labelDivZ.textContent = (projectorState.y * store.state.common.unitRatio).toFixed(2)
-                labelDivZ.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                labelDivZ.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold;font-size:20px`
                 projectorObject.distanceHelperZLabel = new CSS2DObject(labelDivZ)
                 projectorObject.distanceHelperZLabel.position.set(positionZ.x + 3, positionZ.y + 2, positionZ.z)
                 this._scene.add(projectorObject.distanceHelperZLabel)
@@ -1322,13 +1322,13 @@ export default class ThreeBase {
                 labelDivProjectionDistance.className = 'mps-three-label'
                 labelDivProjectionDistance.id = `distance-helper-projection-distance-${projectorObject.name}`
                 labelDivProjectionDistance.textContent = `${projectorObject.projectionDistance.toFixed(2)}`
-                labelDivProjectionDistance.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                labelDivProjectionDistance.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold;font-size:20px`
                 projectorObject.projectionDistanceLabel = new CSS2DObject(labelDivProjectionDistance)
                 projectorObject.projectionDistanceLabel.position.set(hitPoint.x, hitPoint.y + 2, hitPoint.z)
                 this._scene.add(projectorObject.projectionDistanceLabel)
             }
             if (projectorObject.projectionSizeLabel) {
-                projectorObject.projectionSizeLabel.position.set(hitPoint.x, hitPoint.y + 5, hitPoint.z)
+                projectorObject.projectionSizeLabel.position.set(hitPoint.x, hitPoint.y + 8, hitPoint.z)
                 const labelDivProjectionSize = document.getElementById(`distance-helper-projection-size-${projectorObject.name}`)
                 labelDivProjectionSize.textContent = `${screenDiagonal.toFixed(2)}''`
             } else {
@@ -1336,9 +1336,9 @@ export default class ThreeBase {
                 labelDivProjectionSize.className = 'mps-three-label'
                 labelDivProjectionSize.id = `distance-helper-projection-size-${projectorObject.name}`
                 labelDivProjectionSize.textContent = `${screenDiagonal.toFixed(2)}''`
-                labelDivProjectionSize.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold`
+                labelDivProjectionSize.style = `background-color:transparent;color:${projectorObject.distanceHelperColor};font-weight:bold;font-size:20px`
                 projectorObject.projectionSizeLabel = new CSS2DObject(labelDivProjectionSize)
-                projectorObject.projectionSizeLabel.position.set(hitPoint.x, hitPoint.y + 5, hitPoint.z)
+                projectorObject.projectionSizeLabel.position.set(hitPoint.x, hitPoint.y + 8, hitPoint.z)
                 this._scene.add(projectorObject.projectionSizeLabel)
             }
         }

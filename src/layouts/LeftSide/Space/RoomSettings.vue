@@ -38,7 +38,7 @@
     </q-field>
     <q-field dense borderless style="width: 100%" v-show="isShowGrid">
       <div class="text-subtitle">
-        {{ $t('gridSize') }} : {{gridSize}} x {{gridSize}}
+        {{ $t('gridSize') }} : {{ gridSize }} x {{ gridSize }}
       </div>
     </q-field>
   </div>
@@ -96,6 +96,7 @@ export default {
     ...mapMutations('room', ['SET_WIDTH', 'SET_HEIGHT', 'SET_DEPTH']),
     setRoom() {
       this.$bus.emit('setRoomSize')
+      window.gtag('event', `SetRoomSize-W${this.$store.state.room.width}-H${this.$store.state.room.height}-D${this.$store.state.room.depth}`)
     },
     updateShowGrid(val) {
       this.$bus.emit('updateShowGrid', val)

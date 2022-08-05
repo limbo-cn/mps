@@ -1,32 +1,14 @@
 <template>
   <div class="q-pa-sm q-pl-md row">
-    <q-select
-      dense
-      v-model="screenType"
-      @update:modelValue="setScreen"
-      :options="screenTypes"
-      emit-value
-      map-options
-      option-value="value"
-      option-label="label"
-      style="width:95%"
-      behavior="menu"
-    >
+    <q-select dense v-model="screenType" @update:modelValue="setScreen" :options="screenTypes" emit-value map-options
+      option-value="value" option-label="label" style="width:95%" behavior="menu">
       <template v-slot:prepend>
         <div class="text-subtitle2">{{ $t('screenType') }}:</div>
       </template>
     </q-select>
 
-    <q-input
-      v-show="screenType !== 100"
-      v-model.number="screenGain"
-      suffix="lx"
-      dense
-      type="number"
-      step="1"
-      :min="0"
-      style="width: 95%"
-    >
+    <q-input v-show="screenType !== 100" v-model.number="screenGain" suffix="lx" dense type="number" step="1" :min="0"
+      style="width: 95%">
       <template v-slot:prepend>
         <div class="text-subtitle2">{{ $t('screenGain') }}:</div>
       </template>
@@ -105,6 +87,7 @@ export default {
     ...mapMutations('screen', ['SET_SCREEN_TYPE', 'SET_SCREEN_GAIN']),
     setScreen() {
       this.$bus.emit('setScreen', this.screenType)
+      window.gtag('event', `SetScreenShape-${this.screenType}`)
     }
   }
 }

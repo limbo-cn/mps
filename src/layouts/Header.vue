@@ -6,15 +6,31 @@
 
       <q-toolbar-title>
         <div v-show="!$q.platform.is.mobile" style="font-weight:bold"
-          :style="{ color: $q.dark.isActive ? 'white' : '#45ba55' }">Multi Projection Simulator</div>
+          :style="{ color: $q.dark.isActive ? 'white' : '#595959' }">Multi Projection Simulator
+        </div>
       </q-toolbar-title>
 
-      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" icon="history" v-show="!$q.platform.is.mobile"
+      <!-- <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" icon="settings_remote">
+        <q-popup-proxy>
+          <div class="q-pa-md">
+            <q-carousel animated v-model="slide" navigation infinite :autoplay="false" arrows
+              transition-prev="slide-right" transition-next="slide-left" @mouseenter="autoplay = false"
+              @mouseleave="autoplay = true" keep-alive style="width:1000px">
+              <q-carousel-slide :name="1" img-src="https://www.vivitek.eu/media/287180/Thank-You_1920x360.jpg" />
+              <q-carousel-slide :name="2" img-src="https://www.vivitek.eu/media/284346/AV-News-banner-1920x360.png" />
+              <q-carousel-slide :name="3" img-src="https://cdn.quasar.dev/img/parallax2.jpg" />
+              <q-carousel-slide :name="4" img-src="https://cdn.quasar.dev/img/parallax1.jpg" />
+            </q-carousel>
+          </div>
+        </q-popup-proxy>
+      </q-btn> -->
+
+      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'grey-8'" icon="history" v-show="!$q.platform.is.mobile"
         @click="showHistory = true">
         <q-tooltip>{{ $t('history') }}</q-tooltip>
       </q-btn>
 
-      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" icon="language">
+      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'grey-8'" icon="language">
         <q-menu>
           <q-list>
             <q-item clickable v-close-popup @click="changeLanguage(`en-us`)">
@@ -52,10 +68,10 @@
         <q-tooltip>{{ $t('language') }}</q-tooltip>
       </q-btn>
 
-      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" icon="brightness_medium" @click="toggleTheme">
+      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'grey-8'" icon="brightness_medium" @click="toggleTheme">
         <q-tooltip>{{ $t('theme') }}</q-tooltip>
       </q-btn>
-      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'green'" v-show="!$q.platform.is.mobile"
+      <q-btn flat round :color="$q.dark.isActive ? 'white' : 'grey-8'" v-show="!$q.platform.is.mobile"
         @click="$q.fullscreen.toggle()" :icon="$q.fullscreen.isActive ? 'fullscreen_exit' : 'fullscreen'">
         <q-tooltip>{{ $t('fullScreen') }}</q-tooltip>
       </q-btn>
@@ -82,8 +98,9 @@ export default {
   data() {
     return {
       showHistory: false,
-      logo: require('../assets/Vivitek Logo.png'),
-      logo_white: require('../assets/Vivitek Logo_white.png')
+      logo: require('../assets/Vivitek Logo.svg'),
+      logo_white: require('../assets/Vivitek Logo_white.svg'),
+      slide: 1
     }
   },
 
@@ -116,3 +133,10 @@ export default {
   }
 }
 </script>
+<style>
+.ad_banner {
+  width: 100%;
+  height: 40px;
+  border-radius: 2px;
+}
+</style>

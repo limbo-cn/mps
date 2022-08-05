@@ -35,23 +35,23 @@
           <q-card-section class="q-pt-xs" style="padding:5px 0px 5px 10px;width:100%">
             <a :href="selectedProjectorModel.URL" target="_blank"
               :style="{ color: $q.dark.isActive ? 'white' : '#009df7' }" class="text-h5 q-mt-xs q-mb-xs">{{
-                selectedProjectorModel.ModelName
+                  selectedProjectorModel.ModelName
               }}</a>
             <div class="text-caption" :class="{ 'text-grey-4': $q.dark.isActive, 'text-grey-8': !$q.dark.isActive }">
               <span v-if="selectedProjectorModel.Resolution"> {{
-                `${$t('resolution')}:
+                  `${$t('resolution')}:
                               ${selectedProjectorModel.Resolution.Desc}(${selectedProjectorModel.Resolution.width}*${selectedProjectorModel.Resolution.height})`
               }}<br /></span>
               <span v-if="selectedProjectorModel.Brightness"> {{
-                `${$t('brightness')}: ${selectedProjectorModel.Brightness.value}
+                  `${$t('brightness')}: ${selectedProjectorModel.Brightness.value}
                               ${selectedProjectorModel.Brightness.unit}`
               }}<br /></span>
               <span v-if="selectedProjectorModel['Contrast Ratio']"> {{
-                `${$t('contrastRatio')}:
+                  `${$t('contrastRatio')}:
                               ${selectedProjectorModel['Contrast Ratio']}`
               }}<br /></span>
               <span v-if="selectedProjectorModel.Weight">{{
-                `${$t('weight')}: ${selectedProjectorModel.Weight.value}
+                  `${$t('weight')}: ${selectedProjectorModel.Weight.value}
                               ${selectedProjectorModel.Weight.unit}`
               }}<br /></span>
             </div>
@@ -76,13 +76,13 @@
             <div class="text-h5 q-mt-none q-mb-xs">{{ selectedProjectorLens['Part Name'] }}</div>
             <div class="text-caption" :class="{ 'text-grey-4': $q.dark.isActive, 'text-grey-8': !$q.dark.isActive }">
               <span v-if="selectedProjectorLens['Throw Ratio']">{{
-                `${$t('throwRatio')}: ${selectedProjectorLens['Throw Ratio'].min}-${selectedProjectorLens['Throw Ratio'].max}` }}</span><br />
+                  `${$t('throwRatio')}: ${selectedProjectorLens['Throw Ratio'].min}-${selectedProjectorLens['Throw Ratio'].max}` }}</span><br />
               <span v-if="selectedProjectorLens.Distance">{{
-                `${$t('distance')}:
-                            ${selectedProjectorLens.Distance.min}-${selectedProjectorLens.Distance.max} m`
+                  `${$t('distance')}:
+                              ${selectedProjectorLens.Distance.min}-${selectedProjectorLens.Distance.max} m`
               }}</span><br />
               <span v-if="selectedProjectorLens.Offset !== null">{{
-                `${$t('offset')}: ${selectedProjectorLens.Offset} %`
+                  `${$t('offset')}: ${selectedProjectorLens.Offset} %`
               }}<br /></span>
             </div>
           </q-card-section>
@@ -93,8 +93,7 @@
       <div class="col-12">
         <q-card-section horizontal>
           <q-card-section class="col-5 flex flex-center" style="padding:5px">
-            <q-img :src="svgSrc" :img-style="{ 'background-size': 'contain' }" style="height:100px;width:100px"
-              :style="{ background: $q.dark.isActive ? '' : 'black' }" />
+            <q-img :src="svgSrc" :img-style="{ 'background-size': 'contain' }" style="height:100px;width:120px" />
           </q-card-section>
           <q-card-section class="q-pt-xs" style="padding:5px 0px 5px 10px;width:100%">
             <div class="text-h5 q-mt-sm q-mb-xs text-weight-bolder">{{ $t('fixed') }}</div>
@@ -102,11 +101,11 @@
               <span v-if="selectedProjectorModel['Throw Ratio']">{{
                   `${$t('throwRatio')}: ${selectedProjectorModel['Throw Ratio'].min}-${selectedProjectorModel['Throw Ratio'].max}` }}<br /></span>
               <span v-if="selectedProjectorModel.Distance">{{
-                `${$t('distance')}:
-                          ${selectedProjectorModel.Distance.min}-${selectedProjectorModel.Distance.max} m`
+                  `${$t('distance')}:
+                              ${selectedProjectorModel.Distance.min}-${selectedProjectorModel.Distance.max} m`
               }}<br /></span>
               <span v-if="selectedProjectorModel.Offset">{{
-                `${$t('offset')}: ${selectedProjectorModel.Offset} %`
+                  `${$t('offset')}: ${selectedProjectorModel.Offset} %`
               }}<br /></span>
             </div>
           </q-card-section>
@@ -207,8 +206,8 @@
               <div class="text-subtitle2">{{ $t('throwRatio') }}:</div>
             </template>
           </q-select>
-          <q-select clearable outlined dense v-model="aspectRatio" :options="aspectRatioOptions" class="q-pl-md"
-            style="width:33%">
+          <q-select clearable outlined dense v-model="aspectRatio" :options="aspectRatioOptions" map-options
+            option-value="value" option-label="label" class="q-pl-md" style="width:33%">
             <template v-slot:prepend>
               <div class="text-subtitle2">{{ $t('aspectRatio') }}:</div>
             </template>
@@ -280,7 +279,7 @@ export default {
   },
   data() {
     return {
-      svgSrc: require('../../../assets/Lens/Lens shutter.svg'),
+      svgSrc: require('../../../assets/Lens/fixed.svg'),
       lensShiftOnly: false,
       optionalLensOnly: false,
       throwDistance: '',
@@ -288,11 +287,15 @@ export default {
       brightness: '',
       brightnessOptions: ['0-2000', '2000-4000', '4000-6000', '6000-8000', '8000-10000', '10000-15000', '15000-20000', '20000-30000'],
       resolution: '',
-      resolutionOptions: ['480p', '720p', '1080p', 'XGA', 'WXGA', 'WUXGA', 'UHD'],
+      resolutionOptions: ['480p', '720p', '1080p', 'XGA', 'WXGA', 'WUXGA', '4K-UHD'],
       throwRatio: '',
       throwRatioOptions: ['0-0.5', '0.5-1', '1-1.5', '1.5-2', '2-3', '3-5', '5-10'],
       aspectRatio: '',
-      aspectRatioOptions: ['16/10', '16/9', '4/3'],
+      aspectRatioOptions: [
+        { label: '16:9', value: '16/9' },
+        { label: '16:10', value: '16/10' },
+        { label: '4:3', value: '4/3' }
+      ],
       weight: '',
       weightOptions: ['0-2', '1-5', '5-10', '10-20', '20-50'],
       showDlgCopyProjector: false,
@@ -364,7 +367,7 @@ export default {
         .filter(o => !this.brightness || filterBrightness(o, this.brightness))
         .filter(o => !this.resolution || filterResolution(o, this.resolution))
         .filter(o => !this.throwRatio || filterThrowRatio(o, this.throwRatio))
-        .filter(o => !this.aspectRatio || filterAspectRatio(o, this.aspectRatio))
+        .filter(o => !this.aspectRatio || filterAspectRatio(o, this.aspectRatio.value))
         .filter(o => !this.weight || filterWeight(o, this.weight))
         .filter(o => !this.modelNameFilter || filterModelName(o, this.modelNameFilter))
         .map(o => o.ModelName)
@@ -413,6 +416,8 @@ export default {
       projector.maxDistance = lens.Distance.max
       projector.offset = lens.Offset
       this.SET_PROJECTOR_LENS(projector)
+
+      window.gtag('event', `ChooseLens-${projector.lensName}`)
 
       this.$bus.emit('setProjector', this.selectedProjector)
     },
@@ -489,6 +494,8 @@ export default {
         this.$bus.emit('addProjector', projector.uId)
       }
 
+      window.gtag('event', `ChooseModel-${projector.modelName}`)
+
       this.interval = setInterval(() => {
         if (!this.isLoadingModel) {
           this.loadingAdd = false
@@ -498,7 +505,7 @@ export default {
       }, 500)
     },
     deleteProjector() {
-      showConfirm(this.$t('sureToDelete'), this.$t('yes'), this.$t('cancel'), () => {
+      showConfirm(`${this.$t('sureToDelete')} [${this.selectedProjector.customName}]`, this.$t('yes'), this.$t('cancel'), () => {
         this.DELETE_PROJECTOR(this.selectedProjectorId)
         this.$bus.emit('deleteProjector', this.selectedProjectorId)
         if (this.projectors.length > 0) {

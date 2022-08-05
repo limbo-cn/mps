@@ -1,6 +1,6 @@
 <template>
-  <q-footer reveal :style="{ background: $q.dark.isActive ? '#1e1f26' : '#3aaa35' }">
-    <q-toolbar class="glossy" style="height:30px;min-height:30px;">
+  <q-footer reveal class="delta-gradient-bg-2" :style="{ background: $q.dark.isActive ? '#1e1f26' : '' }">
+    <q-toolbar  style="height:30px;min-height:30px;">
       <q-toolbar-title class="text-caption text-left">
         <q-btn
           flat
@@ -43,7 +43,7 @@
             </ul>
           </q-tooltip>
         </q-btn>-->
-        MPS v 1.2.5 © Copyright 2021 Vivitek. All Rights Reserved. |
+        MPS v 1.3.2 © Copyright 2022 Vivitek. All Rights Reserved. |
         <a
           href="https://www.vivitek.eu/support/contact-support"
           target="_blank"

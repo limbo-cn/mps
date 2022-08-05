@@ -1,7 +1,7 @@
 <template>
   <q-dialog :model-value="showDialog" @hide="hideDialog" @show="showPDF" full-height>
     <q-layout view="hHh lpR fFf" container class="bg-white" style="width: 1250px; max-width: 90vw;">
-      <q-header :style="{ background: $q.dark.isActive ? '#445a4d' : '#3aaa35' }">
+      <q-header class="delta-gradient-bg" :style="{ background: $q.dark.isActive ? '#445a4d' : '' }">
         <q-toolbar>
           <q-toolbar-title>{{ $t('report') }}</q-toolbar-title>
           <q-btn icon="close" flat round dense v-close-popup />
@@ -141,7 +141,7 @@
         </q-page>
       </q-page-container>
 
-      <q-footer :style="{ background: $q.dark.isActive ? '#445a4d' : '#3aaa35' }">
+      <q-footer  class="delta-gradient-bg-2" :style="{ background: $q.dark.isActive ? '#445a4d' : '' }">
         <q-toolbar>
           <q-input
             filled

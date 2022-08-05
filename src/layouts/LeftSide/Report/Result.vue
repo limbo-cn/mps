@@ -145,9 +145,10 @@
               </q-card-section>
               <q-card-section class="text-center q-pa-sm row">
                 <div class="col-6">{{ $t('blending') }}</div>
-                <div
-                  class="col-6"
-                >{{ props.row.isShowBlendingGuideLine ? `↑${props.row.blendingGuideLineT}% →${props.row.blendingGuideLineR}% ↓${props.row.blendingGuideLineB}% ←${props.row.blendingGuideLineL}%` : 'N/A' }}</div>
+                <div class="col-6">{{ props.row.isShowBlendingGuideLine ? `↑${props.row.blendingGuideLineT}%
+                                  →${props.row.blendingGuideLineR}% ↓${props.row.blendingGuideLineB}% ←${props.row.blendingGuideLineL}%`
+                    : 'N/A'
+                }}</div>
               </q-card-section>
               <q-separator />
             </q-card>
@@ -162,9 +163,10 @@
 import { ScreenPosition, screenType } from 'src/helper/enum'
 
 export default {
-  name: 'LeftSide-RoomSize',
+  name: 'LeftSide-Result',
   data() {
     return {
+
     }
   },
   computed: {
