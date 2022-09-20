@@ -1,38 +1,19 @@
 <template>
-  <q-footer reveal class="delta-gradient-bg-2" :style="{ background: $q.dark.isActive ? '#1e1f26' : '' }">
-    <q-toolbar  style="height:30px;min-height:30px;">
+  <q-footer class="shadow-2" :style="{ 'background-color': $q.dark.isActive ? '#222222' : '#ffffff' }">
+    <q-toolbar style="height:30px;min-height:30px;">
       <q-toolbar-title class="text-caption text-left">
-        <q-btn
-          flat
-          dense
-          icon-right="arrow_drop_up"
-          v-show="showProjectorDetail === false"
-          @click="showProjectorDetail = !showProjectorDetail"
-        >
-          <q-badge
-            align="middle"
-            class="q-mr-sm"
-            color="white"
-            :text-color="$q.dark.isActive ? 'black' : 'primary'"
-            :label="`${projectors.length}`"
-          />
-          <span>{{ $t('projectors') }}</span>
+        <q-btn flat dense icon-right="arrow_drop_up" :color="$q.dark.isActive ? 'white' : 'primary'"
+          v-show="showProjectorDetail === false" @click="showProjectorDetail = !showProjectorDetail">
+          <q-badge align="middle" class="q-mr-sm" :color="$q.dark.isActive ? 'white' : 'primary'"
+            :text-color="$q.dark.isActive ? 'black' : 'white'" :label="`${projectors.length}`" />
+          <span :class="{ 'text-white': $q.dark.isActive, 'text-primary': !$q.dark.isActive }">{{ $t('projectors')
+          }}</span>
         </q-btn>
-        <q-btn
-          flat
-          dense
-          icon-right="arrow_drop_down"
-          v-show="showProjectorDetail === true"
-          @click="showProjectorDetail = !showProjectorDetail"
-        >
-          <q-badge
-            align="middle"
-            class="q-mr-sm"
-            color="white"
-            :text-color="$q.dark.isActive ? 'black' : 'primary'"
-            :label="`${projectors.length}`"
-          />
-          <span>{{ $t('projectors') }}</span>
+        <q-btn flat dense icon-right="arrow_drop_down" v-show="showProjectorDetail === true"
+          @click="showProjectorDetail = !showProjectorDetail" :color="$q.dark.isActive ? 'white' : 'primary'">
+          <q-badge align="middle" class="q-mr-sm" :color="$q.dark.isActive ? 'white' : 'primary'"
+            :text-color="$q.dark.isActive ? 'black' : 'white'" :label="`${projectors.length}`" />
+          <span :class="{ 'text-white': $q.dark.isActive, 'text-primary': !$q.dark.isActive }">{{ $t('projectors') }}</span>
         </q-btn>
       </q-toolbar-title>
       <q-toolbar-title class="text-caption text-right">
@@ -43,12 +24,11 @@
             </ul>
           </q-tooltip>
         </q-btn>-->
-        MPS v 1.3.2 © Copyright 2022 Vivitek. All Rights Reserved. |
-        <a
-          href="https://www.vivitek.eu/support/contact-support"
-          target="_blank"
-         class="text-white"
-        >Contact Us</a>
+        <span :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive }"> MPS v 1.3.2 © Copyright 2022
+          Vivitek. All Rights Reserved. |
+        </span>
+        <a href="https://www.vivitek.eu/support/contact-support" target="_blank"
+          :class="{ 'text-white': $q.dark.isActive, 'text-black': !$q.dark.isActive }">Contact Us</a>
       </q-toolbar-title>
     </q-toolbar>
   </q-footer>

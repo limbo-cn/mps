@@ -67,7 +67,7 @@ module.exports = configure(function (ctx) {
       // extractCSS: false,
 
       // gitee route
-      publicPath: 'multi-projection',
+      // publicPath: 'multi-projection',
 
       // https://v2.quasar.dev/quasar-cli/handling-webpack
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain

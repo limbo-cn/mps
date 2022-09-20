@@ -1,5 +1,6 @@
 <template>
   <q-header reveal :style="{ background: $q.dark.isActive ? '#1e1f26' : 'white' }" id="app-header">
+   <div style="height:8px" class="delta-gradient-bg"></div>
     <q-toolbar class="shadow-2">
       <img :src="$q.dark.isActive ? logo_white : logo" :style="{ background: !$q.dark.isActive ? 'white' : '' }"
         class="rounded-borders" style="height: 40px;padding: 2px; max-width: 150px;" />
